@@ -92,7 +92,24 @@
 "typeof"				return 'TK_TYPEOF'
 "struct"                return 'TK_STRUCT'
 
+([a-zA-Z])([a-zA-Z0-9_])* return 'IDENTIFICADOR'
+[']\\\\[']|[']\\\"[']|[']\\\'[']|[']\\n[']|[']\\t[']|[']\\r[']|['].?[']	return 'CARACTER'
+[0-9]+("."[0-9]+)+\b	return 'DECI'
+[0-9]+					return 'ENTERO'
 
+["]						{ cadena = ''; this.begin("string"); }
+<string>[^"\\]+			{ cadena += yytext; }
+<string>"\\\""			{ cadena += "\""; }
+<string>"\\n"			{ cadena += "\n"; }
+<string>\s				{ cadena += " ";  }
+<string>"\\t"			{ cadena += "\t"; }
+<string>"\\\\"			{ cadena += "\\"; }
+<string>"\\\'"			{ cadena += "\'"; }
+<string>"\\r"			{ cadena += "\r"; }
+<string>["]				{ yytext = cadena; this.popState(); return 'CADENA'; }
+
+<<EOF>>               	return 'EOF'
+.                     	{ errores.push({ tipo: "Léxico", error: yytext, linea: yylloc.first_line, columna: yylloc.first_column+1 }); return 'INVALID'; } 
 
 
 
