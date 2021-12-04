@@ -94,8 +94,9 @@
 "struct"                return 'TK_STRUCT'
 "begin"                 return 'TK_BEGIN'
 "end"                   return 'TK_END'
-"push"
-"pop"
+"push"                  return 'TK_PUSH'
+"pop"                   return 'TK_POP'
+"function"              return 'TK_FUNCTION'
 
 ([a-zA-Z])([a-zA-Z0-9_])* return 'IDENTIFICADOR'
 [']\\\\[']|[']\\\"[']|[']\\\'[']|[']\\n[']|[']\\t[']|[']\\r[']|['].?[']	return 'CARACTER'
@@ -141,4 +142,47 @@ ini: ENTRADA EOF { retorno = { parse: $1, errores: errores }; errores = []; retu
     |error EOF   { retorno = { parse: null, errores: errores }; errores = []; return retorno; }
 ;
 
+ENTRADA: ENTRADA instrucciones {}
+        | instrucciones {}
+;
 
+instrucciones: Mainbody {}
+            | Funciones {}
+            | Metodos {}
+            | Variables {}
+            | Vectores {}
+            | Structs {}
+;
+
+//---------------------------------------------------------------------------------------------------------
+Mainbody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpomain LlaveCierra {}
+;
+
+cuerpomain: TK_RETURN TK_PYC {}
+;
+//----------------------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+Funciones: tipos TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpoPrograma LlaveCierra {}
+        | tipos TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA LlaveAbre cuerpoPrograma LlaveCierra {}
+;
+
+cuerpoPrograma: TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PYC {}
+            | TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
+            | TK_RETURN IDENTIFICADOR {}
+            | TK_RETURN IDENTIFICADOR TK_PYC {}
+;
+
+listaparametros: tipos IDENTIFICADOR {}
+                | tipos IDENTIFICADOR TK_COMA listaparametros {}
+;
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+tipos: STRING {}
+    | INT {}
+    | DOUBLE {}
+    | CHAR {}
+    | FLOAT {}
+    | BOOLEAN {}
+    | TK_VOID {}
+;
