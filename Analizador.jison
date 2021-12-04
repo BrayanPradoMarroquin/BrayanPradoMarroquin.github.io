@@ -167,16 +167,32 @@ Funciones: tipos TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA Lla
         | tipos TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA LlaveAbre cuerpoPrograma LlaveCierra {}
 ;
 
-cuerpoPrograma: TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PYC {}
+cuerpoPrograma: imprimir {} 
+            | TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PYC {}
             | TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
             | TK_RETURN IDENTIFICADOR {}
             | TK_RETURN IDENTIFICADOR TK_PYC {}
+            
 ;
 
 listaparametros: tipos IDENTIFICADOR {}
                 | tipos IDENTIFICADOR TK_COMA listaparametros {}
+                | IDENTIFICADOR {}
+                | IDENTIFICADOR TK_COMA listaparametros {}
 ;
 //------------------------------------------------------------------------------------------------------------------------------------------
+
+imprimir: TK_PRINT PARENTESIS_ABRE impresion PARENTESIS_CIERRA TK_PYC {}
+        | TK_PRINT PARENTESIS_ABRE impresion PARENTESIS_CIERRA {}
+        | TK_PRINTLN PARENTESIS_ABRE impresion PARENTESIS_CIERRA TK_PYC {}
+        | TK_PRINTLN PARENTESIS_ABRE impresion PARENTESIS_CIERRA {}
+;
+
+impresion: CADENA {}
+        | IDENTIFICADOR {}
+        | IDENTIFICADOR OP_SUMA impresion {}
+;
+
 
 tipos: STRING {}
     | INT {}
