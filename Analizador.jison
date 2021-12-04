@@ -33,7 +33,7 @@
 "continue"				return 'TK_CONTINUE'
 "return"				return 'TK_RETURN'
 "void"					return 'TK_VOID'
-"main"                return 'TK_MAIN'
+"main"                  return 'TK_MAIN'
 
 "pow"                   return 'TK_POW'
 "sqrt"                  return 'TK_SQRT'
@@ -116,5 +116,29 @@
 <<EOF>>               	return 'EOF'
 .                     	{ errores.push({ tipo: "Léxico", error: yytext, linea: yylloc.first_line, columna: yylloc.first_column+1 }); return 'INVALID'; } 
 
+/lex
+
+
+/* Precedencias */
+
+%left 'OP_TERNARIO'
+%left 'OR'
+%left 'AND'
+%right 'NOT'
+%left 'IGUALIGUAL' 'DIFERENTEA' 'MENOR' 'MENORIGUAL' 'MAYOR' 'MAYORIGUAL'
+%left 'OP_SUMA' 'OP_MENOS'
+%left 'OP_MULTIPLICACION' 'OP_DIVISION' 'OP_MODULO'
+%left 'OP_EXPONENTE'
+%left 'INCREMENTO','DECREMENTO'
+%left umenos
+%left 'PARENTESIS_ABRE'
+
+%start ini
+
+%%
+
+ini: ENTRADA EOF { retorno = { parse: $1, errores: errores }; errores = []; return retorno; }
+    |error EOF   { retorno = { parse: null, errores: errores }; errores = []; return retorno; }
+;
 
 
