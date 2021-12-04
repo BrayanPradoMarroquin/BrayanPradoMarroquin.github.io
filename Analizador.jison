@@ -141,4 +141,14 @@ ini: ENTRADA EOF { retorno = { parse: $1, errores: errores }; errores = []; retu
     |error EOF   { retorno = { parse: null, errores: errores }; errores = []; return retorno; }
 ;
 
+ENTRADA: ENTRADA instrucciones {}
+        | instrucciones {}
+;
+
+instrucciones: mainbody {}
+            | Funciones {}
+            | Metodos {}
+            | Variables {}
+            | Vectores {}
+;
 
