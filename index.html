@@ -50,12 +50,13 @@
                 $("#ejecutar").click(function() {
                     try{
                         var result = Analizador.parse($("#txtEdditor").val());
-                        $("#txtConsole").html(result)
+                        console.log(result)
+                        $("#txtConsole").html(String(result));
                     }catch(e){
-                        $("#txtConsole").html(String(e))
+                        $("#txtConsole").html(String(e));
                     }
-                })
-            })
+                });
+            });
         </script>
 </body>
 </html>
