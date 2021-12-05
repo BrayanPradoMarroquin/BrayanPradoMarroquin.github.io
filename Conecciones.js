@@ -1,13 +1,10 @@
-let Editar = document.getElementById('Consola');
-
 function Ejecutar(){
-    try{
-        console.log(Editar)
-        var result = Analizador.parse(Editar);
-        console.log(result);
-        
-    }catch (e){
-        console.log(result);
-    }
+    let consola = document.getElementById('#txtconsol');
+        try{
+            console.log(consola)
+            var result = Analizador.parse(consola);
+            console.log(result);
+        }catch (e){
+    console.log(result);
+        }
 }
-
