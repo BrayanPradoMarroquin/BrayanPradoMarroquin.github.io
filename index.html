@@ -8,7 +8,7 @@
             <h1 class="display-4"><i>QUETZALITO OLC2</i></h1>
         </nav>
         <aside id="Main_Op">
-            <button id="Eject">Ejecutar</button>
+            <button onclick="Ejecutar()">Ejecutar</button>
             <button id="Traslate">Traducir</button>
             <button id="Error">Reporte de Errores</button>
             <button id="Symbol">Tabla de Simbolos</button>
@@ -17,11 +17,13 @@
         </aside>
         <aside id="Edit">
             <label id="lbEditor"><i>Editor</i></label><br>
-            <textarea id="Editor"></textarea><br>
+            <textarea id="Consola"></textarea><br>
             <label id="lbConsola"><i>Consola</i></label><br>
             <textarea id="Console"></textarea><br>
             <label id="lbTraductor"><i>Traductor</i></label><br>
             <textarea id="Traductor"></textarea>
         </aside>
+        <script src="Analizador.js"></script>
+        <script src="Conecciones.js"></script>
     </blody>
 </html>
