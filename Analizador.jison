@@ -158,8 +158,9 @@ Mainbody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpomain
 ;
 
 cuerpomain: imprimir cuerpomain {}
+        | Funciones cuerpomain {}
+        | Dec_Var cuerpomain {}
         | TK_RETURN TK_PYC {}
-        | Variables {}
 ;
 //----------------------------------------------------------------------------------------------------------
 
@@ -173,6 +174,7 @@ cuerpoPrograma: imprimir {}
             | cuerpoPrograma TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
             | cuerpoPrograma TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
             | cuerpoPrograma TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
+            | cuerpoPrograma Dec_Var {}
 ;
 
 listaparametros: tipos IDENTIFICADOR {}
@@ -192,8 +194,42 @@ impresion: CADENA {}
         | IDENTIFICADOR {}
         | ENTERO {}
         | DECI {}
+        | CARACTER {}
         | impresion OP_SUMA impresion {}
 ;
+//-------------------------------------------------------------------------------------------------------------------------------------------
+
+Dec_Var: tipos IDENTIFICADOR IGUAL impresion TK_PYC {}
+        | IDENTIFICADOR IGUAL impresion TK_PYC {}
+        | IDENTIFICADOR IGUAL impresion {}
+        | tipos IDENTIFICADOR IGUAL impresion {}
+        | tipos cadvar TK_PYC {}
+        | tipos cadvar {}
+;
+
+cadvar: IDENTIFICADOR {}
+        | cadvar TK_COMA IDENTIFICADOR {}
+;
+
+//---------------------------------------------------------------------------------------------------------------------------------------------
+
+Dec_Structs: TK_STRUCT IDENTIFICADOR LlaveAbre listatributos LlaveCierra TK_PYC {}
+                | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE listavals PARENTESIS_CIERRA TK_PYC {}
+;
+
+listatributos: tipos IDENTIFICADOR {}
+                | tipos IDENTIFICADOR TK_COMA listatributos {}
+;
+
+listavals: IDENTIFICADOR {}
+        | listavals ENTERO {}
+        | listavals DECI {}
+        | listavals CADENA {}
+        | listavals CARACTER {}
+        | listavals BOOLEAN {}
+        | listavals TK_COMA {}
+;
+
 
 tipos: STRING {}
     | INT {}
