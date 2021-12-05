@@ -98,16 +98,16 @@
 "pop"                   return 'TK_POP'
 "function"              return 'TK_FUNCTION'
 
-([a-zA-Z])([a-zA-Z0-9_])* return 'IDENTIFICADOR'
+([a-zA-Z])([a-zA-Z0-9_])*       return 'IDENTIFICADOR'
 [']\\\\[']|[']\\\"[']|[']\\\'[']|[']\\n[']|[']\\t[']|[']\\r[']|['].?[']	return 'CARACTER'
 [0-9]+("."[0-9]+)+\b	return 'DECI'
 [0-9]+					return 'ENTERO'
 
-["]						{ cadena = ''; this.begin("string"); }
+["]				{ cadena = ''; this.begin("string"); }
 <string>[^"\\]+			{ cadena += yytext; }
 <string>"\\\""			{ cadena += "\""; }
 <string>"\\n"			{ cadena += "\n"; }
-<string>\s				{ cadena += " ";  }
+<string>\s			{ cadena += " ";  }
 <string>"\\t"			{ cadena += "\t"; }
 <string>"\\\\"			{ cadena += "\\"; }
 <string>"\\\'"			{ cadena += "\'"; }
@@ -139,7 +139,7 @@
 %%
 
 ini: ENTRADA EOF { typeof console !== 'undefined' ? console.log($1) : print($1); return $1; }
-    |error EOF   { retorno = { parse: null, errores: errores }; errores = []; return retorno; }
+    |error EOF   { retorno = { parse: "Token no definido", errores: errores }; errores = []; return retorno; }
 ;
 
 ENTRADA: ENTRADA instrucciones {}
@@ -158,7 +158,8 @@ instrucciones: Mainbody {}
 Mainbody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpomain LlaveCierra {}
 ;
 
-cuerpomain: TK_RETURN TK_PYC {}
+cuerpomain: imprimir cuerpomain {}
+        | TK_RETURN TK_PYC {}
 ;
 //----------------------------------------------------------------------------------------------------------
 
@@ -168,10 +169,10 @@ Funciones: tipos TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA Lla
 ;
 
 cuerpoPrograma: imprimir {} 
-            | TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PYC {}
-            | TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
-            | TK_RETURN IDENTIFICADOR {}
-            | TK_RETURN IDENTIFICADOR TK_PYC {}
+            | cuerpoPrograma TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PYC {}
+            | cuerpoPrograma TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
+            | cuerpoPrograma TK_RETURN IDENTIFICADOR {}
+            | cuerpoPrograma TK_RETURN IDENTIFICADOR TK_PYC {}
 ;
 
 listaparametros: tipos IDENTIFICADOR {}
@@ -189,6 +190,8 @@ imprimir: TK_PRINT PARENTESIS_ABRE impresion PARENTESIS_CIERRA TK_PYC {}
 
 impresion: CADENA {}
         | IDENTIFICADOR {}
+        | ENTERO {}
+        | DECI {}
         | IDENTIFICADOR OP_SUMA impresion {}
 ;
 
