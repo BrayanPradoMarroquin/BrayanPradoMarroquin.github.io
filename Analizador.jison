@@ -172,7 +172,6 @@ cuerpoPrograma: imprimir {}
             | TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
             | TK_RETURN IDENTIFICADOR {}
             | TK_RETURN IDENTIFICADOR TK_PYC {}
-            
 ;
 
 listaparametros: tipos IDENTIFICADOR {}
