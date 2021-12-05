@@ -1,41 +1,47 @@
-<html>
-    <head>
-        <title>QUETZALITO OLC2</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    </head>
-    <body>
-        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-            <h1 class="display-4"><i>QUETZALITO OLC2</i></h1>
-        </nav>
-        <aside id="Main_Op">
-            <button id="ejecutar">Ejecutar</button>
-            <button id="Traslate">Traducir</button>
-            <button id="Error">Reporte de Errores</button>
-            <button id="Symbol">Tabla de Simbolos</button>
-            <button id="AST">Reporte AST</button>
-            <button id="Gramatica">Reporte Gramatical</button>
-        </aside>
-        <aside id="Edit">
-            <label id="lbEditor"><i>Editor</i></label><br>
-            <textarea id="txtconsol"></textarea><br>
-            <label id="lbConsola"><i>Consola</i></label><br>
-            <textarea id="Console"></textarea><br>
-            <label id="lbTraductor"><i>Traductor</i></label><br>
-            <textarea id="Traductor"></textarea>
-        </aside>
-        <script src="Analizador.js"></script>
-        <script src="jquery.js"></script>
-        <script>
-            $(document).ready(function (){
-                $("#ejecutar").click(function() {
-                    try{
-                        var result = Analizador.parse($("#txtconsol").val());
-                        console.log(result)
-                    }catch(e){
-                        console.log(e)
-                    }
-                })
-            })
-        </script>
-    </blody>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="Style.css">
+    <title>Quetzalito 502</title>
+</head>
+<body>
+    <div class="padre">
+        <div class="titlep">
+            <h1>Interprete Quetzalito</h1>
+        </div>
+    </div>
+    <br>
+    <aside id="Main_Op">
+        <button type="button" id="ejecutar" class="btn btn-outline-dark">Ejecutar</button>
+        <button type="button" id="traducir" class="btn btn-outline-dark">Traducir</button>
+        <button type="button" id="Terrores" class="btn btn-outline-dark">Tabla de Errores</button>
+        <button type="button" id="Tsimbolos" class="btn btn-outline-dark">Tabla de Simbolos</button>
+        <button type="button" id="report" class="btn btn-outline-dark">Reporte AST</button>
+        <button type="button" id="grammar" class="btn btn-outline-dark">Reporte Gramaticas</button>
+        <button type="button" id="clear" class="btn btn-outline-dark">Limpiar Editores</button>
+    </aside>
+
+    <aside id="Edit">
+        <p class="ed">Editor</p>
+        <textarea id="txtEdditor"></textarea><br>
+
+        <!--<label id="lbConsola"><i>Consola</i></label><br>
+        <textarea id="txtConsole"></textarea><br>
+        <label id="lbTraductor"><i>Traductor</i></label><br>
+        <textarea id="txtTraductor"></textarea>-->
+    </aside>
+     <br>
+     <br>
+    <footer class="text-center text-lg-start">
+        <div class="text-center p-3" style="background-color: #EDEDED;">
+          <p class="foot my-0">
+            © 2021 QUETZALITO - Organización de Lenguajes y Compiladores 2 - Proyecto 1
+          </p>
+        </div>
+      </footer>
+</body>
 </html>
