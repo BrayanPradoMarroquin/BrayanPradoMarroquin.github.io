@@ -138,7 +138,7 @@
 %%
 
 ini: ENTRADA EOF { typeof console !== 'undefined' ? console.log($1) : print($1); return $1; }
-    |error EOF   {}
+    |error EOF   { typeof console !== 'undefined' ? console.log($1) : print($1); return $1; }
 ;
 
 ENTRADA: ENTRADA instrucciones {}
