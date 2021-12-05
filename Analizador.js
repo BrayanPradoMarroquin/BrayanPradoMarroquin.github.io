@@ -72,21 +72,12 @@
   }
 */
 var Analizador = (function(){
-<<<<<<< HEAD
 var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,7],$V1=[1,9],$V2=[1,10],$V3=[1,11],$V4=[1,13],$V5=[1,14],$V6=[1,15],$V7=[1,16],$V8=[1,17],$V9=[1,18],$Va=[5,9,11,12,13,35,36,37,38,39,40],$Vb=[23,24],$Vc=[2,38],$Vd=[1,36],$Ve=[1,35],$Vf=[1,47],$Vg=[1,48],$Vh=[1,49],$Vi=[1,63],$Vj=[1,62];
 var parser = {trace: function trace () { },
 yy: {},
 symbols_: {"error":2,"ini":3,"ENTRADA":4,"EOF":5,"instrucciones":6,"Mainbody":7,"Funciones":8,"Metodos":9,"Variables":10,"Vectores":11,"Structs":12,"TK_VOID":13,"TK_MAIN":14,"PARENTESIS_ABRE":15,"PARENTESIS_CIERRA":16,"LlaveAbre":17,"cuerpomain":18,"LlaveCierra":19,"TK_RETURN":20,"TK_PYC":21,"tipos":22,"TK_FUNCTION":23,"IDENTIFICADOR":24,"cuerpoPrograma":25,"listaparametros":26,"imprimir":27,"TK_COMA":28,"TK_PRINT":29,"impresion":30,"TK_PRINTLN":31,"CADENA":32,"OP_SUMA":33,"IGUAL":34,"STRING":35,"INT":36,"DOUBLE":37,"CHAR":38,"FLOAT":39,"BOOLEAN":40,"$accept":0,"$end":1},
 terminals_: {2:"error",5:"EOF",9:"Metodos",11:"Vectores",12:"Structs",13:"TK_VOID",14:"TK_MAIN",15:"PARENTESIS_ABRE",16:"PARENTESIS_CIERRA",17:"LlaveAbre",19:"LlaveCierra",20:"TK_RETURN",21:"TK_PYC",23:"TK_FUNCTION",24:"IDENTIFICADOR",28:"TK_COMA",29:"TK_PRINT",31:"TK_PRINTLN",32:"CADENA",33:"OP_SUMA",34:"IGUAL",35:"STRING",36:"INT",37:"DOUBLE",38:"CHAR",39:"FLOAT",40:"BOOLEAN"},
 productions_: [0,[3,2],[3,2],[4,2],[4,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[7,7],[18,2],[8,8],[8,9],[25,1],[25,6],[25,5],[25,2],[25,3],[26,2],[26,4],[26,1],[26,3],[27,5],[27,4],[27,5],[27,4],[30,1],[30,1],[30,3],[10,4],[22,1],[22,1],[22,1],[22,1],[22,1],[22,1],[22,1]],
-=======
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,7],$V1=[1,9],$V2=[1,10],$V3=[1,11],$V4=[1,13],$V5=[1,14],$V6=[1,15],$V7=[1,16],$V8=[1,17],$V9=[1,18],$Va=[5,9,11,12,13,37,38,39,40,41,42],$Vb=[24,25],$Vc=[2,41],$Vd=[1,36],$Ve=[1,35],$Vf=[1,39],$Vg=[1,40],$Vh=[1,41],$Vi=[1,58],$Vj=[1,57],$Vk=[1,59],$Vl=[1,60],$Vm=[1,63],$Vn=[19,21],$Vo=[19,21,29,31];
-var parser = {trace: function trace () { },
-yy: {},
-symbols_: {"error":2,"ini":3,"ENTRADA":4,"EOF":5,"instrucciones":6,"Mainbody":7,"Funciones":8,"Metodos":9,"Variables":10,"Vectores":11,"Structs":12,"TK_VOID":13,"TK_MAIN":14,"PARENTESIS_ABRE":15,"PARENTESIS_CIERRA":16,"LlaveAbre":17,"cuerpomain":18,"LlaveCierra":19,"imprimir":20,"TK_RETURN":21,"TK_PYC":22,"tipos":23,"TK_FUNCTION":24,"IDENTIFICADOR":25,"cuerpoPrograma":26,"listaparametros":27,"TK_COMA":28,"TK_PRINT":29,"impresion":30,"TK_PRINTLN":31,"CADENA":32,"ENTERO":33,"DECI":34,"OP_SUMA":35,"IGUAL":36,"STRING":37,"INT":38,"DOUBLE":39,"CHAR":40,"FLOAT":41,"BOOLEAN":42,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",9:"Metodos",11:"Vectores",12:"Structs",13:"TK_VOID",14:"TK_MAIN",15:"PARENTESIS_ABRE",16:"PARENTESIS_CIERRA",17:"LlaveAbre",19:"LlaveCierra",21:"TK_RETURN",22:"TK_PYC",24:"TK_FUNCTION",25:"IDENTIFICADOR",28:"TK_COMA",29:"TK_PRINT",31:"TK_PRINTLN",32:"CADENA",33:"ENTERO",34:"DECI",35:"OP_SUMA",36:"IGUAL",37:"STRING",38:"INT",39:"DOUBLE",40:"CHAR",41:"FLOAT",42:"BOOLEAN"},
-productions_: [0,[3,2],[3,2],[4,2],[4,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[7,7],[18,2],[18,2],[8,8],[8,9],[26,1],[26,7],[26,6],[26,3],[26,4],[27,2],[27,4],[27,1],[27,3],[20,5],[20,4],[20,5],[20,4],[30,1],[30,1],[30,1],[30,1],[30,3],[10,4],[23,1],[23,1],[23,1],[23,1],[23,1],[23,1],[23,1]],
->>>>>>> abf3d183bbf6666404feaa9593fa364cec774974
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -633,7 +624,6 @@ case 1:// Comentarios de una linea
 break;
 case 2:// Comentario Multilinea
 break;
-<<<<<<< HEAD
 case 3:return 37
 break;
 case 4:return 36
@@ -645,19 +635,6 @@ break;
 case 7:return 39
 break;
 case 8:return 35
-=======
-case 3:return 39
-break;
-case 4:return 38
-break;
-case 5:return 42
-break;
-case 6:return 40
-break;
-case 7:return 41
-break;
-case 8:return 37
->>>>>>> abf3d183bbf6666404feaa9593fa364cec774974
 break;
 case 9:return 'TK_IF'
 break;
@@ -719,11 +696,7 @@ case 37:return 'MENORIGUAL'
 break;
 case 38:return 'MAYORIGUAL'
 break;
-<<<<<<< HEAD
 case 39:return 34
-=======
-case 39:return 36
->>>>>>> abf3d183bbf6666404feaa9593fa364cec774974
 break;
 case 40:return 'CONCATENADOCADENA'
 break;
