@@ -138,7 +138,7 @@
 
 %%
 
-ini: ENTRADA EOF { retorno = { parse: $1, errores: errores }; errores = []; return retorno; }
+ini: ENTRADA EOF { typeof console !== 'undefined' ? console.log($1) : print($1); return $1; }
     |error EOF   { retorno = { parse: null, errores: errores }; errores = []; return retorno; }
 ;
 

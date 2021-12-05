@@ -51,7 +51,7 @@
                     try{
                         var result = Analizador.parse($("#txtEdditor").val());
                         console.log(result)
-                        $("#txtConsole").html(String(result));
+                        $("#txtConsole").html(result);
                     }catch(e){
                         $("#txtConsole").html(String(e));
                     }
