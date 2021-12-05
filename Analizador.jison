@@ -138,7 +138,7 @@
 %%
 
 ini: ENTRADA EOF { typeof console !== 'undefined' ? console.log($1) : print($1); return $1; }
-    |error EOF   { typeof console !== 'undefined' ? console.log($1) : print($1); return $1; }
+    |error TK_PYC   {errores.push({ tipo: "Sintactico", error: "Token no Válido", linea: this._$.first_line, columna: this._$.first_column+1 }); return 'INVALID';}
 ;
 
 ENTRADA: ENTRADA instrucciones {}

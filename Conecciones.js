@@ -8,3 +8,7 @@ function Ejecutar(){
     console.log(result);
         }
 }
+
+function imprimir(){
+    console.log(Analizador.errores);
+}
