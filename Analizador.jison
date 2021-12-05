@@ -1,7 +1,6 @@
 %{
     var cadena = '';
     var errores = [];
-
 %}
 
 %lex
@@ -139,7 +138,7 @@
 %%
 
 ini: ENTRADA EOF { typeof console !== 'undefined' ? console.log($1) : print($1); return $1; }
-    |error EOF   { retorno = { parse: "Token no definido", errores: errores }; errores = []; return retorno; }
+    |error EOF   {}
 ;
 
 ENTRADA: ENTRADA instrucciones {}
