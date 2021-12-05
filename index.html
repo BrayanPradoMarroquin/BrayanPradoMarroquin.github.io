@@ -43,5 +43,19 @@
           </p>
         </div>
       </footer>
+      <script src="Analizador.js"></script>
+        <script src="jquery.js"></script>
+        <script>
+            $(document).ready(function (){
+                $("#ejecutar").click(function() {
+                    try{
+                        var result = Analizador.parse($("#txtEdditor").val());
+                        console.log(result)
+                    }catch(e){
+                        console.log(e)
+                    }
+                })
+            })
+        </script>
 </body>
 </html>
