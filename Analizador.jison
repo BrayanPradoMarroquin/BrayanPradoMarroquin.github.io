@@ -149,9 +149,9 @@ ENTRADA: ENTRADA instrucciones {}
 instrucciones: Mainbody {}
             | Funciones {}
             | Metodos {}
-            | Variables {}
-            | Vectores {}
-            | Structs {}
+            | Dec_Var {}
+            | Dec_Vec {}
+            | Dec_Structs {}
 ;
 
 //---------------------------------------------------------------------------------------------------------
@@ -160,6 +160,7 @@ Mainbody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpomain
 
 cuerpomain: imprimir cuerpomain {}
         | TK_RETURN TK_PYC {}
+        | Variables {}
 ;
 //----------------------------------------------------------------------------------------------------------
 
@@ -171,8 +172,8 @@ Funciones: tipos TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA Lla
 cuerpoPrograma: imprimir {} 
             | cuerpoPrograma TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PYC {}
             | cuerpoPrograma TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
-            | cuerpoPrograma TK_RETURN IDENTIFICADOR {}
-            | cuerpoPrograma TK_RETURN IDENTIFICADOR TK_PYC {}
+            | cuerpoPrograma TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
+            | cuerpoPrograma TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
 ;
 
 listaparametros: tipos IDENTIFICADOR {}
@@ -192,12 +193,8 @@ impresion: CADENA {}
         | IDENTIFICADOR {}
         | ENTERO {}
         | DECI {}
-        | IDENTIFICADOR OP_SUMA impresion {}
+        | impresion OP_SUMA impresion {}
 ;
-
-Variables: tipos IDENTIFICADOR IGUAL CADENA {}
-;
-
 
 tipos: STRING {}
     | INT {}
