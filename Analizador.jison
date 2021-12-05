@@ -192,6 +192,9 @@ impresion: CADENA {}
         | IDENTIFICADOR OP_SUMA impresion {}
 ;
 
+Variables: tipos IDENTIFICADOR IGUAL CADENA {}
+;
+
 
 tipos: STRING {}
     | INT {}
