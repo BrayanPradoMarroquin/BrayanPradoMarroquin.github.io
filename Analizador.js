@@ -72,12 +72,12 @@
   }
 */
 var Analizador = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,7],$V1=[1,9],$V2=[1,10],$V3=[1,11],$V4=[1,13],$V5=[1,14],$V6=[1,15],$V7=[1,16],$V8=[1,17],$V9=[1,18],$Va=[5,9,11,12,13,35,36,37,38,39,40],$Vb=[23,24],$Vc=[2,38],$Vd=[1,36],$Ve=[1,35],$Vf=[1,47],$Vg=[1,48],$Vh=[1,49],$Vi=[1,63],$Vj=[1,62];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,7],$V1=[1,9],$V2=[1,10],$V3=[1,11],$V4=[1,13],$V5=[1,14],$V6=[1,15],$V7=[1,16],$V8=[1,17],$V9=[1,18],$Va=[5,9,11,12,13,37,38,39,40,41,42],$Vb=[24,25],$Vc=[2,41],$Vd=[1,36],$Ve=[1,35],$Vf=[1,39],$Vg=[1,40],$Vh=[1,41],$Vi=[1,58],$Vj=[1,57],$Vk=[1,59],$Vl=[1,60],$Vm=[1,63],$Vn=[19,21],$Vo=[19,21,29,31];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"ini":3,"ENTRADA":4,"EOF":5,"instrucciones":6,"Mainbody":7,"Funciones":8,"Metodos":9,"Variables":10,"Vectores":11,"Structs":12,"TK_VOID":13,"TK_MAIN":14,"PARENTESIS_ABRE":15,"PARENTESIS_CIERRA":16,"LlaveAbre":17,"cuerpomain":18,"LlaveCierra":19,"TK_RETURN":20,"TK_PYC":21,"tipos":22,"TK_FUNCTION":23,"IDENTIFICADOR":24,"cuerpoPrograma":25,"listaparametros":26,"imprimir":27,"TK_COMA":28,"TK_PRINT":29,"impresion":30,"TK_PRINTLN":31,"CADENA":32,"OP_SUMA":33,"IGUAL":34,"STRING":35,"INT":36,"DOUBLE":37,"CHAR":38,"FLOAT":39,"BOOLEAN":40,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",9:"Metodos",11:"Vectores",12:"Structs",13:"TK_VOID",14:"TK_MAIN",15:"PARENTESIS_ABRE",16:"PARENTESIS_CIERRA",17:"LlaveAbre",19:"LlaveCierra",20:"TK_RETURN",21:"TK_PYC",23:"TK_FUNCTION",24:"IDENTIFICADOR",28:"TK_COMA",29:"TK_PRINT",31:"TK_PRINTLN",32:"CADENA",33:"OP_SUMA",34:"IGUAL",35:"STRING",36:"INT",37:"DOUBLE",38:"CHAR",39:"FLOAT",40:"BOOLEAN"},
-productions_: [0,[3,2],[3,2],[4,2],[4,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[7,7],[18,2],[8,8],[8,9],[25,1],[25,6],[25,5],[25,2],[25,3],[26,2],[26,4],[26,1],[26,3],[27,5],[27,4],[27,5],[27,4],[30,1],[30,1],[30,3],[10,4],[22,1],[22,1],[22,1],[22,1],[22,1],[22,1],[22,1]],
+symbols_: {"error":2,"ini":3,"ENTRADA":4,"EOF":5,"instrucciones":6,"Mainbody":7,"Funciones":8,"Metodos":9,"Variables":10,"Vectores":11,"Structs":12,"TK_VOID":13,"TK_MAIN":14,"PARENTESIS_ABRE":15,"PARENTESIS_CIERRA":16,"LlaveAbre":17,"cuerpomain":18,"LlaveCierra":19,"imprimir":20,"TK_RETURN":21,"TK_PYC":22,"tipos":23,"TK_FUNCTION":24,"IDENTIFICADOR":25,"cuerpoPrograma":26,"listaparametros":27,"TK_COMA":28,"TK_PRINT":29,"impresion":30,"TK_PRINTLN":31,"CADENA":32,"ENTERO":33,"DECI":34,"OP_SUMA":35,"IGUAL":36,"STRING":37,"INT":38,"DOUBLE":39,"CHAR":40,"FLOAT":41,"BOOLEAN":42,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",9:"Metodos",11:"Vectores",12:"Structs",13:"TK_VOID",14:"TK_MAIN",15:"PARENTESIS_ABRE",16:"PARENTESIS_CIERRA",17:"LlaveAbre",19:"LlaveCierra",21:"TK_RETURN",22:"TK_PYC",24:"TK_FUNCTION",25:"IDENTIFICADOR",28:"TK_COMA",29:"TK_PRINT",31:"TK_PRINTLN",32:"CADENA",33:"ENTERO",34:"DECI",35:"OP_SUMA",36:"IGUAL",37:"STRING",38:"INT",39:"DOUBLE",40:"CHAR",41:"FLOAT",42:"BOOLEAN"},
+productions_: [0,[3,2],[3,2],[4,2],[4,1],[6,1],[6,1],[6,1],[6,1],[6,1],[6,1],[7,7],[18,2],[18,2],[8,8],[8,9],[26,1],[26,7],[26,6],[26,3],[26,4],[27,2],[27,4],[27,1],[27,3],[20,5],[20,4],[20,5],[20,4],[30,1],[30,1],[30,1],[30,1],[30,3],[10,4],[23,1],[23,1],[23,1],[23,1],[23,1],[23,1],[23,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -86,13 +86,64 @@ switch (yystate) {
 case 1:
  typeof console !== 'undefined' ? console.log($$[$0-1]) : print($$[$0-1]); return $$[$0-1]; 
 break;
-case 2:
+}
+},
+table: [{2:[1,3],3:1,4:2,6:4,7:5,8:6,9:$V0,10:8,11:$V1,12:$V2,13:$V3,23:12,37:$V4,38:$V5,39:$V6,40:$V7,41:$V8,42:$V9},{1:[3]},{5:[1,19],6:20,7:5,8:6,9:$V0,10:8,11:$V1,12:$V2,13:$V3,23:12,37:$V4,38:$V5,39:$V6,40:$V7,41:$V8,42:$V9},{5:[1,21]},o($Va,[2,4]),o($Va,[2,5]),o($Va,[2,6]),o($Va,[2,7]),o($Va,[2,8]),o($Va,[2,9]),o($Va,[2,10]),o($Vb,$Vc,{14:[1,22]}),{24:[1,23],25:[1,24]},o($Vb,[2,35]),o($Vb,[2,36]),o($Vb,[2,37]),o($Vb,[2,38]),o($Vb,[2,39]),o($Vb,[2,40]),{1:[2,1]},o($Va,[2,3]),{1:[2,2]},{15:[1,25]},{25:[1,26]},{36:[1,27]},{16:[1,28]},{15:[1,29]},{32:[1,30]},{17:[1,31]},{13:$Vd,16:[1,32],23:34,25:$Ve,27:33,37:$V4,38:$V5,39:$V6,40:$V7,41:$V8,42:$V9},o($Va,[2,34]),{18:37,20:38,21:$Vf,29:$Vg,31:$Vh},{17:[1,42]},{16:[1,43]},{25:[1,44]},{16:[2,23],28:[1,45]},{25:$Vc},{19:[1,46]},{18:47,20:38,21:$Vf,29:$Vg,31:$Vh},{22:[1,48]},{15:[1,49]},{15:[1,50]},{20:52,26:51,29:$Vg,31:$Vh},{17:[1,53]},{16:[2,21],28:[1,54]},{13:$Vd,23:34,25:$Ve,27:55,37:$V4,38:$V5,39:$V6,40:$V7,41:$V8,42:$V9},o($Va,[2,11]),{19:[2,12]},{19:[2,13]},{25:$Vi,30:56,32:$Vj,33:$Vk,34:$Vl},{25:$Vi,30:61,32:$Vj,33:$Vk,34:$Vl},{19:[1,62],21:$Vm},o($Vn,[2,16]),{20:52,26:64,29:$Vg,31:$Vh},{13:$Vd,23:34,25:$Ve,27:65,37:$V4,38:$V5,39:$V6,40:$V7,41:$V8,42:$V9},{16:[2,24]},{16:[1,66]},{16:[2,29]},{16:[2,30],35:[1,67]},{16:[2,31]},{16:[2,32]},{16:[1,68]},o($Va,[2,14]),{25:[1,69]},{19:[1,70],21:$Vm},{16:[2,22]},o($Vo,[2,26],{22:[1,71]}),{25:$Vi,30:72,32:$Vj,33:$Vk,34:$Vl},o($Vo,[2,28],{22:[1,73]}),o($Vn,[2,19],{15:[1,74],22:[1,75]}),o($Va,[2,15]),o($Vo,[2,25]),{16:[2,33]},o($Vo,[2,27]),{13:$Vd,23:34,25:$Ve,27:76,37:$V4,38:$V5,39:$V6,40:$V7,41:$V8,42:$V9},o($Vn,[2,20]),{16:[1,77]},o($Vn,[2,18],{22:[1,78]}),o($Vn,[2,17])],
+defaultActions: {19:[2,1],21:[2,2],36:[2,41],47:[2,12],48:[2,13],55:[2,24],57:[2,29],59:[2,31],60:[2,32],65:[2,22],72:[2,33]},
 parseError: function parseError (str, hash) {
+    if (hash.recoverable) {
+        this.trace(str);
+    } else {
+        var error = new Error(str);
+        error.hash = hash;
+        throw error;
+    }
+},
 parse: function parse (input) {
+    var self = this,
+        stack = [0],
+        tstack = [], // token stack
+        vstack = [null], // semantic value stack
+        lstack = [], // location stack
+        table = this.table,
+        yytext = '',
+        yylineno = 0,
         yyleng = 0,
+        recovering = 0,
+        TERROR = 2,
+        EOF = 1;
+
+    var args = lstack.slice.call(arguments, 1);
+
+    //this.reductionCount = this.shiftCount = 0;
+
     var lexer = Object.create(this.lexer);
+    var sharedState = { yy: {} };
+    // copy state
+    for (var k in this.yy) {
+      if (Object.prototype.hasOwnProperty.call(this.yy, k)) {
+        sharedState.yy[k] = this.yy[k];
+      }
+    }
+
     lexer.setInput(input, sharedState.yy);
+    sharedState.yy.lexer = lexer;
+    sharedState.yy.parser = this;
+    if (typeof lexer.yylloc == 'undefined') {
+        lexer.yylloc = {};
+    }
+    var yyloc = lexer.yylloc;
+    lstack.push(yyloc);
+
     var ranges = lexer.options && lexer.options.ranges;
+
+    if (typeof sharedState.yy.parseError === 'function') {
+        this.parseError = sharedState.yy.parseError;
+    } else {
+        this.parseError = Object.getPrototypeOf(this).parseError;
+    }
+
+    function popStack (n) {
         stack.length = stack.length - 2 * n;
         vstack.length = vstack.length - n;
         lstack.length = lstack.length - n;
@@ -289,7 +340,6 @@ _handle_error:
 
     var cadena = '';
     var errores = [];
-
 /* generated by jison-lex 0.3.4 */
 var lexer = (function(){
 var lexer = ({
@@ -624,17 +674,17 @@ case 1:// Comentarios de una linea
 break;
 case 2:// Comentario Multilinea
 break;
-case 3:return 37
+case 3:return 39
 break;
-case 4:return 36
+case 4:return 38
 break;
-case 5:return 40
+case 5:return 42
 break;
-case 6:return 38
+case 6:return 40
 break;
-case 7:return 39
+case 7:return 41
 break;
-case 8:return 35
+case 8:return 37
 break;
 case 9:return 'TK_IF'
 break;
@@ -696,7 +746,7 @@ case 37:return 'MENORIGUAL'
 break;
 case 38:return 'MAYORIGUAL'
 break;
-case 39:return 34
+case 39:return 36
 break;
 case 40:return 'CONCATENADOCADENA'
 break;
