@@ -139,11 +139,7 @@
 %%
 
 ini: ENTRADA EOF { typeof console !== 'undefined' ? console.log($1) : print($1); return $1; }
-<<<<<<< HEAD
     |error EOF   { errores.push({tipo: "Sintactico", error: "Token Indefinido: "${yytext}, linea: ${this._$.first_line+1}, columna: ${this._$.first_column+1}}) }
-=======
-    |error EOF   { retorno = { parse: "Token no definido", errores: errores }; errores = []; return retorno; }
->>>>>>> abf3d183bbf6666404feaa9593fa364cec774974
 ;
 
 ENTRADA: ENTRADA instrucciones {}
