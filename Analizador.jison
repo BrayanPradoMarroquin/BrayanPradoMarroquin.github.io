@@ -180,6 +180,7 @@ cuerpoFunction: imprimir {}
             | cuerpoFunction TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
             | cuerpoFunction TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
             | cuerpoFunction Dec_Var {}
+            | cuerpoFunction SentenciasControl {}
 ;
 
 listaparametros: tipos IDENTIFICADOR {}
@@ -190,11 +191,13 @@ listaparametros: tipos IDENTIFICADOR {}
 
 cuerpoMetodo: imprimir {}
                 | Dec_Var {}
+                | SentenciasControl {}
                 | imprimir cuerpoMetodo {}
                 | Dec_Var cuerpoMetodo {}
+                | SentenciasControl cuerpoMetodo {}
 ;
 
-//------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------- Imprimir ------------------------------------------------------------------------
 
 imprimir: TK_PRINT PARENTESIS_ABRE impresion PARENTESIS_CIERRA TK_PYC {}
         | TK_PRINT PARENTESIS_ABRE impresion PARENTESIS_CIERRA {}
@@ -209,7 +212,7 @@ impresion: CADENA {}
         | CARACTER {}
         | impresion OP_SUMA impresion {}
 ;
-//-------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------- Declaracion y asignacion de variables --------------------------------------------------------------------------------
 
 Dec_Var: tipos IDENTIFICADOR IGUAL impresion TK_PYC {}
         | IDENTIFICADOR IGUAL impresion TK_PYC {}
@@ -223,7 +226,7 @@ cadvar: IDENTIFICADOR {}
         | cadvar TK_COMA IDENTIFICADOR {}
 ;
 
-//---------------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------- Struct ---------------------------------------------------------------------------------
 
 Dec_Structs: TK_STRUCT IDENTIFICADOR LlaveAbre listatributos LlaveCierra TK_PYC {}
                 | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE params PARENTESIS_CIERRA TK_PYC {}
@@ -258,6 +261,35 @@ LlamadaMF: IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PY
         | IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
         | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
         | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
+;
+
+SentenciasControl: ControlIF {}
+                | ControlSwitch {}                
+;
+
+ControlIF: if {}
+        | ifelse {}
+        | elseif {}
+;
+
+if: TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre instIf LlaveCierra {}
+    | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre LlaveCierra {}
+;
+
+ifelse: TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre instIf LlaveCierra TK_ELSE LlaveAbre instIf LlaveCierra {}
+        | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre instIf LlaveCierra {}
+        | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre instIf LlaveCierra TK_ELSE LlaveAbre LlaveCierra {}
+        | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre LlaveCierra {}
+;
+
+elseif: TK_IF PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre instIf LlaveCierra TK_ELSE ControlIF {}
+        | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE ControlIF {}
+;
+
+condiciones: IDENTIFICADOR IGUALIGUAL IDENTIFICADOR {}
+;
+
+instIf: imprimir{}
 ;
 
 tipos: STRING {}
