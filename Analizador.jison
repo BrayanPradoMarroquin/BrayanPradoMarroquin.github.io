@@ -36,6 +36,7 @@
 "main"                  return 'TK_MAIN'
 "++"					return 'INCREMENTO'
 "--"					return 'DECREMENTO'
+"in"                                    return 'IN'
 
 "pow"                   return 'TK_POW'
 "sqrt"                  return 'TK_SQRT'
@@ -74,7 +75,7 @@
 "+"                   	return 'OP_SUMA'
 "^"                   	return 'OP_EXPONENTE'
 "%"                   	return 'OP_MODULO'
-"?"						return 'OP_TERNARIO'
+"?"			return 'OP_TERNARIO'
 
 "("                   	return 'PARENTESIS_ABRE'
 ")"                   	return 'PARENTESIS_CIERRA'
@@ -184,6 +185,7 @@ cuerpoFunction: imprimir {}
             | TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
             | TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
             | Dec_Var {}
+            | Dec_Vec {}
             | SentenciasControl {}
             | SentenciasCiclicas {}
             | cuerpoFunction imprimir {} 
@@ -192,6 +194,7 @@ cuerpoFunction: imprimir {}
             | cuerpoFunction TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
             | cuerpoFunction TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
             | cuerpoFunction Dec_Var {}
+            | cuerpoFunction Dec_Vec {}
             | cuerpoFunction SentenciasControl {}
             | cuerpoFunction SentenciasCiclicas {}
 ;
@@ -204,10 +207,12 @@ listaparametros: tipos IDENTIFICADOR {}
 
 cuerpoMetodo: imprimir {}
                 | Dec_Var {}
+                | Dec_Vec {}
                 | SentenciasControl {}
                 | SentenciasCiclicas {}
                 | imprimir cuerpoMetodo {}
                 | Dec_Var cuerpoMetodo {}
+                | Dec_Vec cuerpoMetodo {}
                 | SentenciasControl cuerpoMetodo {}
                 | SentenciasCiclicas cuerpoMetodo {}
 ;
@@ -343,7 +348,9 @@ Cwhile: TK_WHILE PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre instIf 
 Cdowhile: TK_DO LlaveAbre instIf LlaveCierra TK_WHILE PARENTESIS_ABRE condiciones PARENTESIS_CIERRA TK_PYC {}
 ;
 
-Cfor: TK_FOR PARENTESIS_ABRE condicionesFor PARENTESIS_CIERRA LlaveAbre instIf LlaveCierra {}
+Cfor: TK_FOR PARENTESIS_ABRE condicionesFor PARENTESIS_CIERRA LlaveAbre instIf LlaveCierra {} 
+     | TK_FOR IDENTIFICADOR IN CADENA LlaveAbre instIf LlaveCierra {}
+     | TK_FOR IDENTIFICADOR IN IDENTIFICADOR LlaveAbre instIf LlaveCierra {}
 ;
 
 condicionesFor: Dec_Var condicionFor TK_PYC actualizacion {}
@@ -358,6 +365,51 @@ condicionFor: IDENTIFICADOR MAYOR IDENTIFICADOR {}
 ;
 
 actualizacion: IDENTIFICADOR INCREMENTO {}
+                | IDENTIFICADOR DECREMENTO {}
+;
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Dec_Vec: tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE valVec COR_CIERRA TK_PYC {}
+        | tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL OP_VECOTRES IDENTIFICADOR TK_PYC {}
+        | IDENTIFICADOR TK_PUNTO TK_PUSH PARENTESIS_ABRE paramV PARENTESIS_CIERRA TK_PYC {}
+        | IDENTIFICADOR TK_PUNTO TK_POP PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
+        | IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
+        | tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL opVector {}
+;
+
+valVec: ENTERO {}
+        | CADENA {}
+        | DECI {}
+        | CARACTER {}
+        | ENTERO TK_COMA valVec {}
+        | CADENA TK_COMA valVec {}
+        | DECI TK_COMA valVec {}
+        | CARACTER TK_COMA valVec {}
+;
+
+paramV: CADENA {}
+        | ENTERO {}
+        | DECI {}
+        | CARACTER {}
+;
+
+opVector: IDENTIFICADOR OP_VECOTRES operacionesA {}
+        | TK_SENO OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA TK_PYC {}
+        | TK_COSENO OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA TK_PYC {}
+        | TK_TANGENTE OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA TK_PYC {}
+        | TK_LOGARITMOB10 OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA TK_PYC {}
+;
+
+operacionesA: ENTERO {}
+             | DECI {}
+             | OP_MENOS operacionesA {}
+             | OP_SUMA operacionesA {}
+             | OP_MULTIPLICACION operacionesA {}
+             | OP_DIVISION operacionesA {}
+             | OP_EXPONENTE operacionesA {}
+             | OP_MODULO operacionesA {}
+             | 
 ;
 
 tipos: STRING {}
