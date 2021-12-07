@@ -19,6 +19,7 @@
 "char"                  return 'CHAR'
 "float"                 return 'FLOAT'
 "String"                return 'STRING'
+"null"                  return 'NULL'
 
 "if"					return 'TK_IF'
 "else"					return 'TK_ELSE'
@@ -146,11 +147,10 @@ ENTRADA: ENTRADA instrucciones {}
 ;
 
 instrucciones: Mainbody {}
-            | Funciones {}
-            | Metodos {}
-            | Variables {}
-            | Vectores {}
-            | Structs {}
+            | FuncionesMetodos {}
+            | Dec_Var {}
+            | Dec_Vec {}
+            | Dec_Structs {}
 ;
 
 //---------------------------------------------------------------------------------------------------------
@@ -158,20 +158,28 @@ Mainbody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpomain
 ;
 
 cuerpomain: imprimir cuerpomain {}
+        | FuncionesMetodos cuerpomain {}
+        | Dec_Var cuerpomain {}
         | TK_RETURN TK_PYC {}
 ;
 //----------------------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------------------------------------------------------
-Funciones: tipos TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpoPrograma LlaveCierra {}
-        | tipos TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA LlaveAbre cuerpoPrograma LlaveCierra {}
+FuncionesMetodos: tipos TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpoFunction LlaveCierra {}
+        | tipos TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA LlaveAbre cuerpoFunction LlaveCierra {}
+        | TK_VOID TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpoFunction LlaveCierra {}
+        | TK_VOID TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA LlaveAbre cuerpoFunction LlaveCierra {}
+        | TK_VOID IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA LlaveAbre cuerpoMetodo TK_RETURN TK_PYC LlaveCierra {}
+        | TK_VOID IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpoMetodo TK_RETURN TK_PYC LlaveCierra {}
+        | LlamadaMF {}
 ;
 
-cuerpoPrograma: imprimir {} 
-            | cuerpoPrograma TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PYC {}
-            | cuerpoPrograma TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
-            | cuerpoPrograma TK_RETURN IDENTIFICADOR {}
-            | cuerpoPrograma TK_RETURN IDENTIFICADOR TK_PYC {}
+cuerpoFunction: imprimir {} 
+            | cuerpoFunction TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PYC {}
+            | cuerpoFunction TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
+            | cuerpoFunction TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
+            | cuerpoFunction TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
+            | cuerpoFunction Dec_Var {}
 ;
 
 listaparametros: tipos IDENTIFICADOR {}
@@ -179,6 +187,13 @@ listaparametros: tipos IDENTIFICADOR {}
                 | IDENTIFICADOR {}
                 | IDENTIFICADOR TK_COMA listaparametros {}
 ;
+
+cuerpoMetodo: imprimir {}
+                | Dec_Var {}
+                | imprimir cuerpoMetodo {}
+                | Dec_Var cuerpoMetodo {}
+;
+
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 imprimir: TK_PRINT PARENTESIS_ABRE impresion PARENTESIS_CIERRA TK_PYC {}
@@ -191,12 +206,59 @@ impresion: CADENA {}
         | IDENTIFICADOR {}
         | ENTERO {}
         | DECI {}
-        | IDENTIFICADOR OP_SUMA impresion {}
+        | CARACTER {}
+        | impresion OP_SUMA impresion {}
+;
+//-------------------------------------------------------------------------------------------------------------------------------------------
+
+Dec_Var: tipos IDENTIFICADOR IGUAL impresion TK_PYC {}
+        | IDENTIFICADOR IGUAL impresion TK_PYC {}
+        | IDENTIFICADOR IGUAL impresion {}
+        | tipos IDENTIFICADOR IGUAL impresion {}
+        | tipos cadvar TK_PYC {}
+        | tipos cadvar {}
 ;
 
-Variables: tipos IDENTIFICADOR IGUAL CADENA {}
+cadvar: IDENTIFICADOR {}
+        | cadvar TK_COMA IDENTIFICADOR {}
 ;
 
+//---------------------------------------------------------------------------------------------------------------------------------------------
+
+Dec_Structs: TK_STRUCT IDENTIFICADOR LlaveAbre listatributos LlaveCierra TK_PYC {}
+                | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE params PARENTESIS_CIERRA TK_PYC {}
+                | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
+                | IDENTIFICADOR TK_PUNTO IDENTIFICADOR IGUAL params {}
+                | IDENTIFICADOR TK_PUNTO IDENTIFICADOR IGUAL params TK_PYC {}
+;
+
+listatributos: tipos IDENTIFICADOR {}
+                | tipos IDENTIFICADOR TK_COMA listatributos {}
+;
+
+params: IDENTIFICADOR {}
+        | ENTERO {}
+        | DECI {}
+        | NULL {}
+        | TRUE {}
+        | FALSE {}
+        | CADENA {}
+        | IDENTIFICADOR TK_COMA params {}
+        | ENTERO TK_COMA params {}
+        | DECI TK_COMA params {}
+        | NULL TK_COMA params {}
+        | TRUE TK_COMA params {}
+        | FALSE TK_COMA params {}
+        | CADENA TK_COMA params {}
+;
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+LlamadaMF: IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PYC {}
+        | IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
+        | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
+        | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
+;
 
 tipos: STRING {}
     | INT {}
@@ -204,5 +266,4 @@ tipos: STRING {}
     | CHAR {}
     | FLOAT {}
     | BOOLEAN {}
-    | TK_VOID {}
 ;
