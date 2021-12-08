@@ -66,8 +66,8 @@
 
 ","                   	return 'TK_COMA'
 ";"                   	return 'TK_PYC'
-"."						return 'TK_PUNTO'
-":"						return 'TK_DOSPUNTS'
+"."			return 'TK_PUNTO'
+":"			return 'TK_DOSPUNTS'
 
 "*"                   	return 'OP_MULTIPLICACION'
 "/"                   	return 'OP_DIVISION'
@@ -151,226 +151,166 @@ ENTRADA: ENTRADA instrucciones {}
         | instrucciones {}
 ;
 
-instrucciones: Mainbody {}
-            | FuncionesMetodos {}
-            | Dec_Var {}
-            | Dec_Vec {}
-            | Dec_Structs {}
+instrucciones: MFBody {}
+		| MainBody {}
+		| Dec_Var {}
+		| Dec_Vect {}
+                | Dec_Struct {}
+                | LLamada TK_PYC{}
+;
+//--------------------------------------------------------------- MAIN ------------------------------------------------------------
+MainBody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
 ;
 
-//---------------------------------------------------------------------------------------------------------
-Mainbody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpomain LlaveCierra {}
+//-----------------------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------------------- METODO FUNCION STRUCT ----------------------------------------------------------
+MFBody: Tipos IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
+        | Tipos IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
+        | TK_VOID IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
+	| TK_VOID IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
 ;
 
-cuerpomain: imprimir cuerpomain {}
-        | FuncionesMetodos cuerpomain {}
-        | Dec_Var cuerpomain {}
-        | TK_RETURN TK_PYC {}
-;
-//----------------------------------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-FuncionesMetodos: tipos TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpoFunction LlaveCierra {}
-        | tipos TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA LlaveAbre cuerpoFunction LlaveCierra {}
-        | TK_VOID TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpoFunction LlaveCierra {}
-        | TK_VOID TK_FUNCTION IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA LlaveAbre cuerpoFunction LlaveCierra {}
-        | TK_VOID IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA LlaveAbre cuerpoMetodo TK_RETURN TK_PYC LlaveCierra {}
-        | TK_VOID IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpoMetodo TK_RETURN TK_PYC LlaveCierra {}
-        | LlamadaMF {}
+Dec_Struct: TK_STRUCT IDENTIFICADOR LlaveAbre BodyStruct LlaveCierra TK_PYC {}
+        | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA TK_PYC {}
+        | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
+        | IDENTIFICADOR TK_PUNTO IDENTIFICADOR IGUAL Expresiones TK_PYC {}
 ;
 
-cuerpoFunction: imprimir {}
-            | TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PYC {}
-            | TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
-            | TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
-            | TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
-            | Dec_Var {}
-            | Dec_Vec {}
-            | SentenciasControl {}
-            | SentenciasCiclicas {}
-            | cuerpoFunction imprimir {} 
-            | cuerpoFunction TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PYC {}
-            | cuerpoFunction TK_RETURN IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
-            | cuerpoFunction TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
-            | cuerpoFunction TK_RETURN IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
-            | cuerpoFunction Dec_Var {}
-            | cuerpoFunction Dec_Vec {}
-            | cuerpoFunction SentenciasControl {}
-            | cuerpoFunction SentenciasCiclicas {}
+BodyStruct: s {}
+        | s TK_COMA BodyStruct {}
 ;
 
-listaparametros: tipos IDENTIFICADOR {}
-                | tipos IDENTIFICADOR TK_COMA listaparametros {}
-                | IDENTIFICADOR {}
-                | IDENTIFICADOR TK_COMA listaparametros {}
+s: Dec_Var {}
+        | IDENTIFICADOR IDENTIFICADOR {}
+;
+//------------------------------------------------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------- PARAMETROS -------------------------------------------------------------
+Params: parametros{}
+        | parametros TK_COMA Params {}
 ;
 
-cuerpoMetodo: imprimir {}
-                | Dec_Var {}
-                | Dec_Vec {}
-                | SentenciasControl {}
-                | SentenciasCiclicas {}
-                | imprimir cuerpoMetodo {}
-                | Dec_Var cuerpoMetodo {}
-                | Dec_Vec cuerpoMetodo {}
-                | SentenciasControl cuerpoMetodo {}
-                | SentenciasCiclicas cuerpoMetodo {}
+parametros: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR {}
+	| Tipos IDENTIFICADOR {}
+        | IDENTIFICADOR IDENTIFICADOR {}
+        | Expresiones {}
+;
+//--------------------------------------------------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------- Instrucciones ------------------------------------------------------------
+Instructions: Instructions cuerpo {}
+			| cuerpo {}
 ;
 
-//---------------------------------------------------- Imprimir ------------------------------------------------------------------------
-
-imprimir: TK_PRINT PARENTESIS_ABRE impresion PARENTESIS_CIERRA TK_PYC {}
-        | TK_PRINT PARENTESIS_ABRE impresion PARENTESIS_CIERRA {}
-        | TK_PRINTLN PARENTESIS_ABRE impresion PARENTESIS_CIERRA TK_PYC {}
-        | TK_PRINTLN PARENTESIS_ABRE impresion PARENTESIS_CIERRA {}
+cuerpo: Dec_Var {}
+        | Imprimir {}
+        | SentenciasControl {}
+        | SentenciasCiclicas {}
+        | SentenciasTransferencias {}
+        | Dec_Struct {}
+        | LLamada TK_PYC {}
 ;
+//--------------------------------------------------------------------------------------------------------------------------------------
 
-impresion: CADENA {}
-        | IDENTIFICADOR {}
-        | ENTERO {}
-        | DECI {}
-        | CARACTER {}
-        | impresion OP_SUMA impresion {}
-;
-//----------------------------------------------- Declaracion y asignacion de variables --------------------------------------------------------------------------------
+//--------------------------------------------------- Sentencias de Control If y Switch ------------------------------------------------
 
-Dec_Var: tipos IDENTIFICADOR IGUAL impresion TK_PYC {}
-        | IDENTIFICADOR IGUAL impresion TK_PYC {}
-        | IDENTIFICADOR IGUAL impresion {}
-        | tipos IDENTIFICADOR IGUAL impresion {}
-        | tipos cadvar TK_PYC {}
-        | tipos cadvar {}
-;
-
-cadvar: IDENTIFICADOR {}
-        | cadvar TK_COMA IDENTIFICADOR {}
-;
-
-//------------------------------------------------- Struct ---------------------------------------------------------------------------------
-
-Dec_Structs: TK_STRUCT IDENTIFICADOR LlaveAbre listatributos LlaveCierra TK_PYC {}
-                | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE params PARENTESIS_CIERRA TK_PYC {}
-                | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
-                | IDENTIFICADOR TK_PUNTO IDENTIFICADOR IGUAL params {}
-                | IDENTIFICADOR TK_PUNTO IDENTIFICADOR IGUAL params TK_PYC {}
-;
-
-listatributos: tipos IDENTIFICADOR {}
-                | tipos IDENTIFICADOR TK_COMA listatributos {}
-;
-
-params: IDENTIFICADOR {}
-        | ENTERO {}
-        | DECI {}
-        | NULL {}
-        | TRUE {}
-        | FALSE {}
-        | CADENA {}
-        | IDENTIFICADOR TK_COMA params {}
-        | ENTERO TK_COMA params {}
-        | DECI TK_COMA params {}
-        | NULL TK_COMA params {}
-        | TRUE TK_COMA params {}
-        | FALSE TK_COMA params {}
-        | CADENA TK_COMA params {}
-;
-
-//-----------------------------------------------------------------------------------------------------------------------------------------------------
-
-LlamadaMF: IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA TK_PYC {}
-        | IDENTIFICADOR PARENTESIS_ABRE listaparametros PARENTESIS_CIERRA {}
-        | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
-        | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
-;
-
-//------------------------------------------------------------------------------------------------------------------------------------------------------
 SentenciasControl: ControlIF {}
-                | ControlSwitch {}                
+		| CSwitch {}
 ;
 
-ControlIF: if {}
-        | ifelse {}
-        | elseif {}
+ControlIF: If {}
+	| IfElse {}
+	| ElseIf {}
 ;
 
-if: TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre instIf LlaveCierra {}
-    | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre LlaveCierra {}
-    | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA instIf {}
+If: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
+   | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra {}
 ;
 
-ifelse: TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre instIf LlaveCierra TK_ELSE LlaveAbre instIf LlaveCierra {}
-        | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre instIf LlaveCierra {}
-        | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre instIf LlaveCierra TK_ELSE LlaveAbre LlaveCierra {}
-        | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre LlaveCierra {}
-        | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA instIf TK_ELSE instIf {}
+IfElse: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra {}
+        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra {}
+        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre LlaveCierra {}
+        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre LlaveCierra {}
 ;
 
-elseif: TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre instIf LlaveCierra TK_ELSE ControlIF {}
-        | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE ControlIF {}
-        | TK_IF PARENTESIS_ABRE condiciones PARENTESIS_CIERRA instIf TK_ELSE ControlIF {}
+ElseIf: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE ControlIF {}
+	| TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE ControlIF {}
 ;
 
-condiciones: IDENTIFICADOR IGUALIGUAL IDENTIFICADOR {}
+CSwitch: TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre ListCase Default LlaveCierra {}
+		| TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre ListCase LlaveCierra {}
+		| TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Default LlaveCierra {}
 ;
 
-
-instIf: imprimir{}
+ListCase: ListCase TK_CASE Expresiones TK_DOSPUNTS Instructions {}
+		| ListCase TK_CASE Expresiones TK_DOSPUNTS {}
+		| TK_CASE Expresiones TK_DOSPUNTS Instructions {}
+		| TK_CASE Expresiones TK_DOSPUNTS {}
 ;
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-ControlSwitch: TK_SWITCH PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA LlaveAbre Caselist listDefault LlaveCierra {}
-                | TK_SWITCH PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA LlaveAbre Caselist LlaveCierra {}
-                | TK_SWITCH PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA LlaveAbre listDefault LlaveCierra {}
+Default: TK_DEFAULT TK_DOSPUNTS Instructions {}
+		| TK_DEFAULT TK_DOSPUNTS {}
 ;
 
-Caselist: Caselist TK_CASE IDENTIFICADOR TK_DOSPUNTS instIf TK_BREAK TK_PYC {}
-        | Caselist TK_CASE IDENTIFICADOR TK_DOSPUNTS TK_BREAK TK_PYC {}
-        | TK_CASE IDENTIFICADOR TK_DOSPUNTS instIf TK_BREAK TK_PYC {}
-        | TK_CASE IDENTIFICADOR TK_DOSPUNTS TK_BREAK TK_PYC {} 
+//--------------------------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------------------------- Sentencias Ciclicas ---------------------------------------------------------
+
+SentenciasCiclicas: While {}
+                   | For {}
+                   | DoWhile {}
 ;
 
-listDefault: TK_DEFAULT TK_DOSPUNTS instIf {}
-        | TK_DEFAULT TK_DOSPUNTS {}
-
+While: TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
+        | TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra {}
 ;
 
-//------------------------------------------------------------------------------------------------------------------------------------------------
-
-SentenciasCiclicas: Cwhile {}
-                  | Cfor {}
-                  | Cdowhile {}
+DoWhile: TK_DO LlaveAbre Instructions LlaveCierra TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC {}
+        | TK_DO LlaveAbre LlaveCierra TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC {} 
 ;
 
-Cwhile: TK_WHILE PARENTESIS_ABRE condiciones PARENTESIS_CIERRA LlaveAbre instIf LlaveCierra {}
+For: TK_FOR PARENTESIS_ABRE Dec_Var Expresiones TK_PYC Actualizacion PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
+	| TK_FOR PARENTESIS_ABRE Dec_Var Expresiones TK_PYC Actualizacion PARENTESIS_CIERRA LlaveAbre LlaveCierra {}
 ;
 
-Cdowhile: TK_DO LlaveAbre instIf LlaveCierra TK_WHILE PARENTESIS_ABRE condiciones PARENTESIS_CIERRA TK_PYC {}
+Actualizacion: IDENTIFICADOR IGUAL Expresiones {}
+ 		| IDENTIFICADOR INCREMENTO {}
+		| IDENTIFICADOR DECREMENTO {}
 ;
 
-Cfor: TK_FOR PARENTESIS_ABRE condicionesFor PARENTESIS_CIERRA LlaveAbre instIf LlaveCierra {} 
-     | TK_FOR IDENTIFICADOR IN CADENA LlaveAbre instIf LlaveCierra {}
-     | TK_FOR IDENTIFICADOR IN IDENTIFICADOR LlaveAbre instIf LlaveCierra {}
+//--------------------------------------------------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------- Sentencias de Transferencia ------------------------------------------------
+
+SentenciasTransferencias: TK_BREAK TK_PYC {}
+                        | TK_RETURN TK_PYC {}
+                        | TK_CONTINUE TK_PYC {}
+                        | TK_RETURN Expresiones TK_PYC {}
 ;
 
-condicionesFor: Dec_Var condicionFor TK_PYC actualizacion {}
-;
+//--------------------------------------------------------------------------------------------------------------------------------------
 
-condicionFor: IDENTIFICADOR MAYOR IDENTIFICADOR {}
-            | IDENTIFICADOR MENOR IDENTIFICADOR {}
-            | IDENTIFICADOR DIFERENTEA IDENTIFICADOR {}
-            | IDENTIFICADOR MENORIGUAL IDENTIFICADOR {}
-            | IDENTIFICADOR MAYORIGUAL IDENTIFICADOR {}
-            | IDENTIFICADOR IGUALIGUAL IDENTIFICADOR {}
-;
+//-------------------------------------------------------------- Impresion -------------------------------------------------------------
 
-actualizacion: IDENTIFICADOR INCREMENTO {}
-                | IDENTIFICADOR DECREMENTO {}
-;
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+ Imprimir: TK_PRINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC {}
+        | TK_PRINTLN PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC {}
+ ;
+ //---------------------------------------------------------------------------------------------------------------------------------------
 
+//------------------------------------------------------------- Declaraciones -----------------------------------------------------------
+
+ Dec_Var: Tipos IDENTIFICADOR IGUAL Expresiones TK_PYC {}
+        | Tipos IDENTIFICADOR TK_PYC {}
+        | IDENTIFICADOR IGUAL Expresiones TK_PYC {}
+        | IDENTIFICADOR INCREMENTO TK_PYC {}
+        | IDENTIFICADOR DECREMENTO TK_PYC {}
+        | Tipos IDENTIFICADOR {}
+        | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA IGUAL Expresiones TK_PYC {}
+;
 
 Dec_Vec: tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE valVec COR_CIERRA TK_PYC {}
+        | tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE COR_CIERRA TK_PYC {}
         | tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL OP_VECOTRES IDENTIFICADOR TK_PYC {}
         | IDENTIFICADOR TK_PUNTO TK_PUSH PARENTESIS_ABRE paramV PARENTESIS_CIERRA TK_PYC {}
         | IDENTIFICADOR TK_PUNTO TK_POP PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
@@ -400,19 +340,42 @@ opVector: IDENTIFICADOR OP_VECOTRES operacionesA {}
         | TK_TANGENTE OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA TK_PYC {}
         | TK_LOGARITMOB10 OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA TK_PYC {}
 ;
+//--------------------------------------------------------------------------------------------------------------------------------------
 
-operacionesA: ENTERO {}
-             | DECI {}
-             | OP_MENOS operacionesA {}
-             | OP_SUMA operacionesA {}
-             | OP_MULTIPLICACION operacionesA {}
-             | OP_DIVISION operacionesA {}
-             | OP_EXPONENTE operacionesA {}
-             | OP_MODULO operacionesA {}
-             | 
+LLamada: IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA {}
+        | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
 ;
 
-tipos: STRING {}
+Expresiones: CADENA {}
+            | CARACTER {}
+            | TRUE {}
+            | FALSE {}
+            | ENTERO {}
+            | DECI {}
+            | NULL {}
+            | IDENTIFICADOR {}
+            | PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+            | Expresiones OP_SUMA Expresiones {}
+            | Expresiones OP_MENOS Expresiones {}
+            | Expresiones OP_DIVISION Expresiones {}
+            | Expresiones OP_MULTIPLICACION Expresiones {}
+            | Expresiones OP_MODULO Expresiones {}
+            | TK_POW PARENTESIS_ABRE Expresiones TK_COMA Expresiones PARENTESIS_CIERRA {}
+            | Expresiones IGUALIGUAL Expresiones {}
+            | Expresiones MENOR Expresiones {}
+            | Expresiones MENORIGUAL Expresiones {}
+            | Expresiones MAYOR Expresiones {}
+            | Expresiones MAYORIGUAL Expresiones {}
+            | Expresiones OR Expresiones {}
+            | Expresiones AND Expresiones {}
+            | Expresiones DIFERENTEA Expresiones {}
+            | NOT Expresiones {}
+            | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA {}
+            | OP_MENOS Expresiones %prec umenos {}
+;
+
+
+Tipos: STRING {}
     | INT {}
     | DOUBLE {}
     | CHAR {}
