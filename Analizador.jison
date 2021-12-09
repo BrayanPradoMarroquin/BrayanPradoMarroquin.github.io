@@ -143,7 +143,7 @@
 
 %%
 
-ini: ENTRADA EOF { typeof console !== 'undefined' ? console.log($1) : print($1); return $1; }
+ini: ENTRADA EOF { typeof console !== 'undefined' ? alert($1) : print($1); return $1; }
     |error EOF   {}
 ;
 
@@ -307,6 +307,7 @@ SentenciasTransferencias: TK_BREAK TK_PYC {}
         | IDENTIFICADOR DECREMENTO TK_PYC {}
         | Tipos IDENTIFICADOR {}
         | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA IGUAL Expresiones TK_PYC {}
+        | Tipos IDENTIFICADOR IGUAL operString TK_PYC {}
 ;
 
 Dec_Vect: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE Params COR_CIERRA TK_PYC {}
@@ -321,14 +322,39 @@ Dec_Vect: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE Params COR_CIER
 
 opVector: OP_VECOTRES simbolos Expresiones {}
         | OP_VECOTRES simbolos Expresiones opVector {}
+
         | TK_SENO OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA {}
         | TK_SENO OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA opVector {}
+        | TK_SENO OP_VECOTRES PARENTESIS_ABRE opVector PARENTESIS_CIERRA opVector {}
+        | TK_SENO OP_VECOTRES PARENTESIS_ABRE opVector PARENTESIS_CIERRA {}
+
         | TK_COSENO OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA {}
         | TK_COSENO OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA opVector {}
+        | TK_COSENO OP_VECOTRES PARENTESIS_ABRE opVector PARENTESIS_CIERRA opVector {}
+        | TK_COSENO OP_VECOTRES PARENTESIS_ABRE opVector PARENTESIS_CIERRA {}
+
         | TK_TANGENTE OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA {}
         | TK_TANGENTE OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA opVector {}
+        | TK_TANGENTE OP_VECOTRES PARENTESIS_ABRE opVector PARENTESIS_CIERRA opVector {}
+        | TK_TANGENTE OP_VECOTRES PARENTESIS_ABRE opVector PARENTESIS_CIERRA {}
+
         | TK_LOGARITMOB10 OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA {}
         | TK_LOGARITMOB10 OP_VECOTRES PARENTESIS_ABRE IDENTIFICADOR PARENTESIS_CIERRA opVector {}
+        | TK_LOGARITMOB10 OP_VECOTRES PARENTESIS_ABRE opVector PARENTESIS_CIERRA opVector {}
+        | TK_LOGARITMOB10 OP_VECOTRES PARENTESIS_ABRE opVector PARENTESIS_CIERRA {}
+
+        | TK_POW OP_VECOTRES PARENTESIS_ABRE Expresiones TK_COMA IDENTIFICADOR opVector PARENTESIS_CIERRA {}
+        | TK_POW OP_VECOTRES PARENTESIS_ABRE Expresiones TK_COMA IDENTIFICADOR PARENTESIS_CIERRA {}
+        | TK_POW OP_VECOTRES PARENTESIS_ABRE Expresiones TK_COMA opVector PARENTESIS_CIERRA {}
+        | TK_SQRT OP_VECOTRES PARENTESIS_ABRE opVector PARENTESIS_CIERRA {}
+;
+//--------------------------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------------------- Operaciones con String ------------------------------------------------------------
+operString: CADENA CONCATENADOCADENA CADENA {}
+        | operString CONCATENADOCADENA CADENA {}
+        | CADENA OP_EXPONENTE ENTERO {}
+        | operString OP_EXPONENTE ENTERO {}
 ;
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -358,6 +384,11 @@ Expresiones: CADENA {}
             | Expresiones OP_MULTIPLICACION Expresiones {}
             | Expresiones OP_MODULO Expresiones {}
             | TK_POW PARENTESIS_ABRE Expresiones TK_COMA Expresiones PARENTESIS_CIERRA {}
+            | TK_SQRT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+            | TK_SENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+            | TK_COSENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+            | TK_TANGENTE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+            | TK_LOGARITMOB10 PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
             | Expresiones IGUALIGUAL Expresiones {}
             | Expresiones MENOR Expresiones {}
             | Expresiones MENORIGUAL Expresiones {}
