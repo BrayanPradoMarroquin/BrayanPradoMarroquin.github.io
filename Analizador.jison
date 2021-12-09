@@ -95,7 +95,7 @@
 "toInt"                 return 'TK_TOINT'
 "toDouble"              return 'TK_TODOUBLE'
 "string"                return 'TK_STRINGPARSE'
-"typeof"				return 'TK_TYPEOF'
+"typeof"	        return 'TK_TYPEOF'
 "struct"                return 'TK_STRUCT'
 "begin"                 return 'TK_BEGIN'
 "end"                   return 'TK_END'
@@ -358,9 +358,13 @@ operString: CADENA CONCATENADOCADENA CADENA {}
 ;
 //--------------------------------------------------------------------------------------------------------------------------------------
 
+//------------------------------------------------- LLamada a metodos / funciones -------------------------------------------------------
+
 LLamada: IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA {}
         | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
 ;
+//--------------------------------------------------------------------------------------------------------------------------------------
+
 
 simbolos: OP_SUMA {}
         | OP_MENOS {}
@@ -399,8 +403,60 @@ Expresiones: CADENA {}
             | Expresiones DIFERENTEA Expresiones {}
             | NOT Expresiones {}
             | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA {}
+            | FuncioesReservadas {}
+            | Casteos {}
+            | Ternario {}
             | OP_MENOS Expresiones %prec umenos {}
 ;
+
+Ternario: Expresiones OP_TERNARIO Expresiones TK_DOSPUNTS Expresiones {}
+;
+
+//------------------------------------------------------ Reservadas --------------------------------------------------------------------
+
+FuncioesReservadas: FCaracterOfPosition {}
+                   | FSubString {}
+                   | Flength {}
+                   | FToLower {}
+                   | FToUpper {}
+                   | FTypeof {}
+;
+
+FCaracterOfPosition: IDENTIFICADOR TK_PUNTO TK_CARACTEROFPOSITION PARENTESIS_ABRE ENTERO PARENTESIS_CIERRA {}
+;
+
+FSubString: IDENTIFICADOR TK_PUNTO TK_SUBSTRING PARENTESIS_ABRE ENTERO TK_COMA ENTERO PARENTESIS_CIERRA {}
+;
+
+Flength: IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA {}
+;
+
+FToLower: IDENTIFICADOR TK_PUNTO TK_TOLOWER PARENTESIS_ABRE PARENTESIS_CIERRA {}
+;
+
+FToUpper: IDENTIFICADOR TK_PUNTO TK_TOUPPER PARENTESIS_ABRE PARENTESIS_CIERRA {}
+;
+
+FTypeof: TK_TYPEOF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+;
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------------------------------- Casteos ---------------------------------------------------------------
+Casteos: parseo {}
+        | toTipo {}
+        | TK_STRINGPARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+;
+
+parseo: Tipos TK_PUNTO TK_PARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+;
+
+toTipo: TK_TOINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+        | TK_TODOUBLE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+;
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------
 
 
 Tipos: STRING {}
