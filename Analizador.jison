@@ -209,6 +209,7 @@ cuerpo: Dec_Var {}
         | SentenciasCiclicas {}
         | SentenciasTransferencias {}
         | Dec_Struct {}
+        | Dec_Vect {}
         | LLamada TK_PYC {}
 ;
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -295,6 +296,10 @@ SentenciasTransferencias: TK_BREAK TK_PYC {}
 
  Imprimir: TK_PRINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC {}
         | TK_PRINTLN PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC {}
+        | TK_PRINT PARENTESIS_ABRE Dec_Vect PARENTESIS_CIERRA TK_PYC {}
+        | TK_PRINTLN PARENTESIS_ABRE Dec_Vect PARENTESIS_CIERRA TK_PYC {}
+        | TK_PRINT PARENTESIS_ABRE operString PARENTESIS_CIERRA TK_PYC {}
+        | TK_PRINTLN PARENTESIS_ABRE operString PARENTESIS_CIERRA TK_PYC {}
  ;
  //---------------------------------------------------------------------------------------------------------------------------------------
 
@@ -308,6 +313,10 @@ SentenciasTransferencias: TK_BREAK TK_PYC {}
         | Tipos IDENTIFICADOR {}
         | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA IGUAL Expresiones TK_PYC {}
         | Tipos IDENTIFICADOR IGUAL operString TK_PYC {}
+        | Tipos IDENTIFICADOR IGUAL muchos {}
+;
+
+muchos: IDENTIFICADOR TK_COMA IDENTIFICADOR {}
 ;
 
 Dec_Vect: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE Params COR_CIERRA TK_PYC {}
@@ -318,6 +327,7 @@ Dec_Vect: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE Params COR_CIER
         | IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
         | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL IDENTIFICADOR opVector TK_PYC {}
         | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL opVector TK_PYC {}
+        | IDENTIFICADOR opVector {}
 ;
 
 opVector: OP_VECOTRES simbolos Expresiones {}
@@ -406,6 +416,9 @@ Expresiones: CADENA {}
             | FuncioesReservadas {}
             | Casteos {}
             | Ternario {}
+            | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	ENTERO COR_CIERRA {}
+            | IDENTIFICADOR COR_ABRE TK_BEGIN TK_DOSPUNTS ENTERO COR_CIERRA {}
+            | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	TK_END COR_CIERRA {}
             | OP_MENOS Expresiones %prec umenos {}
 ;
 
