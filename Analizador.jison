@@ -313,10 +313,6 @@ SentenciasTransferencias: TK_BREAK TK_PYC {}
         | Tipos IDENTIFICADOR {}
         | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA IGUAL Expresiones TK_PYC {}
         | Tipos IDENTIFICADOR IGUAL operString TK_PYC {}
-        | Tipos IDENTIFICADOR IGUAL muchos {}
-;
-
-muchos: IDENTIFICADOR TK_COMA IDENTIFICADOR {}
 ;
 
 Dec_Vect: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE Params COR_CIERRA TK_PYC {}
@@ -365,6 +361,8 @@ operString: CADENA CONCATENADOCADENA CADENA {}
         | operString CONCATENADOCADENA CADENA {}
         | CADENA OP_EXPONENTE ENTERO {}
         | operString OP_EXPONENTE ENTERO {}
+        | IDENTIFICADOR TK_COMA IDENTIFICADOR {}
+        | operString TK_COMA IDENTIFICADOR {}
 ;
 //--------------------------------------------------------------------------------------------------------------------------------------
 
