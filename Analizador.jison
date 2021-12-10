@@ -143,23 +143,25 @@
 
 %%
 
-ini: ENTRADA EOF { typeof console !== 'undefined' ? alert($1) : print($1); return $1; }
-    |error EOF   {}
+ini: ENTRADA EOF { retorno = { parse: $1, errores: errores }; errores = []; /*alert($1);*/ return $1; } 
+        //{ typeof console !== 'undefined' ? alert($1) : print($1); return $1; }
+    |error EOF   { retorno = { parse: null, errores: errores }; errores = []; return retorno; }
 ;
 
-ENTRADA: ENTRADA instrucciones {}
-        | instrucciones {}
+ENTRADA: ENTRADA instrucciones { if($2 !=="") $1.push($2); $$ = $1; }
+        | instrucciones { if($1 !== "") $$ = [$1]; else $$ = []; alert($1); }
 ;
 
-instrucciones: MFBody {}
-		| MainBody {}
-		| Dec_Var {}
-		| Dec_Vect {}
-                | Dec_Struct {}
-                | LLamada TK_PYC{}
+instrucciones: MFBody { $$ = $1 }
+		| MainBody { $$= $1 }
+		| Dec_Var { $$= $1 }
+		| Dec_Vect { $$= $1 }
+                | Dec_Struct { $$= $1 }
+                | LLamada TK_PYC{ $$= $1 }
 ;
 //--------------------------------------------------------------- MAIN ------------------------------------------------------------
-MainBody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
+MainBody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { alert($6); return $6; }
+        | TK_VOID TK_MAIN error LlaveCierra { $$= ""; errores.push({ tipo: "Sintactico", error: "Declaracion de main invalido", linea: this._$.first_line, columna: this._$.first_column+1 }); console.log(errores) }
 ;
 
 //-----------------------------------------------------------------------------------------------------------------------------------
@@ -199,18 +201,20 @@ parametros: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR {}
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------- Instrucciones ------------------------------------------------------------
-Instructions: Instructions cuerpo {}
-			| cuerpo {}
+Instructions: Instructions cuerpo { if($2 !== "") $1.push($2); $$=$1; }
+			| cuerpo { if($1 !== "") $$ = [$1]; else $$ = []; }
 ;
 
-cuerpo: Dec_Var {}
-        | Imprimir {}
-        | SentenciasControl {}
-        | SentenciasCiclicas {}
-        | SentenciasTransferencias {}
-        | Dec_Struct {}
-        | Dec_Vect {}
-        | LLamada TK_PYC {}
+cuerpo: Dec_Var { $$=$1 }
+        | Imprimir {$$=$1}
+        | SentenciasControl {$$=$1}
+        | SentenciasCiclicas {$$=$1}
+        | SentenciasTransferencias {$$=$1}
+        | Dec_Struct {$$=$1}
+        | Dec_Vect {$$=$1}
+        | LLamada TK_PYC {$$=$1}
+        | error TK_PYC { $$=""; errores.push({ tipo: "Sintactico", error: "Declaracion de instruccion no valida", linea: this._$.first_line, columna: this._$.first_column+1}); }
+        | error LlaveCierra { $$=""; errores.push({ tipo: "Sintactico", error: "Declaracion de instruccion no valida", linea: this._$.first_line, columna: this._$.first_column+1}); }
 ;
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -294,36 +298,40 @@ SentenciasTransferencias: TK_BREAK TK_PYC {}
 
 //-------------------------------------------------------------- Impresion -------------------------------------------------------------
 
- Imprimir: TK_PRINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC {}
-        | TK_PRINTLN PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC {}
-        | TK_PRINT PARENTESIS_ABRE Dec_Vect PARENTESIS_CIERRA TK_PYC {}
-        | TK_PRINTLN PARENTESIS_ABRE Dec_Vect PARENTESIS_CIERRA TK_PYC {}
-        | TK_PRINT PARENTESIS_ABRE operString PARENTESIS_CIERRA TK_PYC {}
-        | TK_PRINTLN PARENTESIS_ABRE operString PARENTESIS_CIERRA TK_PYC {}
+ Imprimir: TK_PRINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC { alert("Mensaje capturado con "+$1); return $3; }
+        | TK_PRINTLN PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC { alert("Mensaje capturado con "+$1); return $3; }
+        | TK_PRINT PARENTESIS_ABRE Dec_Vect PARENTESIS_CIERRA TK_PYC { alert("Mensaje capturado con "+$1); return $3; }
+        | TK_PRINTLN PARENTESIS_ABRE Dec_Vect PARENTESIS_CIERRA TK_PYC { alert("Mensaje capturado con "+$1); return $3; }
+        | TK_PRINT PARENTESIS_ABRE operString PARENTESIS_CIERRA TK_PYC { alert("Mensaje capturado con "+$1); return $3; }
+        | TK_PRINTLN PARENTESIS_ABRE operString PARENTESIS_CIERRA TK_PYC { alert("Mensaje capturado con "+$1); return $3; }
+        | TK_PRINT error TK_PYC {  $$ = ""; errores.push({ tipo: "Sintáctico", error: "Llamada a función imprimir no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
+        | TK_PRINTLN error TK_PYC {  $$ = ""; errores.push({ tipo: "Sintáctico", error: "Llamada a función imprimir no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
  ;
  //---------------------------------------------------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------- Declaraciones -----------------------------------------------------------
 
- Dec_Var: Tipos IDENTIFICADOR IGUAL Expresiones TK_PYC {}
-        | Tipos IDENTIFICADOR TK_PYC {}
-        | IDENTIFICADOR IGUAL Expresiones TK_PYC {}
-        | IDENTIFICADOR INCREMENTO TK_PYC {}
-        | IDENTIFICADOR DECREMENTO TK_PYC {}
-        | Tipos IDENTIFICADOR {}
-        | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA IGUAL Expresiones TK_PYC {}
-        | Tipos IDENTIFICADOR IGUAL operString TK_PYC {}
+ Dec_Var: Tipos IDENTIFICADOR IGUAL Expresiones TK_PYC { alert("Tipo: "+$1+" Nombre variable: "+$2); return $4;}
+        | Tipos IDENTIFICADOR TK_PYC { alert("Tipo: "+$1+" Nombre variable: "+$2); return $2; }
+        | IDENTIFICADOR IGUAL Expresiones TK_PYC { alert("Nombre variable: "+$1); return $3; }
+        | IDENTIFICADOR INCREMENTO TK_PYC { alert("Nombre variable: "+$1); return $1; }
+        | IDENTIFICADOR DECREMENTO TK_PYC { alert("Nombre variable: "+$1); return $1; }
+        | Tipos IDENTIFICADOR { alert("Tipo: "+$1+" Nombre variable: "+$2); return $2; }
+        | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA IGUAL Expresiones TK_PYC { { alert("Nombre variable: "+$1); return $6; } }
+        | Tipos IDENTIFICADOR IGUAL operString TK_PYC { { alert("Tipo: "+$1+" Nombre variable: "+$2); return $3; } }
+        | Tipos error TK_PYC { $$ = ""; errores.push({ tipo: "Sintactico", error: "Declaracion de variable incorrecta", linea: this._$.first_line, columna: this._$.first_column+1 }); console.log(errores) }
 ;
 
-Dec_Vect: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE Params COR_CIERRA TK_PYC {}
-        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE COR_CIERRA TK_PYC {}
-        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL OP_VECOTRES IDENTIFICADOR TK_PYC {}
-        | IDENTIFICADOR TK_PUNTO TK_PUSH PARENTESIS_ABRE Params PARENTESIS_CIERRA TK_PYC {}
-        | IDENTIFICADOR TK_PUNTO TK_POP PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
-        | IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
-        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL IDENTIFICADOR opVector TK_PYC {}
-        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL opVector TK_PYC {}
-        | IDENTIFICADOR opVector {}
+Dec_Vect: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE Params COR_CIERRA TK_PYC { alert("Tipo: "+$1+" Nombre del vector: "+$4); return $7; }
+        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE COR_CIERRA TK_PYC { alert("Tipo: "+$1+" Nombre del vector: "+$4); return $4; }
+        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL OP_VECOTRES IDENTIFICADOR TK_PYC { alert("Tipo: "+$1+" Nombre del vector: "+$4); return $7; }
+        | IDENTIFICADOR TK_PUNTO TK_PUSH PARENTESIS_ABRE Params PARENTESIS_CIERRA TK_PYC { alert("Nombre del vector: "+$1); return $5; }
+        | IDENTIFICADOR TK_PUNTO TK_POP PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC { alert("Nombre del vector: "+$1); return $3; }
+        | IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC { alert("Nombre del vector: "+$1); return $3; }
+        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL IDENTIFICADOR opVector TK_PYC {alert("Tipo: "+$1+" Nombre del vector: "+$4); return $6;}
+        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL opVector TK_PYC { alert("Tipo: "+$1+" Nombre del vector: "+$4); return $6; }
+        | IDENTIFICADOR opVector {alert("Nombre del vector: "+$1); return $2;}
+        | Tipos COR_ABRE COR_CIERRA error TK_PYC { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de vector no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
 opVector: OP_VECOTRES simbolos Expresiones {}
@@ -470,10 +478,10 @@ toTipo: TK_TOINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 
-Tipos: STRING {}
-    | INT {}
-    | DOUBLE {}
-    | CHAR {}
-    | FLOAT {}
-    | BOOLEAN {}
+Tipos: STRING { $$ = "String";}
+    | INT { $$ = "Entero"; }
+    | DOUBLE { $$ = "Decimal"; }
+    | CHAR { $$ = "Caracter"; }
+    | FLOAT { $$ = "Flotante"; }
+    | BOOLEAN { $$ = "Buleano"; }
 ;
