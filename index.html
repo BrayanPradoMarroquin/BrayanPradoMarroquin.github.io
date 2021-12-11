@@ -17,7 +17,7 @@
     </div>
     <br>
     <aside id="Main_Op">
-        <button type="button" id="ejecutar" class="btn btn-outline-dark">Ejecutar</button>
+        <button type="button" id="ejecutar" class="btn btn-outline-dark" onclick="imprimir()">Ejecutar</button>
         <button type="button" id="traducir" class="btn btn-outline-dark">Traducir</button>
         <button type="button" id="Terrores" class="btn btn-outline-dark">Tabla de Errores</button>
         <button type="button" id="Tsimbolos" class="btn btn-outline-dark">Tabla de Simbolos</button>
@@ -44,8 +44,11 @@
           </p>
         </div>
       </footer>
-        <script src="Analizador.js"></script>
-        <script src="jquery.js"></script>
+      <script type="text/javascript" src="Analizador.js"></script>
+      <script type="text/javascript" src="Conecciones.js"></script>
+        <!-- <script src="Analizador.js"></script> --> 
+        <!-- <script src="jquery.js"></script>  
+
         <script>
             $(document).ready(function (){
                 $("#ejecutar").click(function() {
@@ -58,6 +61,6 @@
                     }
                 });
             });
-        </script>
+        </script> -->
 </body>
 </html>

@@ -138,15 +138,15 @@
 
 %%
 
-ini: ENTRADA EOF { typeof console !== 'undefined' ? console.log($1) : print($1); return $1; }
-    |error TK_PYC   {errores.push({ tipo: "Sintactico", error: "Token no Válido", linea: this._$.first_line, columna: this._$.first_column+1 }); return 'INVALID';}
+ini: ENTRADA EOF { retorno = { parse: $1, errores: errores }; errores = []; return $1; }
+    |error TK_PYC   { retorno = { parse: null, errores: errores }; errores = []; return retorno;}
 ;
 
-ENTRADA: ENTRADA instrucciones {}
-        | instrucciones {}
+ENTRADA: ENTRADA instrucciones {$$=$2}
+        | instrucciones {$$=$1}
 ;
 
-instrucciones: Mainbody {}
+instrucciones: Mainbody {$$=$1}
             | FuncionesMetodos {}
             | Dec_Var {}
             | Dec_Vec {}
@@ -154,10 +154,10 @@ instrucciones: Mainbody {}
 ;
 
 //---------------------------------------------------------------------------------------------------------
-Mainbody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpomain LlaveCierra {}
+Mainbody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre cuerpomain LlaveCierra {$$=$6;}
 ;
 
-cuerpomain: imprimir cuerpomain {}
+cuerpomain: imprimir cuerpomain {$$=$1; return $1;}
         | FuncionesMetodos cuerpomain {}
         | Dec_Var cuerpomain {}
         | TK_RETURN TK_PYC {}
@@ -196,13 +196,13 @@ cuerpoMetodo: imprimir {}
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-imprimir: TK_PRINT PARENTESIS_ABRE impresion PARENTESIS_CIERRA TK_PYC {}
-        | TK_PRINT PARENTESIS_ABRE impresion PARENTESIS_CIERRA {}
-        | TK_PRINTLN PARENTESIS_ABRE impresion PARENTESIS_CIERRA TK_PYC {}
-        | TK_PRINTLN PARENTESIS_ABRE impresion PARENTESIS_CIERRA {}
+imprimir: TK_PRINT PARENTESIS_ABRE impresion PARENTESIS_CIERRA TK_PYC {$$=$3; return $3;}
+        | TK_PRINT PARENTESIS_ABRE impresion PARENTESIS_CIERRA {$$=$3; return $3;}
+        | TK_PRINTLN PARENTESIS_ABRE impresion PARENTESIS_CIERRA TK_PYC {$$=$3; return $3;}
+        | TK_PRINTLN PARENTESIS_ABRE impresion PARENTESIS_CIERRA {$$=$3; return $3;}
 ;
 
-impresion: CADENA {}
+impresion: CADENA {$$=$1;}
         | IDENTIFICADOR {}
         | ENTERO {}
         | DECI {}
