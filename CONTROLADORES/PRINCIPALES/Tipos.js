@@ -1,0 +1,9 @@
+const TIPO_DATO = {
+    ENTERO: 'ENTERO',
+    DOBLE: 'DOBLE',
+    BOOLEANO: 'BOOLEANO',
+    CARACTER: 'CARACTER',
+    CADENA: 'CADENA',
+    VECTOR: 'VECTOR',
+    LISTA: 'LISTA'
+}
