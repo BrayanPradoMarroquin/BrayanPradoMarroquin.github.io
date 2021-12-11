@@ -143,8 +143,7 @@
 
 %%
 
-ini: ENTRADA EOF { retorno = { parse: $1, errores: errores }; errores = []; /*alert($1);*/ return $1; } 
-        //{ typeof console !== 'undefined' ? alert($1) : print($1); return $1; }
+ini: ENTRADA EOF { retorno = { parse: $1, errores: errores }; errores = []; return $1; }
     |error EOF   { retorno = { parse: null, errores: errores }; errores = []; return retorno; }
 ;
 
@@ -167,36 +166,41 @@ MainBody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructio
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 //-------------------------------------------------- METODO FUNCION STRUCT ----------------------------------------------------------
-MFBody: Tipos IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
-        | Tipos IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
-        | TK_VOID IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
-	| TK_VOID IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
+MFBody: Tipos IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $6; }
+        | Tipos IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $4; }
+        | Tipos IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre LlaveCierra {alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $4; }
+        | Tipos IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre LlaveCierra {alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $2; }
+
+        | TK_VOID IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $6; }
+	| TK_VOID IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $4; } 
+	| TK_VOID IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre LlaveCierra { alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $4; } 
+	| TK_VOID IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre LlaveCierra { alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $2; } 
 ;
 
-Dec_Struct: TK_STRUCT IDENTIFICADOR LlaveAbre BodyStruct LlaveCierra TK_PYC {}
-        | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA TK_PYC {}
-        | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
-        | IDENTIFICADOR TK_PUNTO IDENTIFICADOR IGUAL Expresiones TK_PYC {}
+Dec_Struct: TK_STRUCT IDENTIFICADOR LlaveAbre BodyStruct LlaveCierra TK_PYC { alert("Struct: "+$1+", Nombre: "+$2); return $4; }
+        | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA TK_PYC { alert("Nombre Struct: "+$1+", Identificador1: "+$2+", Identificador2: "+$4); return $5; }
+        | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC { alert("Nombre Struct: "+$1+", Identificador1: "+$2+", Identificador2: "+$4); return $1; }
+        | IDENTIFICADOR TK_PUNTO IDENTIFICADOR IGUAL Expresiones TK_PYC { alert("Nombre Struct: "+$1+" Identificador: "+$3); return $5; }
 ;
 
-BodyStruct: s {}
-        | s TK_COMA BodyStruct {}
+BodyStruct: s { $$ = $1 }
+        | s TK_COMA BodyStruct { $1.push($3); $$=1; return $1; }
 ;
 
-s: Dec_Var {}
-        | IDENTIFICADOR IDENTIFICADOR {}
+s: Dec_Var {$$=$1}
+        | IDENTIFICADOR IDENTIFICADOR { alert("Nombre: "+$1+", identificador: "+$2); return $2; }
 ;
 //------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------- PARAMETROS -------------------------------------------------------------
-Params: parametros{}
-        | parametros TK_COMA Params {}
+Params: parametros { $$ = [$1];  }
+        | Params TK_COMA parametros { $1.push($3); $$=$1; return $3 } 
 ;
 
-parametros: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR {}
-	| Tipos IDENTIFICADOR {}
-        | IDENTIFICADOR IDENTIFICADOR {}
-        | Expresiones {}
+parametros: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR { alert("Este vector es tipo: "+$1+" Y se llama: "+$4); return $4 }
+	| Tipos IDENTIFICADOR { alert("Tipo: "+$1+" Nombre de la variable: "+$2); return $2 }
+        | IDENTIFICADOR IDENTIFICADOR { alert("Nombre del objeto: "+$1+", Nombre de la variable: "+$2); return $2 }
+        | Expresiones { $$ = $1}
 ;
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -220,20 +224,21 @@ cuerpo: Dec_Var { $$=$1 }
 
 //--------------------------------------------------- Sentencias de Control If y Switch ------------------------------------------------
 
-SentenciasControl: ControlIF {}
-		| CSwitch {}
+SentenciasControl: ControlIF { $$ = $1 }
+		| CSwitch { $$ = $1 }
 ;
 
-ControlIF: If {}
-	| IfElse {}
-	| ElseIf {}
+ControlIF: If { $$=1 }
+	| IfElse { $$ = $1 }
+	| ElseIf { $$ = $1 }
+        | TK_IF error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de sentencia If no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
-If: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
-   | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra {}
+If: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { alert("Este es un "+$1+", con su expresion "+$3); return $6; }
+   | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra { alert("Este es un "+$1+", con su expresion "+$3); }
 ;
 
-IfElse: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra {}
+IfElse: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra { alert("Este es un "+$1+" con "+$3+" junto con "+$6+" con su respectivo "+$7) }
         | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra {}
         | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre LlaveCierra {}
         | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre LlaveCierra {}
