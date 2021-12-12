@@ -6,6 +6,7 @@ function imprimir(){
         //var cadena = Global(gramatica, global);
         //var simbolos = global.getArraySimbols();
         alert(gramatica);
+        document.getElementById("txtConsole").innerHTML = gramatica;
     }catch(error){
         alert(error);
     }
