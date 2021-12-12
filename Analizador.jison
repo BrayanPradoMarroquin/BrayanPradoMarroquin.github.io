@@ -235,68 +235,73 @@ ControlIF: If { $$=1 }
 ;
 
 If: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { alert("Este es un "+$1+", con su expresion "+$3); return $6; }
-   | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra { alert("Este es un "+$1+", con su expresion "+$3); }
+   | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra { alert("Este es un "+$1+", con su expresion "+$3); return $3; }
 ;
 
-IfElse: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra { alert("Este es un "+$1+" con "+$3+" junto con "+$6+" con su respectivo "+$7) }
-        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra {}
-        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre LlaveCierra {}
-        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre LlaveCierra {}
+IfElse: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra { alert("Este es un "+$1+" con "+$3+" junto con "+$6+" con su respectivo "+$8); return $10 }
+        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra { alert("Este es un "+$1+" con "+$3+" con su respectivo "+$7); return $9; }
+        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre LlaveCierra { alert("Este es un "+$1+" con "+$3+" con su respectivo "+$8); return $6; }
+        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre LlaveCierra { alert("Este es un "+$1+" con su respectivo "+$7); return $3; }
 ;
 
-ElseIf: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE ControlIF {}
-	| TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE ControlIF {}
+ElseIf: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE ControlIF { alert("Este es un "+$1+", con "+$8+", con su expresion "+$6); return $9; }
+	| TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE ControlIF { alert("Este es un "+$1+", con "+$7); return $3; }
 ;
 
-CSwitch: TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre ListCase Default LlaveCierra {}
-		| TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre ListCase LlaveCierra {}
-		| TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Default LlaveCierra {}
+CSwitch: TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre ListCase Default LlaveCierra { alert("Este es un "+$1+" de "+$3); return $6;  }
+		| TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre ListCase LlaveCierra { alert("Este es un "+$1+" de "+$3); return $6; }
+		| TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Default LlaveCierra { alert("Este es un "+$1+" de "+$3); return $6; }
+                | TK_SWITCH error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de Switch no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
-ListCase: ListCase TK_CASE Expresiones TK_DOSPUNTS Instructions {}
-		| ListCase TK_CASE Expresiones TK_DOSPUNTS {}
-		| TK_CASE Expresiones TK_DOSPUNTS Instructions {}
-		| TK_CASE Expresiones TK_DOSPUNTS {}
+ListCase: ListCase TK_CASE Expresiones TK_DOSPUNTS Instructions { alert("This is a "+$2+", and other expression "+$3); return $5; }
+		| ListCase TK_CASE Expresiones TK_DOSPUNTS { alert("This is a "+$2+", and other expression "+$3); return $3; }
+		| TK_CASE Expresiones TK_DOSPUNTS Instructions { alert("This is a "+$1+", and other expression "+$2); return $4; }
+		| TK_CASE Expresiones TK_DOSPUNTS { alert("This is a "+$1+", and other expression "+$2); return $2; }
+                | TK_CASE error TK_DOSPUNTS { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de caso no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
-Default: TK_DEFAULT TK_DOSPUNTS Instructions {}
-		| TK_DEFAULT TK_DOSPUNTS {}
+Default: TK_DEFAULT TK_DOSPUNTS Instructions { alert("This is a "+$1); return $3; }
+		| TK_DEFAULT TK_DOSPUNTS { alert($1); }
 ;
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 //-------------------------------------------------------- Sentencias Ciclicas ---------------------------------------------------------
 
-SentenciasCiclicas: While {}
-                   | For {}
-                   | DoWhile {}
+SentenciasCiclicas: While { $$=$1 }
+                   | For { $$=$1 }
+                   | DoWhile { $$=$1 }
 ;
 
-While: TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
-        | TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra {}
+While: TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { alert("Este es un "+$1+" con la condicion de "+$3); return $6; }
+        | TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra { alert("Este es un "+$1+" con la condicion de "+$3); return $3; }
+        | TK_WHILE error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de ciclo While no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
-DoWhile: TK_DO LlaveAbre Instructions LlaveCierra TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC {}
-        | TK_DO LlaveAbre LlaveCierra TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC {} 
+DoWhile: TK_DO LlaveAbre Instructions LlaveCierra TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC { alert("Este "+$1+" con "+$3+" se encicla con el "+$5+" ya que la condicion "+$7); return $7; }
+        | TK_DO LlaveAbre LlaveCierra TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC { alert("Este "+$1+" junto con "+$4); return $6; } 
+        | TK_DO error TK_PYC { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de sentencia Do-While no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
 For: TK_FOR PARENTESIS_ABRE Dec_Var Expresiones TK_PYC Actualizacion PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
 	| TK_FOR PARENTESIS_ABRE Dec_Var Expresiones TK_PYC Actualizacion PARENTESIS_CIERRA LlaveAbre LlaveCierra {}
+        | TK_FOR error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de ciclo For no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
-Actualizacion: IDENTIFICADOR IGUAL Expresiones {}
- 		| IDENTIFICADOR INCREMENTO {}
-		| IDENTIFICADOR DECREMENTO {}
+Actualizacion: IDENTIFICADOR IGUAL Expresiones { alert(" Este es "+$1); return $3; }
+ 		| IDENTIFICADOR INCREMENTO { alert("Este identificador "+$1+" aumento con "+$2); }
+		| IDENTIFICADOR DECREMENTO { alert("Este identificador "+$1+" decrecio con "+$2); }
 ;
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------------- Sentencias de Transferencia ------------------------------------------------
 
-SentenciasTransferencias: TK_BREAK TK_PYC {}
-                        | TK_RETURN TK_PYC {}
-                        | TK_CONTINUE TK_PYC {}
-                        | TK_RETURN Expresiones TK_PYC {}
+SentenciasTransferencias: TK_BREAK TK_PYC { $$="break"; }
+                        | TK_RETURN TK_PYC { $$="return"; }
+                        | TK_CONTINUE TK_PYC { $$="contenido"; }
+                        | TK_RETURN Expresiones TK_PYC { return $2; }
 ;
 
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -394,43 +399,43 @@ simbolos: OP_SUMA {}
         | OP_MODULO {}
 ;
 
-Expresiones: CADENA {}
-            | CARACTER {}
-            | TRUE {}
-            | FALSE {}
-            | ENTERO {}
-            | DECI {}
-            | NULL {}
-            | IDENTIFICADOR {}
-            | PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
-            | Expresiones OP_SUMA Expresiones {}
-            | Expresiones OP_MENOS Expresiones {}
-            | Expresiones OP_DIVISION Expresiones {}
-            | Expresiones OP_MULTIPLICACION Expresiones {}
-            | Expresiones OP_MODULO Expresiones {}
-            | TK_POW PARENTESIS_ABRE Expresiones TK_COMA Expresiones PARENTESIS_CIERRA {}
-            | TK_SQRT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
-            | TK_SENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
-            | TK_COSENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
-            | TK_TANGENTE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
-            | TK_LOGARITMOB10 PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
-            | Expresiones IGUALIGUAL Expresiones {}
-            | Expresiones MENOR Expresiones {}
-            | Expresiones MENORIGUAL Expresiones {}
-            | Expresiones MAYOR Expresiones {}
-            | Expresiones MAYORIGUAL Expresiones {}
-            | Expresiones OR Expresiones {}
-            | Expresiones AND Expresiones {}
-            | Expresiones DIFERENTEA Expresiones {}
-            | NOT Expresiones {}
-            | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA {}
-            | FuncioesReservadas {}
-            | Casteos {}
-            | Ternario {}
-            | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	ENTERO COR_CIERRA {}
-            | IDENTIFICADOR COR_ABRE TK_BEGIN TK_DOSPUNTS ENTERO COR_CIERRA {}
-            | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	TK_END COR_CIERRA {}
-            | OP_MENOS Expresiones %prec umenos {}
+Expresiones: CADENA {$$=$1;}
+            | CARACTER {$$=$1;}
+            | TRUE {$$=$1;}
+            | FALSE {$$=$1;}
+            | ENTERO {$$=$1;}
+            | DECI {$$=$1;}
+            | NULL {$$=$1;}
+            | IDENTIFICADOR {$$=$1;}
+            | PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {$$=$2;}
+            | Expresiones OP_SUMA Expresiones {return Number($1)+Number($3) }
+            | Expresiones OP_MENOS Expresiones {return Number($1)-Number($3)}
+            | Expresiones OP_DIVISION Expresiones {return Number($1)/Number($3)}
+            | Expresiones OP_MULTIPLICACION Expresiones {return Number($1)*Number($3)}
+            | Expresiones OP_MODULO Expresiones {return Number($1)%Number($3)}
+            | TK_POW PARENTESIS_ABRE Expresiones TK_COMA Expresiones PARENTESIS_CIERRA { return Math.pow(Number($3), Number($5)); }
+            | TK_SQRT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { return Math.sqrt(Number($3)); }
+            | TK_SENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { return Math.sin(Number($3)); }
+            | TK_COSENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { return Math.cos(Number($3)); }
+            | TK_TANGENTE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { return Math.tan(Number($3)); }
+            | TK_LOGARITMOB10 PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { return Math.log10(Number($3)); }
+            | Expresiones IGUALIGUAL Expresiones { if(Number($1)==Number($3)) alert("son iguales"); else alert("Nel"); }
+            | Expresiones MENOR Expresiones { if($1 < Number($3)) alert("Es menor"+$1); else alert("Es mayor"+$3); }
+            | Expresiones MENORIGUAL Expresiones { if($1 <= Number($3)) alert("Es menor o igual "+$1); else alert("Nel, es mayor "+$3); }
+            | Expresiones MAYOR Expresiones { if($1>Number($3)) alert("Es mayor "+$1); else alert("Nel "+$3); }
+            | Expresiones MAYORIGUAL Expresiones { if($1>=Number($3)) alert("Es mayor o igual "+$1); else alert("Nel, sigue siendo mayot"+$3); }
+            | Expresiones OR Expresiones { alert("Operacion ternaria"+$2); }
+            | Expresiones AND Expresiones { alert("Operacion ternaria"+$2); }
+            | Expresiones DIFERENTEA Expresiones { if($1!=$3) alert("Son diferentes"); else alert("Nel"); }
+            | NOT Expresiones { return $3; }
+            | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA { return $3; }
+            | FuncioesReservadas { $$=$1; }
+            | Casteos { $$=$1; }
+            | Ternario {$$=$1;}
+            | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	ENTERO COR_CIERRA { return $5; }
+            | IDENTIFICADOR COR_ABRE TK_BEGIN TK_DOSPUNTS ENTERO COR_CIERRA { return $5; }
+            | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	TK_END COR_CIERRA { return $3; }
+            | OP_MENOS Expresiones %prec umenos { return $2; }
 ;
 
 Ternario: Expresiones OP_TERNARIO Expresiones TK_DOSPUNTS Expresiones {}
