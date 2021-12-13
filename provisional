@@ -6,6 +6,7 @@ $$ = Instruccion.nuevoStart("main", [], $6, this._$.first_line, this._$.first_co
 
 TIPOS DE OPERACIONES QUE SE PUEDEN REALIZAR EN JAVA
 
+
 SI SE PUEDEN EJECUTAR
 
 INT = INT + INT
