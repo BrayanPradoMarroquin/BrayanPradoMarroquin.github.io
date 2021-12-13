@@ -321,12 +321,12 @@ SentenciasTransferencias: TK_BREAK TK_PYC { $$ = new Instruccion.nuevoBreak(this
 
 //-------------------------------------------------------------- Impresion -------------------------------------------------------------
 
- Imprimir: TK_PRINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC { alert("Mensaje capturado con "+$1); return $3; }
-        | TK_PRINTLN PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC { alert("Mensaje capturado con "+$1); return $3; }
-        | TK_PRINT PARENTESIS_ABRE Dec_Vect PARENTESIS_CIERRA TK_PYC { alert("Mensaje capturado con "+$1); return $3; }
-        | TK_PRINTLN PARENTESIS_ABRE Dec_Vect PARENTESIS_CIERRA TK_PYC { alert("Mensaje capturado con "+$1); return $3; }
-        | TK_PRINT PARENTESIS_ABRE operString PARENTESIS_CIERRA TK_PYC { alert("Mensaje capturado con "+$1); return $3; }
-        | TK_PRINTLN PARENTESIS_ABRE operString PARENTESIS_CIERRA TK_PYC { alert("Mensaje capturado con "+$1); return $3; }
+ Imprimir: TK_PRINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC { $$ = new Instruccion.nuevoImprimir($3, this._$.first_line,this._$.first_column+1); return $3; }
+        | TK_PRINTLN PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC { $$ = new Instruccion.nuevoImprimir($3, this._$.first_line,this._$.first_column+1); return $3; }
+        | TK_PRINT PARENTESIS_ABRE Dec_Vect PARENTESIS_CIERRA TK_PYC { $$ = new Instruccion.nuevoImprimir($3, this._$.first_line,this._$.first_column+1); return $3; }
+        | TK_PRINTLN PARENTESIS_ABRE Dec_Vect PARENTESIS_CIERRA TK_PYC { $$ = new Instruccion.nuevoImprimir($3, this._$.first_line,this._$.first_column+1); return $3; }
+        | TK_PRINT PARENTESIS_ABRE operString PARENTESIS_CIERRA TK_PYC { $$ = new Instruccion.nuevoImprimir($3, this._$.first_line,this._$.first_column+1); return $3; }
+        | TK_PRINTLN PARENTESIS_ABRE operString PARENTESIS_CIERRA TK_PYC { $$ = new Instruccion.nuevoImprimir($3, this._$.first_line,this._$.first_column+1); return $3; }
         | TK_PRINT error TK_PYC {  $$ = ""; errores.push({ tipo: "Sintáctico", error: "Llamada a función imprimir no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
         | TK_PRINTLN error TK_PYC {  $$ = ""; errores.push({ tipo: "Sintáctico", error: "Llamada a función imprimir no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
  ;
@@ -334,37 +334,37 @@ SentenciasTransferencias: TK_BREAK TK_PYC { $$ = new Instruccion.nuevoBreak(this
 
 //------------------------------------------------------------- Declaraciones -----------------------------------------------------------
 
- Dec_Var: Tipos IDENTIFICADOR IGUAL Expresiones TK_PYC { $$ = INSTRUCCION.nuevaDeclaracion($2, $4, $1, this._$.first_line,this._$.first_column+1) }
-        | Tipos IDENTIFICADOR TK_PYC { $$ = INSTRUCCION.nuevaDeclaracion($2, null, $1, this._$.first_line,this._$.first_column+1) }
-        | IDENTIFICADOR IGUAL Expresiones TK_PYC { $$ = INSTRUCCION.nuevaAsignacion($1, $3, this._$.first_line,this._$.first_column+1) }
-        | IDENTIFICADOR INCREMENTO TK_PYC { $$ = INSTRUCCION.nuevaAsignacion($1,
+ Dec_Var: Tipos IDENTIFICADOR IGUAL Expresiones TK_PYC { $$ = Instruccion.nuevaDeclaracion($2, $4, $1, this._$.first_line,this._$.first_column+1) }
+        | Tipos IDENTIFICADOR TK_PYC { $$ = Instruccion.nuevaDeclaracion($2, null, $1, this._$.first_line,this._$.first_column+1) }
+        | IDENTIFICADOR IGUAL Expresiones TK_PYC { $$ = Instruccion.nuevaAsignacion($1, $3, this._$.first_line,this._$.first_column+1) }
+        | IDENTIFICADOR INCREMENTO TK_PYC { $$ = Instruccion.nuevaAsignacion($1,
 			{ opIzq: { tipo: 'VAL_IDENTIFICADOR', valor: $1, linea: this._$.first_line, columna: this._$.first_column+1 },
   			opDer: { tipo: 'VAL_ENTERO', valor: 1, linea: this._$.first_line, columna: this._$.first_column+1 },
   			tipo: 'SUMA',
   			linea: this._$.first_line,
   			columna: this._$.first_column+1 }, this._$.first_line,this._$.first_column+1) }
-        | IDENTIFICADOR DECREMENTO TK_PYC { $$ = INSTRUCCION.nuevaAsignacion($1,
+        | IDENTIFICADOR DECREMENTO TK_PYC { $$ = Instruccion.nuevaAsignacion($1,
 			{ opIzq: { tipo: 'VAL_IDENTIFICADOR', valor: $1, linea: this._$.first_line, columna: this._$.first_column+1 },
   			opDer: { tipo: 'VAL_ENTERO', valor: 1, linea: this._$.first_line, columna: this._$.first_column+1 },
   			tipo: 'RESTA',
   			linea: this._$.first_line,
   			columna: this._$.first_column+1 }, this._$.first_line,this._$.first_column+1) }
-        | Tipos IDENTIFICADOR { $$ = INSTRUCCION.nuevaDeclaracion($2, null, $1, this._$.first_line,this._$.first_column+1) }
+        | Tipos IDENTIFICADOR { $$ = Instruccion.nuevaDeclaracion($2, null, $1, this._$.first_line,this._$.first_column+1) }
 
-        | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA IGUAL Expresiones TK_PYC { $$ = INSTRUCCION.modificacionVector($1, $3, $6, this._$.first_line, this._$.first_column+1) }
+        | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA IGUAL Expresiones TK_PYC { $$ = Instruccion.modificacionVector($1, $3, $6, this._$.first_line, this._$.first_column+1) }
 
-        | Tipos IDENTIFICADOR IGUAL operString TK_PYC { $$ = INSTRUCCION.nuevaDeclaracion($2, $4, $1, this._$.first_line,this._$.first_column+1) }
+        | Tipos IDENTIFICADOR IGUAL operString TK_PYC { $$ = Instruccion.nuevaDeclaracion($2, $4, $1, this._$.first_line,this._$.first_column+1) }
         | Tipos error TK_PYC { $$ = ""; errores.push({ tipo: "Sintactico", error: "Declaracion de variable incorrecta", linea: this._$.first_line, columna: this._$.first_column+1 }); console.log(errores) }
 ;
 
-Dec_Vect: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE Params COR_CIERRA TK_PYC { $$ = INSTRUCCION.nuevoVector($1, null, $4, null, $7, null, this._$.first_line, this._$.first_column+1) }
-        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE COR_CIERRA TK_PYC { $$ = INSTRUCCION.nuevoVector($1, null, $4, null, null, null, this._$.first_line, this._$.first_column+1) }
+Dec_Vect: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE Params COR_CIERRA TK_PYC { $$ = Instruccion.nuevoVector($1, null, $4, null, $7, null, this._$.first_line, this._$.first_column+1) }
+        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE COR_CIERRA TK_PYC { $$ = Instruccion.nuevoVector($1, null, $4, null, null, null, this._$.first_line, this._$.first_column+1) }
         | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL OP_VECOTRES IDENTIFICADOR TK_PYC {  }
         
         | IDENTIFICADOR TK_PUNTO TK_PUSH PARENTESIS_ABRE Params PARENTESIS_CIERRA TK_PYC {}
         | IDENTIFICADOR TK_PUNTO TK_POP PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
 
-        | IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {$$ = new INSTRUCCION.nuevoLength($3, this._$.first_line,this._$.first_column+1)}
+        | IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {$$ = new Instruccion.nuevoLength($3, this._$.first_line,this._$.first_column+1)}
         
         | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL IDENTIFICADOR opVector TK_PYC {}
         | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL opVector TK_PYC {}
@@ -427,49 +427,49 @@ simbolos: OP_SUMA {}
         | OP_MODULO {}
 ;
 
-Expresiones: CADENA {$$ = INSTRUCCION.nuevoValor($1, TValores.CADENA, this._$.first_line,this._$.first_column+1)}
-            | CARACTER {$$ = INSTRUCCION.nuevoValor($1.trim().substring(1, $1.length - 1), TValores.CARACTER, this._$.first_line,this._$.first_column+1)}
-            | TRUE {$$ = INSTRUCCION.nuevoValor($1.trim(), TValores.BOOLEAN, this._$.first_line,this._$.first_column+1)}
-            | FALSE {$$ = INSTRUCCION.nuevoValor($1.trim(), TValores.BOOLEAN, this._$.first_line,this._$.first_column+1)}
-            | ENTERO {$$ = INSTRUCCION.nuevoValor(Number($1.trim()), TValores.ENTERO, this._$.first_line,this._$.first_column+1)}
-            | DECI {$$ = INSTRUCCION.nuevoValor(Number($1.trim()), TValores.DOUBLE, this._$.first_line,this._$.first_column+1)}
-            | NULL {$$ = INSTRUCCION.nuevoValor($1, TValores.NULL, this._$.first_line,this._$.first_column+1)}
-            | IDENTIFICADOR {$$ = INSTRUCCION.nuevoValor($1.trim(), TValores.IDENTIFICADOR, this._$.first_line,this._$.first_column+1)}
+Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TValores.CADENA, this._$.first_line,this._$.first_column+1)}
+            | CARACTER {$$ = Instruccion.nuevoValor($1.trim().substring(1, $1.length - 1), TValores.CARACTER, this._$.first_line,this._$.first_column+1)}
+            | TRUE {$$ = Instruccion.nuevoValor($1.trim(), TValores.BOOLEAN, this._$.first_line,this._$.first_column+1)}
+            | FALSE {$$ = Instruccion.nuevoValor($1.trim(), TValores.BOOLEAN, this._$.first_line,this._$.first_column+1)}
+            | ENTERO {$$ = Instruccion.nuevoValor(Number($1.trim()), TValores.ENTERO, this._$.first_line,this._$.first_column+1)}
+            | DECI {$$ = Instruccion.nuevoValor(Number($1.trim()), TValores.DOUBLE, this._$.first_line,this._$.first_column+1)}
+            | NULL {$$ = Instruccion.nuevoValor($1, TValores.NULL, this._$.first_line,this._$.first_column+1)}
+            | IDENTIFICADOR {$$ = Instruccion.nuevoValor($1.trim(), TValores.IDENTIFICADOR, this._$.first_line,this._$.first_column+1)}
 
             | PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {$$=$2;}
 
-            | Expresiones OP_SUMA Expresiones {$$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.SUMA,this._$.first_line,this._$.first_column+1); return Number($1)+Number($3) }
-            | Expresiones OP_MENOS Expresiones {$$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.RESTA,this._$.first_line,this._$.first_column+1); return Number($1)-Number($3)}
-            | Expresiones OP_DIVISION Expresiones {$$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.DIVISION,this._$.first_line,this._$.first_column+1); return Number($1)/Number($3)}
-            | Expresiones OP_MULTIPLICACION Expresiones {$$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.MULTIPLICACION,this._$.first_line,this._$.first_column+1); return Number($1)*Number($3)}
-            | Expresiones OP_MODULO Expresiones {$$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.MODULO,this._$.first_line,this._$.first_column+1); return Number($1)%Number($3)}
+            | Expresiones OP_SUMA Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.SUMA,this._$.first_line,this._$.first_column+1); return Number($1)+Number($3) }
+            | Expresiones OP_MENOS Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.RESTA,this._$.first_line,this._$.first_column+1); return Number($1)-Number($3)}
+            | Expresiones OP_DIVISION Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.DIVISION,this._$.first_line,this._$.first_column+1); return Number($1)/Number($3)}
+            | Expresiones OP_MULTIPLICACION Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.MULTIPLICACION,this._$.first_line,this._$.first_column+1); return Number($1)*Number($3)}
+            | Expresiones OP_MODULO Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.MODULO,this._$.first_line,this._$.first_column+1); return Number($1)%Number($3)}
 
-            | TK_POW PARENTESIS_ABRE Expresiones TK_COMA Expresiones PARENTESIS_CIERRA {$$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.POTENCIA,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); }
-            | TK_SQRT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.RAIZ,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.sqrt(Number($3)); }
-            | TK_SENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.SENO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.sin(Number($3)); }
-            | TK_COSENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.COSENO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.cos(Number($3)); }
-            | TK_TANGENTE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.TANGENTE,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.tan(Number($3)); }
-            | TK_LOGARITMOB10 PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.LOGARITMO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.log10(Number($3)); }
+            | TK_POW PARENTESIS_ABRE Expresiones TK_COMA Expresiones PARENTESIS_CIERRA {$$= Instruccion.nuevaOperacionBinaria($3,$5, TOperaciones.POTENCIA,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); }
+            | TK_SQRT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= Instruccion.nuevaOperacionBinaria(null,$3, TOperaciones.RAIZ,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.sqrt(Number($3)); }
+            | TK_SENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= Instruccion.nuevaOperacionBinaria(null,$3, TOperaciones.SENO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.sin(Number($3)); }
+            | TK_COSENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= Instruccion.nuevaOperacionBinaria(null,$3, TOperaciones.COSENO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.cos(Number($3)); }
+            | TK_TANGENTE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= Instruccion.nuevaOperacionBinaria(null,$3, TOperaciones.TANGENTE,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.tan(Number($3)); }
+            | TK_LOGARITMOB10 PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= Instruccion.nuevaOperacionBinaria(null,$3, TOperaciones.LOGARITMO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.log10(Number($3)); }
 
-            | Expresiones IGUALIGUAL Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.IGUALIGUAL,this._$.first_line,this._$.first_column+1); if(Number($1)==Number($3)) alert("son iguales"); else alert("Nel"); }
-            | Expresiones MENOR Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.MENOR,this._$.first_line,this._$.first_column+1); if($1 < Number($3)) alert("Es menor"+$1); else alert("Es mayor"+$3); }
-            | Expresiones MENORIGUAL Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.MENORIGUAL,this._$.first_line,this._$.first_column+1); if($1 <= Number($3)) alert("Es menor o igual "+$1); else alert("Nel, es mayor "+$3); }
-            | Expresiones MAYOR Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.MAYOR,this._$.first_line,this._$.first_column+1); if($1>Number($3)) alert("Es mayor "+$1); else alert("Nel "+$3); }
-            | Expresiones MAYORIGUAL Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.MAYORIGUAL,this._$.first_line,this._$.first_column+1); if($1>=Number($3)) alert("Es mayor o igual "+$1); else alert("Nel, sigue siendo mayot"+$3); }
+            | Expresiones IGUALIGUAL Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.IGUALIGUAL,this._$.first_line,this._$.first_column+1); if(Number($1)==Number($3)) alert("son iguales"); else alert("Nel"); }
+            | Expresiones MENOR Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.MENOR,this._$.first_line,this._$.first_column+1); if($1 < Number($3)) alert("Es menor"+$1); else alert("Es mayor"+$3); }
+            | Expresiones MENORIGUAL Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.MENORIGUAL,this._$.first_line,this._$.first_column+1); if($1 <= Number($3)) alert("Es menor o igual "+$1); else alert("Nel, es mayor "+$3); }
+            | Expresiones MAYOR Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.MAYOR,this._$.first_line,this._$.first_column+1); if($1>Number($3)) alert("Es mayor "+$1); else alert("Nel "+$3); }
+            | Expresiones MAYORIGUAL Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.MAYORIGUAL,this._$.first_line,this._$.first_column+1); if($1>=Number($3)) alert("Es mayor o igual "+$1); else alert("Nel, sigue siendo mayot"+$3); }
 
-            | Expresiones OR Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.OR,this._$.first_line,this._$.first_column+1); }
-            | Expresiones AND Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.AND,this._$.first_line,this._$.first_column+1); }
-            | Expresiones DIFERENTEA Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.DIFERENTEA,this._$.first_line,this._$.first_column+1); if($1!=$3) alert("Son diferentes"); else alert("Nel"); }
-            | NOT Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($2, null, TOperaciones.NOT,this._$.first_line,this._$.first_column+1); }
+            | Expresiones OR Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.OR,this._$.first_line,this._$.first_column+1); }
+            | Expresiones AND Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.AND,this._$.first_line,this._$.first_column+1); }
+            | Expresiones DIFERENTEA Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TOperaciones.DIFERENTEA,this._$.first_line,this._$.first_column+1); if($1!=$3) alert("Son diferentes"); else alert("Nel"); }
+            | NOT Expresiones { $$= Instruccion.nuevaOperacionBinaria($2, null, TOperaciones.NOT,this._$.first_line,this._$.first_column+1); }
 
-            | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA { $$ = INSTRUCCION.modificacionVector($1, $3, $6, this._$.first_line, this._$.first_column+1) }
+            | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA {}
             | FuncioesReservadas { $$=$1; }
             | Casteos { $$=$1; }
             | Ternario {$$=$1;}
             | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	ENTERO COR_CIERRA { return $5; }
             | IDENTIFICADOR COR_ABRE TK_BEGIN TK_DOSPUNTS ENTERO COR_CIERRA { return $5; }
             | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	TK_END COR_CIERRA { return $3; }
-            | OP_MENOS Expresiones %prec umenos { $$= INSTRUCCION.nuevaOperacionBinaria($2, null, TOperaciones.NEGACION,this._$.first_line,this._$.first_column+1); }
+            | OP_MENOS Expresiones %prec umenos { $$= Instruccion.nuevaOperacionBinaria($2, null, TOperaciones.NEGACION,this._$.first_line,this._$.first_column+1); }
 ;
 
 Ternario: Expresiones OP_TERNARIO Expresiones TK_DOSPUNTS Expresiones {}
