@@ -316,7 +316,7 @@ case 93:
  this.$ = new Instruccion.nuevoReturn($$[$0-1], this._$.first_line, this._$.first_column+1) 
 break;
 case 94: case 95: case 96: case 97: case 98: case 99:
- this.$ = new Instruccion.nuevoImprimir($$[$0-2], this._$.first_line,this._$.first_column+1); return $$[$0-2]; 
+ this.$ = new Instruccion.nuevoImprimir($$[$0-2], this._$.first_line,this._$.first_column+1); 
 break;
 case 100: case 101:
   this.$ = ""; errores.push({ tipo: "Sintáctico", error: "Llamada a función imprimir no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); 
@@ -440,7 +440,7 @@ case 179:
  this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.MAYOR,this._$.first_line,this._$.first_column+1); 
 break;
 case 180:
- this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.MAYORIGUAL,this._$.first_line,this._$.first_column+1)ñ 
+ this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.MAYORIGUAL,this._$.first_line,this._$.first_column+1) 
 break;
 case 181:
  this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.OR,this._$.first_line,this._$.first_column+1); 
@@ -460,11 +460,8 @@ break;
 case 188:
 this.$=$$[$0];
 break;
-case 189: case 190:
- return $$[$0-1]; 
-break;
-case 191:
- return $$[$0-3]; 
+case 189: case 190: case 191:
+ 
 break;
 case 192:
  this.$= Instruccion.nuevaOperacionBinaria($$[$0], null, TIPO_OPERACION.NEGACION,this._$.first_line,this._$.first_column+1); 
