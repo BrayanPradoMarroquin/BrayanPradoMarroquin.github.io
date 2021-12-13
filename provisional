@@ -2,6 +2,8 @@ ini: ENTRADA EOF { typeof console !== 'undefined' ? console.log($1) : print($1);
     |error TK_PYC   {errores.push({ tipo: "Sintactico", error: "Token no Válido", linea: this._$.first_line, columna: this._$.first_column+1 }); return 'INVALID';}
 ;
 
+$$ = Instruccion.nuevoStart("main", [], $6, this._$.first_line, this._$.first_column+1)
+
 TIPOS DE OPERACIONES QUE SE PUEDEN REALIZAR EN JAVA
 
 SI SE PUEDEN EJECUTAR
