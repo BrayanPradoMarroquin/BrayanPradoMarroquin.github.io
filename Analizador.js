@@ -371,88 +371,88 @@ case 120:
  this.$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de vector no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); 
 break;
 case 156:
-this.$ = Instruccion.nuevoValor($$[$0], TValores.CADENA, this._$.first_line,this._$.first_column+1)
+this.$ = Instruccion.nuevoValor($$[$0], TIPO_VALOR.CADENA, this._$.first_line,this._$.first_column+1)
 break;
 case 157:
-this.$ = Instruccion.nuevoValor($$[$0].trim().substring(1, $$[$0].length - 1), TValores.CARACTER, this._$.first_line,this._$.first_column+1)
+this.$ = Instruccion.nuevoValor($$[$0].trim().substring(1, $$[$0].length - 1), TIPO_VALOR.CARACTER, this._$.first_line,this._$.first_column+1)
 break;
 case 158: case 159:
-this.$ = Instruccion.nuevoValor($$[$0].trim(), TValores.BOOLEAN, this._$.first_line,this._$.first_column+1)
+this.$ = Instruccion.nuevoValor($$[$0].trim(), TIPO_VALOR.BOOLEAN, this._$.first_line,this._$.first_column+1)
 break;
 case 160:
-this.$ = Instruccion.nuevoValor(Number($$[$0].trim()), TValores.ENTERO, this._$.first_line,this._$.first_column+1)
+this.$ = Instruccion.nuevoValor(Number($$[$0].trim()), TIPO_VALOR.ENTERO, this._$.first_line,this._$.first_column+1)
 break;
 case 161:
-this.$ = Instruccion.nuevoValor(Number($$[$0].trim()), TValores.DOUBLE, this._$.first_line,this._$.first_column+1)
+this.$ = Instruccion.nuevoValor(Number($$[$0].trim()), TIPO_VALOR.DOUBLE, this._$.first_line,this._$.first_column+1)
 break;
 case 162:
-this.$ = Instruccion.nuevoValor($$[$0], TValores.NULL, this._$.first_line,this._$.first_column+1)
+this.$ = Instruccion.nuevoValor($$[$0], TIPO_VALOR.NULL, this._$.first_line,this._$.first_column+1)
 break;
 case 163:
-this.$ = Instruccion.nuevoValor($$[$0].trim(), TValores.IDENTIFICADOR, this._$.first_line,this._$.first_column+1)
+this.$ = Instruccion.nuevoValor($$[$0].trim(), TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1)
 break;
 case 164:
 this.$=$$[$0-1];
 break;
 case 165:
-this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.SUMA,this._$.first_line,this._$.first_column+1); return Number($$[$0-2])+Number($$[$0]) 
+this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.SUMA,this._$.first_line,this._$.first_column+1); return Number($$[$0-2])+Number($$[$0]) 
 break;
 case 166:
-this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.RESTA,this._$.first_line,this._$.first_column+1); return Number($$[$0-2])-Number($$[$0])
+this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.RESTA,this._$.first_line,this._$.first_column+1); return Number($$[$0-2])-Number($$[$0])
 break;
 case 167:
-this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.DIVISION,this._$.first_line,this._$.first_column+1); return Number($$[$0-2])/Number($$[$0])
+this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.DIVISION,this._$.first_line,this._$.first_column+1); return Number($$[$0-2])/Number($$[$0])
 break;
 case 168:
-this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.MULTIPLICACION,this._$.first_line,this._$.first_column+1); return Number($$[$0-2])*Number($$[$0])
+this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.MULTIPLICACION,this._$.first_line,this._$.first_column+1); return Number($$[$0-2])*Number($$[$0])
 break;
 case 169:
-this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.MODULO,this._$.first_line,this._$.first_column+1); return Number($$[$0-2])%Number($$[$0])
+this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.MODULO,this._$.first_line,this._$.first_column+1); return Number($$[$0-2])%Number($$[$0])
 break;
 case 170:
-this.$= Instruccion.nuevaOperacionBinaria($$[$0-3],$$[$0-1], TOperaciones.POTENCIA,this._$.first_line,this._$.first_column+1); return Math.pow(Number($$[$0-3]), Number($$[$0-1])); 
+this.$= Instruccion.nuevaOperacionBinaria($$[$0-3],$$[$0-1], TIPO_OPERACION.POTENCIA,this._$.first_line,this._$.first_column+1); return Math.pow(Number($$[$0-3]), Number($$[$0-1])); 
 break;
 case 171:
- this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TOperaciones.RAIZ,this._$.first_line,this._$.first_column+1); return Math.pow(Number($$[$0-1]), Number($$[$01])); return Math.sqrt(Number($$[$0-1])); 
+ this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TIPO_OPERACION.RAIZ,this._$.first_line,this._$.first_column+1); return Math.pow(Number($$[$0-1]), Number($$[$01])); return Math.sqrt(Number($$[$0-1])); 
 break;
 case 172:
- this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TOperaciones.SENO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($$[$0-1]), Number($$[$01])); return Math.sin(Number($$[$0-1])); 
+ this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TIPO_OPERACION.SENO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($$[$0-1]), Number($$[$01])); return Math.sin(Number($$[$0-1])); 
 break;
 case 173:
- this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TOperaciones.COSENO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($$[$0-1]), Number($$[$01])); return Math.cos(Number($$[$0-1])); 
+ this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TIPO_OPERACION.COSENO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($$[$0-1]), Number($$[$01])); return Math.cos(Number($$[$0-1])); 
 break;
 case 174:
- this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TOperaciones.TANGENTE,this._$.first_line,this._$.first_column+1); return Math.pow(Number($$[$0-1]), Number($$[$01])); return Math.tan(Number($$[$0-1])); 
+ this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TIPO_OPERACION.TANGENTE,this._$.first_line,this._$.first_column+1); return Math.pow(Number($$[$0-1]), Number($$[$01])); return Math.tan(Number($$[$0-1])); 
 break;
 case 175:
- this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TOperaciones.LOGARITMO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($$[$0-1]), Number($$[$01])); return Math.log10(Number($$[$0-1])); 
+ this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TIPO_OPERACION.LOGARITMO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($$[$0-1]), Number($$[$01])); return Math.log10(Number($$[$0-1])); 
 break;
 case 176:
- this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.IGUALIGUAL,this._$.first_line,this._$.first_column+1); if(Number($$[$0-2])==Number($$[$0])) alert("son iguales"); else alert("Nel"); 
+ this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.IGUALIGUAL,this._$.first_line,this._$.first_column+1); if(Number($$[$0-2])==Number($$[$0])) alert("son iguales"); else alert("Nel"); 
 break;
 case 177:
- this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.MENOR,this._$.first_line,this._$.first_column+1); if($$[$0-2] < Number($$[$0])) alert("Es menor"+$$[$0-2]); else alert("Es mayor"+$$[$0]); 
+ this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.MENOR,this._$.first_line,this._$.first_column+1); if($$[$0-2] < Number($$[$0])) alert("Es menor"+$$[$0-2]); else alert("Es mayor"+$$[$0]); 
 break;
 case 178:
- this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.MENORIGUAL,this._$.first_line,this._$.first_column+1); if($$[$0-2] <= Number($$[$0])) alert("Es menor o igual "+$$[$0-2]); else alert("Nel, es mayor "+$$[$0]); 
+ this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.MENORIGUAL,this._$.first_line,this._$.first_column+1); if($$[$0-2] <= Number($$[$0])) alert("Es menor o igual "+$$[$0-2]); else alert("Nel, es mayor "+$$[$0]); 
 break;
 case 179:
- this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.MAYOR,this._$.first_line,this._$.first_column+1); if($$[$0-2]>Number($$[$0])) alert("Es mayor "+$$[$0-2]); else alert("Nel "+$$[$0]); 
+ this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.MAYOR,this._$.first_line,this._$.first_column+1); if($$[$0-2]>Number($$[$0])) alert("Es mayor "+$$[$0-2]); else alert("Nel "+$$[$0]); 
 break;
 case 180:
- this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.MAYORIGUAL,this._$.first_line,this._$.first_column+1); if($$[$0-2]>=Number($$[$0])) alert("Es mayor o igual "+$$[$0-2]); else alert("Nel, sigue siendo mayot"+$$[$0]); 
+ this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.MAYORIGUAL,this._$.first_line,this._$.first_column+1); if($$[$0-2]>=Number($$[$0])) alert("Es mayor o igual "+$$[$0-2]); else alert("Nel, sigue siendo mayot"+$$[$0]); 
 break;
 case 181:
- this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.OR,this._$.first_line,this._$.first_column+1); 
+ this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.OR,this._$.first_line,this._$.first_column+1); 
 break;
 case 182:
- this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.AND,this._$.first_line,this._$.first_column+1); 
+ this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.AND,this._$.first_line,this._$.first_column+1); 
 break;
 case 183:
- this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TOperaciones.DIFERENTEA,this._$.first_line,this._$.first_column+1); if($$[$0-2]!=$$[$0]) alert("Son diferentes"); else alert("Nel"); 
+ this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.DIFERENTEA,this._$.first_line,this._$.first_column+1); if($$[$0-2]!=$$[$0]) alert("Son diferentes"); else alert("Nel"); 
 break;
 case 184:
- this.$= Instruccion.nuevaOperacionBinaria($$[$0], null, TOperaciones.NOT,this._$.first_line,this._$.first_column+1); 
+ this.$= Instruccion.nuevaOperacionBinaria($$[$0], null, TIPO_OPERACION.NOT,this._$.first_line,this._$.first_column+1); 
 break;
 case 186: case 187:
  this.$=$$[$0]; 
@@ -467,22 +467,22 @@ case 191:
  return $$[$0-3]; 
 break;
 case 192:
- this.$= Instruccion.nuevaOperacionBinaria($$[$0], null, TOperaciones.NEGACION,this._$.first_line,this._$.first_column+1); 
+ this.$= Instruccion.nuevaOperacionBinaria($$[$0], null, TIPO_OPERACION.NEGACION,this._$.first_line,this._$.first_column+1); 
 break;
 case 212:
- this.$ = Tipos.CADENA; 
+ this.$ = TIPO_DATO.CADENA; 
 break;
 case 213:
- this.$ = Tipos.ENTERO; 
+ this.$ = TIPO_DATO.ENTERO; 
 break;
 case 214: case 216:
- this.$ = Tipos.DOUBLE; 
+ this.$ = TIPO_DATO.DOUBLE; 
 break;
 case 215:
- this.$ = Tipos.CARACTER; 
+ this.$ = TIPO_DATO.CARACTER; 
 break;
 case 217:
- this.$ = Tipos.BOOLEAN; 
+ this.$ = TIPO_DATO.BOOLEAN; 
 break;
 }
 },
