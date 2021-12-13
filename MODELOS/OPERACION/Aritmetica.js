@@ -21,6 +21,18 @@ function Aritmetica(_expresion, _ambito) {
         case TIPO_OPERACION.NEGACION:
             return negacion(_expresion.opIzq, _ambito)
 
+        case TIPO_OPERACION.SENO:
+            return seno(_expresion.opIzq, _ambito)
+        
+        case TIPO_OPERACION.COSENO:
+            return coseno(_expresion.opIzq, _ambito)
+
+        case TIPO_OPERACION.TANGETE:
+            return tangente(_expresion.opIzq, _ambito)
+
+        case TIPO_OPERACION.LOGARITMO:
+            return logaritmo(_expresion.opIzq, _ambito)
+
         default:
             break;
     }
@@ -466,5 +478,105 @@ function negacion(_opIzq, _ambito) {
         tipo: null,
         linea: _opIzq.linea,
         columna: _opIzq.columna
+    }
+}
+
+function seno(_opIzq, _ambito){
+    var cadena = "";
+    var opIzq = Operacion(_opIzq, _ambito); if (opIzq.err) return opIzq;
+    if (opIzq.cadena) cadena = opIzq.cadena;
+    if (opIzq.retorno)
+        opIzq = opIzq.retorno;
+    const tipoRes = TipoResultado(opIzq.tipo, null, TIPO_OPERACION.SENO);
+    var resultado;
+    if (tipoRes != null) {
+        switch (tipoRes) {
+            case TIPO_DATO.DOBLE:
+                resultado = Math.sin(Number(opIzq.valor)) 
+                return {
+                    valor: resultado,
+                    tipo: tipoRes,
+                    linea: _opIzq.linea,
+                    columna: _opIzq.columna,
+                    cadena: cadena
+                }
+            default:
+                break;
+        }
+    }
+}
+
+function coseno(_opIzq, _ambito){
+    var cadena = "";
+    var opIzq = Operacion(_opIzq, _ambito); if (opIzq.err) return opIzq;
+    if (opIzq.cadena) cadena = opIzq.cadena;
+    if (opIzq.retorno)
+        opIzq = opIzq.retorno;
+    const tipoRes = TipoResultado(opIzq.tipo, null, TIPO_OPERACION.COSENO);
+    var resultado;
+    if (tipoRes != null) {
+        switch (tipoRes) {
+            case TIPO_DATO.DOBLE:
+                resultado = Math.cos(Number(opIzq.valor)) 
+                return {
+                    valor: resultado,
+                    tipo: tipoRes,
+                    linea: _opIzq.linea,
+                    columna: _opIzq.columna,
+                    cadena: cadena
+                }
+            default:
+                break;
+        }
+    }
+}
+
+function tangente(_opIzq, _ambito){
+    var cadena = "";
+    var opIzq = Operacion(_opIzq, _ambito); if (opIzq.err) return opIzq;
+    if (opIzq.cadena) cadena = opIzq.cadena;
+    if (opIzq.retorno)
+        opIzq = opIzq.retorno;
+    const tipoRes = TipoResultado(opIzq.tipo, null, TIPO_OPERACION.TANGETE);
+    var resultado;
+    if (tipoRes != null) {
+        switch (tipoRes) {
+            case TIPO_DATO.DOBLE:
+                resultado = Math.tan(Number(opIzq.valor)) 
+                return {
+                    valor: resultado,
+                    tipo: tipoRes,
+                    linea: _opIzq.linea,
+                    columna: _opIzq.columna,
+                    cadena: cadena
+                }
+            default:
+                break;
+        }
+    }
+}
+
+function logaritmo(_opIzq, _ambito){
+    var cadena = "";
+    var opIzq = Operacion(_opIzq, _ambito); if (opIzq.err) return opIzq;
+    if (opIzq.cadena) cadena = opIzq.cadena;
+    if (opIzq.retorno)
+        opIzq = opIzq.retorno;
+    const tipoRes = TipoResultado(opIzq.tipo, null, TIPO_OPERACION.LOGARITMO);
+    var resultado;
+    if (tipoRes != null) {
+        switch (tipoRes) {
+            case TIPO_DATO.DOBLE:
+                resultado = Math.log10(Number(opIzq.valor)) 
+                return {
+                    valor: resultado,
+                    tipo: tipoRes,
+                    linea: _opIzq.linea,
+                    columna: _opIzq.columna,
+                    cadena: cadena
+                }
+            default:
+                break;
+        }
     }
 }

@@ -157,6 +157,26 @@ function TipoResultado(_tipo1, _tipo2, operacion) {
 
             else return null;
 
+        case TIPO_OPERACION.SENO:
+            if (_tipo1 === TIPO_DATO.DOBLE) { return TIPO_DATO.DOBLE }
+    
+            else return null;
+
+        case TIPO_OPERACION.COSENO:
+            if (_tipo1 === TIPO_DATO.DOBLE) { return TIPO_DATO.DOBLE }
+        
+            else return null;
+
+        case TIPO_OPERACION.TANGENTE:
+            if (_tipo1 === TIPO_DATO.DOBLE) { return TIPO_DATO.DOBLE }
+            
+            else return null;
+
+        case TIPO_OPERACION.LOGARITMO:
+            if (_tipo1 === TIPO_DATO.DOBLE) { return TIPO_DATO.DOBLE }
+                
+            else return null;
+
         default:
             return null;
     }

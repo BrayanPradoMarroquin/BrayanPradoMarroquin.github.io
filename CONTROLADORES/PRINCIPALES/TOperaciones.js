@@ -15,5 +15,9 @@ const TIPO_OPERACION = {
     OR: 'OR',
     AND: 'AND',
     NOT: 'NOT',
+    SENO: 'SENO',
+    COSENO: 'COSENO',
+    TANGETE: 'TANGETE',
+    LOGARITMO: 'LOGARITMO',
     MAX: 2000
 }
