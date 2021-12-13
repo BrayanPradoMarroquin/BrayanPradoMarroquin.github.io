@@ -166,15 +166,18 @@ MainBody: TK_VOID TK_MAIN PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructio
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 //-------------------------------------------------- METODO FUNCION STRUCT ----------------------------------------------------------
-MFBody: Tipos IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $6; }
-        | Tipos IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $4; }
-        | Tipos IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre LlaveCierra {alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $4; }
-        | Tipos IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre LlaveCierra {alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $2; }
+MFBody: Tipos IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { $$ = Instruccion.nuevaFuncion($2, null, $6, $1, this._$.first_line, this._$.first_column+1) }
+        | Tipos IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { $$= Instruccion.nuevaFuncion($2, $4, $7, $1, this._$.first_line, this._$.first_column+1) }
+        | Tipos IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre LlaveCierra { $$= Instruccion.nuevaFuncion($2, $4, [], $1, this._$.first_line, this._$.first_column+1) }
+        | Tipos IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre LlaveCierra { $$= Instruccion.nuevaFuncion($2, null, [], $1, this._$.first_line, this._$.first_column+1) }
+        | Tipos error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de función no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
+        | Tipos COR_ABRE COR_CIERRA error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de función no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 
-        | TK_VOID IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $6; }
-	| TK_VOID IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $4; } 
-	| TK_VOID IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre LlaveCierra { alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $4; } 
-	| TK_VOID IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre LlaveCierra { alert("Tipo de la funcion/metodo: "+$1+", Nombre: "+$2); return $2; } 
+        | TK_VOID IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { $$ = Instruccion.nuevoMetodo($2, null, $6, this._$.first_line, this._$.first_column+1) }
+	| TK_VOID IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { $$ = Instruccion.nuevoMetodo($2, $4, $7, this._$.first_line, this._$.first_column+1) } 
+	| TK_VOID IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA LlaveAbre LlaveCierra { $$ = Instruccion.nuevoMetodo($2, $4, [], this._$.first_line, this._$.first_column+1) } 
+	| TK_VOID IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre LlaveCierra { $$ = Instruccion.nuevoMetodo($2, [], [], this._$.first_line, this._$.first_column+1) }
+        | TK_VOID error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de método no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
 Dec_Struct: TK_STRUCT IDENTIFICADOR LlaveAbre BodyStruct LlaveCierra TK_PYC { alert("Struct: "+$1+", Nombre: "+$2); return $4; }
@@ -194,12 +197,12 @@ s: Dec_Var {$$=$1}
 
 //----------------------------------------------------------- PARAMETROS -------------------------------------------------------------
 Params: parametros { $$ = [$1];  }
-        | Params TK_COMA parametros { $1.push($3); $$=$1; return $3 } 
+        | Params TK_COMA parametros { $1.push($3); $$=$1; } 
 ;
 
-parametros: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR { alert("Este vector es tipo: "+$1+" Y se llama: "+$4); return $4 }
-	| Tipos IDENTIFICADOR { alert("Tipo: "+$1+" Nombre de la variable: "+$2); return $2 }
-        | IDENTIFICADOR IDENTIFICADOR { alert("Nombre del objeto: "+$1+", Nombre de la variable: "+$2); return $2 }
+parametros: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR { $$ = Instruccion.nuevoParametro($4, {vector: $1}, this._$.first_line, this._$.first_column+1) }
+	| Tipos IDENTIFICADOR { $$=Instruccion.nuevoParametro($2, $1, this._$.first_line, this._$.first_column+1) }
+        | IDENTIFICADOR IDENTIFICADOR { $$=Instruccion.nuevoParametro($2, {struct: $1}, this._$.first_line, this._$.first_column+1) }
         | Expresiones { $$ = $1}
 ;
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -234,35 +237,35 @@ ControlIF: If { $$=1 }
         | TK_IF error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de sentencia If no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
-If: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { alert("Este es un "+$1+", con su expresion "+$3); return $6; }
-   | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra { alert("Este es un "+$1+", con su expresion "+$3); return $3; }
+If: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { $$ = new Instruccion.nuevoIf($3, $6, this._$.first_line, this._$.first_column+1) }
+   | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra { $$ = new Instruccion.nuevoIf($3, [], this._$.first_line, this._$.first_column+1) }
 ;
 
-IfElse: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra { alert("Este es un "+$1+" con "+$3+" junto con "+$6+" con su respectivo "+$8); return $10 }
-        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra { alert("Este es un "+$1+" con "+$3+" con su respectivo "+$7); return $9; }
-        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre LlaveCierra { alert("Este es un "+$1+" con "+$3+" con su respectivo "+$8); return $6; }
-        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre LlaveCierra { alert("Este es un "+$1+" con su respectivo "+$7); return $3; }
+IfElse: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra { $$ = new Instruccion.nuevoIfElse($3, $6, $10, this._$.first_line, this._$.first_column+1) }
+        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre Instructions LlaveCierra { $$ = new Instruccion.nuevoIfElse($3, [], $9, this._$.first_line, this._$.first_column+1) }
+        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE LlaveAbre LlaveCierra { $$ = new Instruccion.nuevoIfElse($3, $6, [], this._$.first_line, this._$.first_column+1) }
+        | TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE LlaveAbre LlaveCierra { $$ = new Instruccion.nuevoIfElse($3, [], [], this._$.first_line, this._$.first_column+1) }
 ;
 
-ElseIf: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE ControlIF { alert("Este es un "+$1+", con "+$8+", con su expresion "+$6); return $9; }
-	| TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE ControlIF { alert("Este es un "+$1+", con "+$7); return $3; }
+ElseIf: TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra TK_ELSE ControlIF { $$ = new Instruccion.nuevoElseIf($3, $6, $9, this._$.first_line, this._$.first_column+1) }
+	| TK_IF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra TK_ELSE ControlIF { $$ = new Instruccion.nuevoElseIf($3, [], [], this._$.first_line, this._$.first_column+1) }
 ;
 
-CSwitch: TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre ListCase Default LlaveCierra { alert("Este es un "+$1+" de "+$3); return $6;  }
-		| TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre ListCase LlaveCierra { alert("Este es un "+$1+" de "+$3); return $6; }
-		| TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Default LlaveCierra { alert("Este es un "+$1+" de "+$3); return $6; }
+CSwitch: TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre ListCase Default LlaveCierra { $$ = new Instruccion.nuevoSwitch($3, $6, $7, this._$.first_line, this._$.first_column+1)  }
+		| TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre ListCase LlaveCierra { $$ = new Instruccion.nuevoSwitch($3, $6, null, this._$.first_line, this._$.first_column+1) }
+		| TK_SWITCH PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Default LlaveCierra { $$ = new Instruccion.nuevoSwitch($3, null, $6, this._$.first_line, this._$.first_column+1) }
                 | TK_SWITCH error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de Switch no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
-ListCase: ListCase TK_CASE Expresiones TK_DOSPUNTS Instructions { alert("This is a "+$2+", and other expression "+$3); return $5; }
-		| ListCase TK_CASE Expresiones TK_DOSPUNTS { alert("This is a "+$2+", and other expression "+$3); return $3; }
-		| TK_CASE Expresiones TK_DOSPUNTS Instructions { alert("This is a "+$1+", and other expression "+$2); return $4; }
-		| TK_CASE Expresiones TK_DOSPUNTS { alert("This is a "+$1+", and other expression "+$2); return $2; }
+ListCase: ListCase TK_CASE Expresiones TK_DOSPUNTS Instructions { $1.push(new Instruccion.nuevoCaso($3, $5, this._$.first_line, this._$.first_column+1)); $$=$1; }
+		| ListCase TK_CASE Expresiones TK_DOSPUNTS { $1.push(new Instruccion.nuevoCaso($3, [], this._$.first_line, this._$.first_column+1)); $$=$1; }
+		| TK_CASE Expresiones TK_DOSPUNTS Instructions { $$ = [new Instruccion.nuevoCaso($2, $4, this._$.first_line, this._$.first_column+1)]; }
+		| TK_CASE Expresiones TK_DOSPUNTS { $ = [new Instruccion.nuevoCaso($2, [], this._$.first_line, this._$.first_column+1)]; }
                 | TK_CASE error TK_DOSPUNTS { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de caso no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
-Default: TK_DEFAULT TK_DOSPUNTS Instructions { alert("This is a "+$1); return $3; }
-		| TK_DEFAULT TK_DOSPUNTS { alert($1); }
+Default: TK_DEFAULT TK_DOSPUNTS Instructions { $$ = new Instruccion.nuevoCaso(null, $3, this._$.first_line, this._$.first_column+1); }
+		| TK_DEFAULT TK_DOSPUNTS { $$ = new Instruccion.nuevoCaso(null, [], this._$.first_line, this._$.first_column+1); }
 ;
 
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -274,34 +277,44 @@ SentenciasCiclicas: While { $$=$1 }
                    | DoWhile { $$=$1 }
 ;
 
-While: TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { alert("Este es un "+$1+" con la condicion de "+$3); return $6; }
-        | TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra { alert("Este es un "+$1+" con la condicion de "+$3); return $3; }
+While: TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { $$ = new Instruccion.nuevoWhile($3, $6, this._$.first_line,this._$.first_column+1) }
+        | TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA LlaveAbre LlaveCierra { $$ = new Instruccion.nuevoWhile($3, [], this._$.first_line,this._$.first_column+1) }
         | TK_WHILE error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de ciclo While no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
-DoWhile: TK_DO LlaveAbre Instructions LlaveCierra TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC { alert("Este "+$1+" con "+$3+" se encicla con el "+$5+" ya que la condicion "+$7); return $7; }
-        | TK_DO LlaveAbre LlaveCierra TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC { alert("Este "+$1+" junto con "+$4); return $6; } 
+DoWhile: TK_DO LlaveAbre Instructions LlaveCierra TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC { $$ = new Instruccion.nuevoDoWhile($7, $3, this._$.first_line,this._$.first_column+1) }
+        | TK_DO LlaveAbre LlaveCierra TK_WHILE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA TK_PYC { $$ = new Instruccion.nuevoDoWhile($7, [], this._$.first_line,this._$.first_column+1) } 
         | TK_DO error TK_PYC { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de sentencia Do-While no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
-For: TK_FOR PARENTESIS_ABRE Dec_Var Expresiones TK_PYC Actualizacion PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra {}
-	| TK_FOR PARENTESIS_ABRE Dec_Var Expresiones TK_PYC Actualizacion PARENTESIS_CIERRA LlaveAbre LlaveCierra {}
+For: TK_FOR PARENTESIS_ABRE Dec_Var Expresiones TK_PYC Actualizacion PARENTESIS_CIERRA LlaveAbre Instructions LlaveCierra { $9.push($6); $$ = new Instruccion.nuevoFor($3, $4, $9, this._$.first_line,this._$.first_column+1) }
+	| TK_FOR PARENTESIS_ABRE Dec_Var Expresiones TK_PYC Actualizacion PARENTESIS_CIERRA LlaveAbre LlaveCierra { $$ = new Instruccion.nuevoFor($3, $4, [$6], this._$.first_line,this._$.first_column+1) }
         | TK_FOR error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de ciclo For no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
-Actualizacion: IDENTIFICADOR IGUAL Expresiones { alert(" Este es "+$1); return $3; }
- 		| IDENTIFICADOR INCREMENTO { alert("Este identificador "+$1+" aumento con "+$2); }
-		| IDENTIFICADOR DECREMENTO { alert("Este identificador "+$1+" decrecio con "+$2); }
+Actualizacion: IDENTIFICADOR IGUAL Expresiones { $$ = Instruccion.nuevaAsignacion($1, $3, this._$.first_line,this._$.first_column+1) }
+ 		| IDENTIFICADOR INCREMENTO { $$ = Instruccion.nuevaAsignacion($1,
+			{ opIzq: { tipo: 'VAL_IDENTIFICADOR', valor: $1, linea: this._$.first_line, columna: this._$.first_column+1 },
+  			opDer: { tipo: 'VAL_ENTERO', valor: 1, linea: this._$.first_line, columna: this._$.first_column+1 },
+  			tipo: 'SUMA',
+  			linea: this._$.first_line,
+  			columna: this._$.first_column+1 }, this._$.first_line,this._$.first_column+1) }
+		| IDENTIFICADOR DECREMENTO { $$ = Instruccion.nuevaAsignacion($1,
+			{ opIzq: { tipo: 'VAL_IDENTIFICADOR', valor: $1, linea: this._$.first_line, columna: this._$.first_column+1 },
+  			opDer: { tipo: 'VAL_ENTERO', valor: 1, linea: this._$.first_line, columna: this._$.first_column+1 },
+  			tipo: 'RESTA',
+  			linea: this._$.first_line,
+  			columna: this._$.first_column+1 }, this._$.first_line,this._$.first_column+1) }
 ;
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------------- Sentencias de Transferencia ------------------------------------------------
 
-SentenciasTransferencias: TK_BREAK TK_PYC { $$="break"; }
-                        | TK_RETURN TK_PYC { $$="return"; }
-                        | TK_CONTINUE TK_PYC { $$="contenido"; }
-                        | TK_RETURN Expresiones TK_PYC { return $2; }
+SentenciasTransferencias: TK_BREAK TK_PYC { $$ = new Instruccion.nuevoBreak(this._$.first_line, this._$.first_column+1) }
+                        | TK_RETURN TK_PYC { $$ = new Instruccion.nuevoReturn(null, this._$.first_line, this._$.first_column+1) }
+                        | TK_CONTINUE TK_PYC { $$ = new Instruccion.nuevoContinue(this._$.first_line, this._$.first_column+1) }
+                        | TK_RETURN Expresiones TK_PYC { $$ = new Instruccion.nuevoReturn($2, this._$.first_line, this._$.first_column+1) }
 ;
 
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -321,26 +334,41 @@ SentenciasTransferencias: TK_BREAK TK_PYC { $$="break"; }
 
 //------------------------------------------------------------- Declaraciones -----------------------------------------------------------
 
- Dec_Var: Tipos IDENTIFICADOR IGUAL Expresiones TK_PYC { alert("Tipo: "+$1+" Nombre variable: "+$2); return $4;}
-        | Tipos IDENTIFICADOR TK_PYC { alert("Tipo: "+$1+" Nombre variable: "+$2); return $2; }
-        | IDENTIFICADOR IGUAL Expresiones TK_PYC { alert("Nombre variable: "+$1); return $3; }
-        | IDENTIFICADOR INCREMENTO TK_PYC { alert("Nombre variable: "+$1); return $1; }
-        | IDENTIFICADOR DECREMENTO TK_PYC { alert("Nombre variable: "+$1); return $1; }
-        | Tipos IDENTIFICADOR { alert("Tipo: "+$1+" Nombre variable: "+$2); return $2; }
-        | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA IGUAL Expresiones TK_PYC { { alert("Nombre variable: "+$1); return $6; } }
-        | Tipos IDENTIFICADOR IGUAL operString TK_PYC { { alert("Tipo: "+$1+" Nombre variable: "+$2); return $3; } }
+ Dec_Var: Tipos IDENTIFICADOR IGUAL Expresiones TK_PYC { $$ = INSTRUCCION.nuevaDeclaracion($2, $4, $1, this._$.first_line,this._$.first_column+1) }
+        | Tipos IDENTIFICADOR TK_PYC { $$ = INSTRUCCION.nuevaDeclaracion($2, null, $1, this._$.first_line,this._$.first_column+1) }
+        | IDENTIFICADOR IGUAL Expresiones TK_PYC { $$ = INSTRUCCION.nuevaAsignacion($1, $3, this._$.first_line,this._$.first_column+1) }
+        | IDENTIFICADOR INCREMENTO TK_PYC { $$ = INSTRUCCION.nuevaAsignacion($1,
+			{ opIzq: { tipo: 'VAL_IDENTIFICADOR', valor: $1, linea: this._$.first_line, columna: this._$.first_column+1 },
+  			opDer: { tipo: 'VAL_ENTERO', valor: 1, linea: this._$.first_line, columna: this._$.first_column+1 },
+  			tipo: 'SUMA',
+  			linea: this._$.first_line,
+  			columna: this._$.first_column+1 }, this._$.first_line,this._$.first_column+1) }
+        | IDENTIFICADOR DECREMENTO TK_PYC { $$ = INSTRUCCION.nuevaAsignacion($1,
+			{ opIzq: { tipo: 'VAL_IDENTIFICADOR', valor: $1, linea: this._$.first_line, columna: this._$.first_column+1 },
+  			opDer: { tipo: 'VAL_ENTERO', valor: 1, linea: this._$.first_line, columna: this._$.first_column+1 },
+  			tipo: 'RESTA',
+  			linea: this._$.first_line,
+  			columna: this._$.first_column+1 }, this._$.first_line,this._$.first_column+1) }
+        | Tipos IDENTIFICADOR { $$ = INSTRUCCION.nuevaDeclaracion($2, null, $1, this._$.first_line,this._$.first_column+1) }
+
+        | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA IGUAL Expresiones TK_PYC { $$ = INSTRUCCION.modificacionVector($1, $3, $6, this._$.first_line, this._$.first_column+1) }
+
+        | Tipos IDENTIFICADOR IGUAL operString TK_PYC { $$ = INSTRUCCION.nuevaDeclaracion($2, $4, $1, this._$.first_line,this._$.first_column+1) }
         | Tipos error TK_PYC { $$ = ""; errores.push({ tipo: "Sintactico", error: "Declaracion de variable incorrecta", linea: this._$.first_line, columna: this._$.first_column+1 }); console.log(errores) }
 ;
 
-Dec_Vect: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE Params COR_CIERRA TK_PYC { alert("Tipo: "+$1+" Nombre del vector: "+$4); return $7; }
-        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE COR_CIERRA TK_PYC { alert("Tipo: "+$1+" Nombre del vector: "+$4); return $4; }
-        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL OP_VECOTRES IDENTIFICADOR TK_PYC { alert("Tipo: "+$1+" Nombre del vector: "+$4); return $7; }
-        | IDENTIFICADOR TK_PUNTO TK_PUSH PARENTESIS_ABRE Params PARENTESIS_CIERRA TK_PYC { alert("Nombre del vector: "+$1); return $5; }
-        | IDENTIFICADOR TK_PUNTO TK_POP PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC { alert("Nombre del vector: "+$1); return $3; }
-        | IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC { alert("Nombre del vector: "+$1); return $3; }
-        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL IDENTIFICADOR opVector TK_PYC {alert("Tipo: "+$1+" Nombre del vector: "+$4); return $6;}
-        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL opVector TK_PYC { alert("Tipo: "+$1+" Nombre del vector: "+$4); return $6; }
-        | IDENTIFICADOR opVector {alert("Nombre del vector: "+$1); return $2;}
+Dec_Vect: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE Params COR_CIERRA TK_PYC { $$ = INSTRUCCION.nuevoVector($1, null, $4, null, $7, null, this._$.first_line, this._$.first_column+1) }
+        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE COR_CIERRA TK_PYC { $$ = INSTRUCCION.nuevoVector($1, null, $4, null, null, null, this._$.first_line, this._$.first_column+1) }
+        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL OP_VECOTRES IDENTIFICADOR TK_PYC {  }
+        
+        | IDENTIFICADOR TK_PUNTO TK_PUSH PARENTESIS_ABRE Params PARENTESIS_CIERRA TK_PYC {}
+        | IDENTIFICADOR TK_PUNTO TK_POP PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
+
+        | IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {$$ = new INSTRUCCION.nuevoLength($3, this._$.first_line,this._$.first_column+1)}
+        
+        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL IDENTIFICADOR opVector TK_PYC {}
+        | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL opVector TK_PYC {}
+        | IDENTIFICADOR opVector {}
         | Tipos COR_ABRE COR_CIERRA error TK_PYC { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de vector no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
 ;
 
@@ -399,43 +427,49 @@ simbolos: OP_SUMA {}
         | OP_MODULO {}
 ;
 
-Expresiones: CADENA {$$=$1;}
-            | CARACTER {$$=$1;}
-            | TRUE {$$=$1;}
-            | FALSE {$$=$1;}
-            | ENTERO {$$=$1;}
-            | DECI {$$=$1;}
-            | NULL {$$=$1;}
-            | IDENTIFICADOR {$$=$1;}
+Expresiones: CADENA {$$ = INSTRUCCION.nuevoValor($1, TValores.CADENA, this._$.first_line,this._$.first_column+1)}
+            | CARACTER {$$ = INSTRUCCION.nuevoValor($1.trim().substring(1, $1.length - 1), TValores.CARACTER, this._$.first_line,this._$.first_column+1)}
+            | TRUE {$$ = INSTRUCCION.nuevoValor($1.trim(), TValores.BOOLEAN, this._$.first_line,this._$.first_column+1)}
+            | FALSE {$$ = INSTRUCCION.nuevoValor($1.trim(), TValores.BOOLEAN, this._$.first_line,this._$.first_column+1)}
+            | ENTERO {$$ = INSTRUCCION.nuevoValor(Number($1.trim()), TValores.ENTERO, this._$.first_line,this._$.first_column+1)}
+            | DECI {$$ = INSTRUCCION.nuevoValor(Number($1.trim()), TValores.DOUBLE, this._$.first_line,this._$.first_column+1)}
+            | NULL {$$ = INSTRUCCION.nuevoValor($1, TValores.NULL, this._$.first_line,this._$.first_column+1)}
+            | IDENTIFICADOR {$$ = INSTRUCCION.nuevoValor($1.trim(), TValores.IDENTIFICADOR, this._$.first_line,this._$.first_column+1)}
+
             | PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {$$=$2;}
-            | Expresiones OP_SUMA Expresiones {return Number($1)+Number($3) }
-            | Expresiones OP_MENOS Expresiones {return Number($1)-Number($3)}
-            | Expresiones OP_DIVISION Expresiones {return Number($1)/Number($3)}
-            | Expresiones OP_MULTIPLICACION Expresiones {return Number($1)*Number($3)}
-            | Expresiones OP_MODULO Expresiones {return Number($1)%Number($3)}
-            | TK_POW PARENTESIS_ABRE Expresiones TK_COMA Expresiones PARENTESIS_CIERRA { return Math.pow(Number($3), Number($5)); }
-            | TK_SQRT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { return Math.sqrt(Number($3)); }
-            | TK_SENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { return Math.sin(Number($3)); }
-            | TK_COSENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { return Math.cos(Number($3)); }
-            | TK_TANGENTE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { return Math.tan(Number($3)); }
-            | TK_LOGARITMOB10 PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { return Math.log10(Number($3)); }
-            | Expresiones IGUALIGUAL Expresiones { if(Number($1)==Number($3)) alert("son iguales"); else alert("Nel"); }
-            | Expresiones MENOR Expresiones { if($1 < Number($3)) alert("Es menor"+$1); else alert("Es mayor"+$3); }
-            | Expresiones MENORIGUAL Expresiones { if($1 <= Number($3)) alert("Es menor o igual "+$1); else alert("Nel, es mayor "+$3); }
-            | Expresiones MAYOR Expresiones { if($1>Number($3)) alert("Es mayor "+$1); else alert("Nel "+$3); }
-            | Expresiones MAYORIGUAL Expresiones { if($1>=Number($3)) alert("Es mayor o igual "+$1); else alert("Nel, sigue siendo mayot"+$3); }
-            | Expresiones OR Expresiones { alert("Operacion ternaria"+$2); }
-            | Expresiones AND Expresiones { alert("Operacion ternaria"+$2); }
-            | Expresiones DIFERENTEA Expresiones { if($1!=$3) alert("Son diferentes"); else alert("Nel"); }
-            | NOT Expresiones { return $3; }
-            | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA { return $3; }
+
+            | Expresiones OP_SUMA Expresiones {$$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.SUMA,this._$.first_line,this._$.first_column+1); return Number($1)+Number($3) }
+            | Expresiones OP_MENOS Expresiones {$$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.RESTA,this._$.first_line,this._$.first_column+1); return Number($1)-Number($3)}
+            | Expresiones OP_DIVISION Expresiones {$$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.DIVISION,this._$.first_line,this._$.first_column+1); return Number($1)/Number($3)}
+            | Expresiones OP_MULTIPLICACION Expresiones {$$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.MULTIPLICACION,this._$.first_line,this._$.first_column+1); return Number($1)*Number($3)}
+            | Expresiones OP_MODULO Expresiones {$$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.MODULO,this._$.first_line,this._$.first_column+1); return Number($1)%Number($3)}
+
+            | TK_POW PARENTESIS_ABRE Expresiones TK_COMA Expresiones PARENTESIS_CIERRA {$$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.POTENCIA,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); }
+            | TK_SQRT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.RAIZ,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.sqrt(Number($3)); }
+            | TK_SENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.SENO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.sin(Number($3)); }
+            | TK_COSENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.COSENO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.cos(Number($3)); }
+            | TK_TANGENTE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.TANGENTE,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.tan(Number($3)); }
+            | TK_LOGARITMOB10 PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.LOGARITMO,this._$.first_line,this._$.first_column+1); return Math.pow(Number($3), Number($5)); return Math.log10(Number($3)); }
+
+            | Expresiones IGUALIGUAL Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.IGUALIGUAL,this._$.first_line,this._$.first_column+1); if(Number($1)==Number($3)) alert("son iguales"); else alert("Nel"); }
+            | Expresiones MENOR Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.MENOR,this._$.first_line,this._$.first_column+1); if($1 < Number($3)) alert("Es menor"+$1); else alert("Es mayor"+$3); }
+            | Expresiones MENORIGUAL Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.MENORIGUAL,this._$.first_line,this._$.first_column+1); if($1 <= Number($3)) alert("Es menor o igual "+$1); else alert("Nel, es mayor "+$3); }
+            | Expresiones MAYOR Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.MAYOR,this._$.first_line,this._$.first_column+1); if($1>Number($3)) alert("Es mayor "+$1); else alert("Nel "+$3); }
+            | Expresiones MAYORIGUAL Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.MAYORIGUAL,this._$.first_line,this._$.first_column+1); if($1>=Number($3)) alert("Es mayor o igual "+$1); else alert("Nel, sigue siendo mayot"+$3); }
+
+            | Expresiones OR Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.OR,this._$.first_line,this._$.first_column+1); }
+            | Expresiones AND Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.AND,this._$.first_line,this._$.first_column+1); }
+            | Expresiones DIFERENTEA Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($1,$3, TOperaciones.DIFERENTEA,this._$.first_line,this._$.first_column+1); if($1!=$3) alert("Son diferentes"); else alert("Nel"); }
+            | NOT Expresiones { $$= INSTRUCCION.nuevaOperacionBinaria($2, null, TOperaciones.NOT,this._$.first_line,this._$.first_column+1); }
+
+            | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA { $$ = INSTRUCCION.modificacionVector($1, $3, $6, this._$.first_line, this._$.first_column+1) }
             | FuncioesReservadas { $$=$1; }
             | Casteos { $$=$1; }
             | Ternario {$$=$1;}
             | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	ENTERO COR_CIERRA { return $5; }
             | IDENTIFICADOR COR_ABRE TK_BEGIN TK_DOSPUNTS ENTERO COR_CIERRA { return $5; }
             | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	TK_END COR_CIERRA { return $3; }
-            | OP_MENOS Expresiones %prec umenos { return $2; }
+            | OP_MENOS Expresiones %prec umenos { $$= INSTRUCCION.nuevaOperacionBinaria($2, null, TOperaciones.NEGACION,this._$.first_line,this._$.first_column+1); }
 ;
 
 Ternario: Expresiones OP_TERNARIO Expresiones TK_DOSPUNTS Expresiones {}
@@ -488,10 +522,10 @@ toTipo: TK_TOINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 
-Tipos: STRING { $$ = "String";}
-    | INT { $$ = "Entero"; }
-    | DOUBLE { $$ = "Decimal"; }
-    | CHAR { $$ = "Caracter"; }
-    | FLOAT { $$ = "Flotante"; }
-    | BOOLEAN { $$ = "Buleano"; }
+Tipos: STRING { $$ = Tipos.CADENA; }
+    | INT { $$ = Tipos.ENTERO; }
+    | DOUBLE { $$ = Tipos.DOUBLE; }
+    | CHAR { $$ = Tipos.CARACTER; }
+    | FLOAT { $$ = Tipos.DOUBLE; }
+    | BOOLEAN { $$ = Tipos.BOOLEAN; }
 ;
