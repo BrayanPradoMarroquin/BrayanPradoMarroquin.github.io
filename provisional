@@ -93,3 +93,37 @@ CHAR     |    X   |    X   |    x    |    X   |    x   |
 
 double[] arr2 = sqrt#(sin#(sqrt#(pow#(arr#*2)))#*2)
 
+
+void main(){
+	int n = 20;
+    String cadenaFigura = "";
+    int i;
+    for (i = -3 * n / 2; i <= n; i++) {
+        cadenaFigura = "";
+        int j;
+        for (j = -3 * n / 2; j <= 3 * n / 2; j++) {
+
+            int absolutoi;
+            absolutoi = i;
+            int absolutoj;
+            absolutoj = j;
+            if (i < 0) {
+                absolutoi = i * -1;
+            }
+            if (j < 0) {
+                absolutoj = j * -1;
+            }
+            if ((absolutoi + absolutoj < n)
+                || ((-n / 2 - i) * (-n / 2 - i) + (n / 2 - j) * (n / 2 - j) <= n * n / 2)
+                || ((-n / 2 - i) * (-n / 2 - i) + (-n / 2 - j) * (-n / 2 - j) <= n * n / 2)) {
+                cadenaFigura = cadenaFigura + "* ";
+            }
+            else {
+                cadenaFigura = cadenaFigura + ". ";
+            }
+        }
+        print(cadenaFigura);
+    }
+    print("Si la figura es un corazon +10 <3");
+return;
+}

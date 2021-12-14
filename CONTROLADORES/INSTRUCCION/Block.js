@@ -104,7 +104,7 @@ function Block(_instrucciones, _ambito) {
                         brk = true;
                 }
             }else if (instruccion.tipo === TIPO_INSTRUCCION.DOWHILE) {
-                var mensaje = CicloDoWhile(instruccion, _ambito)
+                var mensaje = Ci_cicloDoWhile(instruccion, _ambito)
                 if (mensaje) {
                     if (mensaje.cadena)
                         cadena.cadena += mensaje.cadena
@@ -196,7 +196,7 @@ function Block(_instrucciones, _ambito) {
                         brk = true;
                 }
             }else if (instruccion.tipo === TIPO_INSTRUCCION.SWITCH) {
-                var mensaje = Switch(instruccion, _ambito)
+                var mensaje = sentenciaSwitch(instruccion, _ambito)
                 if (mensaje) {
                     if (mensaje.cadena)
                         cadena.cadena += mensaje.cadena

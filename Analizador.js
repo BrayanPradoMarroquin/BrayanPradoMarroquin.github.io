@@ -443,7 +443,7 @@ case 182:
  this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.AND,this._$.first_line,this._$.first_column+1); 
 break;
 case 183:
- this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.DIFERENTEA,this._$.first_line,this._$.first_column+1);  
+ this.$= Instruccion.nuevaOperacionBinaria($$[$0-2],$$[$0], TIPO_OPERACION.DIFERENTE,this._$.first_line,this._$.first_column+1);  
 break;
 case 184:
  this.$= Instruccion.nuevaOperacionBinaria($$[$0], null, TIPO_OPERACION.NOT,this._$.first_line,this._$.first_column+1); 
