@@ -432,7 +432,7 @@ Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this._$.
             | TRUE {$$ = Instruccion.nuevoValor($1.trim(), TIPO_VALOR.BOOLEAN, this._$.first_line,this._$.first_column+1)}
             | FALSE {$$ = Instruccion.nuevoValor($1.trim(), TIPO_VALOR.BOOLEAN, this._$.first_line,this._$.first_column+1)}
             | ENTERO {$$ = Instruccion.nuevoValor(Number($1.trim()), TIPO_VALOR.ENTERO, this._$.first_line,this._$.first_column+1)}
-            | DECI {$$ = Instruccion.nuevoValor(Number($1.trim()), TIPO_VALOR.DOUBLE, this._$.first_line,this._$.first_column+1)}
+            | DECI {$$ = Instruccion.nuevoValor(Number($1.trim()), TIPO_VALOR.DOBLE, this._$.first_line,this._$.first_column+1)}
             | NULL {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.NULL, this._$.first_line,this._$.first_column+1)}
             | IDENTIFICADOR {$$ = Instruccion.nuevoValor($1.trim(), TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1)}
 
@@ -524,7 +524,7 @@ toTipo: TK_TOINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
 
 Tipos: STRING { $$ = TIPO_DATO.CADENA; }
     | INT { $$ = TIPO_DATO.ENTERO; }
-    | DOUBLE { $$ = TIPO_DATO.DOUBLE; }
+    | DOUBLE { $$ = TIPO_DATO.DOBLE; }
     | CHAR { $$ = TIPO_DATO.CARACTER; }
     | FLOAT { $$ = TIPO_DATO.DOUBLE; }
     | BOOLEAN { $$ = TIPO_DATO.BOOLEAN; }

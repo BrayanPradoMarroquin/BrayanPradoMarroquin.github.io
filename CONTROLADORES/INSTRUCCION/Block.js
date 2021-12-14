@@ -4,7 +4,7 @@ function Block(_instrucciones, _ambito) {
     if (_instrucciones == null) return cadena;
     _instrucciones.forEach(instruccion => {
         if (!brk) {
-            if (instruccion.tipo === TIPO_INSTRUCCION.WRITELINE) {
+            if (instruccion.tipo === TIPO_INSTRUCCION.PRINT) {
                 var mensaje = Wirteline(instruccion, _ambito)
                 if (mensaje) {
                     if (mensaje.cadena)

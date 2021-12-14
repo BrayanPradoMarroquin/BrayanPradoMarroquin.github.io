@@ -380,7 +380,7 @@ case 160:
 this.$ = Instruccion.nuevoValor(Number($$[$0].trim()), TIPO_VALOR.ENTERO, this._$.first_line,this._$.first_column+1)
 break;
 case 161:
-this.$ = Instruccion.nuevoValor(Number($$[$0].trim()), TIPO_VALOR.DOUBLE, this._$.first_line,this._$.first_column+1)
+this.$ = Instruccion.nuevoValor(Number($$[$0].trim()), TIPO_VALOR.DOBLE, this._$.first_line,this._$.first_column+1)
 break;
 case 162:
 this.$ = Instruccion.nuevoValor($$[$0], TIPO_VALOR.NULL, this._$.first_line,this._$.first_column+1)
@@ -469,11 +469,14 @@ break;
 case 213:
  this.$ = TIPO_DATO.ENTERO; 
 break;
-case 214: case 216:
- this.$ = TIPO_DATO.DOUBLE; 
+case 214:
+ this.$ = TIPO_DATO.DOBLE; 
 break;
 case 215:
  this.$ = TIPO_DATO.CARACTER; 
+break;
+case 216:
+ this.$ = TIPO_DATO.DOUBLE; 
 break;
 case 217:
  this.$ = TIPO_DATO.BOOLEAN; 
