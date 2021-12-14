@@ -7,36 +7,52 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="Style.css">
     <link rel="icon" type="image/x-icon" href="quetzal.ico">
+    <script src="codemirror-5.64.0/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="codemirror-5.64.0/lib/codemirror.css">
+    <script src="codemirror-5.64.0/mode/clike/clike.js"></script>
+    <link rel="stylesheet" href="codemirror-5.64.0/theme/lesser-dark.css">
+    <script src="codemirror-5.64.0/addon/edit/closetag.js"></script>
     <title>Quetzalito 502</title>
 </head>
 <body>
-    <div class="padre">
-        <div class="titlep">
-            <h1>Interprete Quetzalito</h1>
+    <header>
+        <div class="padre">
+            <div class="titlep">
+                <h1>Interprete Quetzalito</h1>
+            </div>
         </div>
-    </div>
-    <br>
-    <aside id="Main_Op">
-        <button type="button" id="ejecutar" class="btn btn-outline-dark">Ejecutar</button>
-        <button type="button" id="traducir" class="btn btn-outline-dark">Traducir</button>
+    </header>
+
+    <nav class="arranque">
+        <button type="button" id="abrir" class="btn btn-outline-dark">Abrir Archivo</button>
+        <input type="file" id="fileInput" style="display: none;" >
+
         <button type="button" id="Terrores" class="btn btn-outline-dark">Tabla de Errores</button>
         <button type="button" id="Tsimbolos" class="btn btn-outline-dark">Tabla de Simbolos</button>
         <button type="button" id="report" class="btn btn-outline-dark">Reporte AST</button>
-        <button type="button" id="grammar" class="btn btn-outline-dark">Reporte Gramaticas</button>
+        <button type="button" id="grammar" class="btn btn-outline-dark">Reporte de Gramaticas</button>
         <button type="button" id="clear" class="btn btn-outline-dark">Limpiar Editores</button>
-    </aside>
+    </nav>
 
-    <div class="container">
-        
-    </div>
+    <div class="containers">
         <p class="ed">Editor</p>
-        <textarea id="txtEdditor"></textarea><br>
+        <div class="entry">
+            <textarea id="txtEdditor"></textarea>            
+        </div>
+        <p class="ou">Consola</p>
+        <div class="output">
+            <textarea id="txtConsole"></textarea>
+        </div>
+        <div class="exec">
+            <button type="button" id="ejecutar" class="btn btn-outline-dark" onclick="compiler()">Compilar</button>
+            <button type="button" id="traducir" class="btn btn-outline-dark">Traducir</button>
+        </div>
+        <p class="tra">Traductor</p>
+        <div class="traductor">
+            <textarea id="trad"></textarea>
+        </div>
+    </div>
 
-        <p class="edc">Consola</p>
-        <textarea id="txtConsole"></textarea><br>
-    
-     <br>
-     <br>
     <footer class="text-center text-lg-start">
         <div class="text-center p-3" style="background-color: #EDEDED;">
           <p class="foot my-0">
@@ -50,19 +66,7 @@
       <script src="Controller/Principales/Tinstrucciones.js"></script>
       <script src="Controller/Instrucciones/Instruccion.js"></script>
       <script src="Analizador.js"></script>
-        <script src="jquery.js"></script>
-        <script>
-            $(document).ready(function (){
-                $("#ejecutar").click(function() {
-                    try{
-                        var result = Analizador.parse($("#txtEdditor").val());
-                        console.log(result)
-                        $("#txtConsole").html(result);
-                    }catch(e){
-                        $("#txtConsole").html(String(e));
-                    }
-                });
-            });
-        </script>
+      <script src="Editores.js"></script>
+      <script src="jquery.js"></script>
 </body>
 </html>
