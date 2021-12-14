@@ -58,7 +58,7 @@ function Block(_instrucciones, _ambito) {
                     }
                 }
             }else if (instruccion.tipo === TIPO_INSTRUCCION.WHILE) {
-                var mensaje = CicloWhile(instruccion, _ambito)
+                var mensaje = Ci_cicloWhile(instruccion, _ambito)
                 if (mensaje) {
                     if (mensaje.cadena)
                         cadena.cadena += mensaje.cadena
@@ -127,7 +127,7 @@ function Block(_instrucciones, _ambito) {
                         brk = true;
                 }
             }else if (instruccion.tipo === TIPO_INSTRUCCION.IF) {
-                var mensaje = If(instruccion, _ambito)
+                var mensaje = sentenciaIf(instruccion, _ambito)
                 if (mensaje) {
                     if (mensaje.cadena)
                         cadena.cadena += mensaje.cadena
@@ -150,7 +150,7 @@ function Block(_instrucciones, _ambito) {
                         brk = true;
                 }
             }else if (instruccion.tipo === TIPO_INSTRUCCION.IF_ELSE) {
-                var mensaje = IfElse(instruccion, _ambito)
+                var mensaje = sentenciaElseIf(instruccion, _ambito)
                 if (mensaje) {
                     if (mensaje.cadena)
                         cadena.cadena += mensaje.cadena
@@ -173,7 +173,7 @@ function Block(_instrucciones, _ambito) {
                         brk = true;
                 }
             }else if (instruccion.tipo === TIPO_INSTRUCCION.ELSE_IF) {
-                var mensaje = ElseIf(instruccion, _ambito)
+                var mensaje = sentenciaElseIf(instruccion, _ambito)
                 if (mensaje) {
                     if (mensaje.cadena)
                         cadena.cadena += mensaje.cadena
@@ -219,7 +219,6 @@ function Block(_instrucciones, _ambito) {
                         brk = true;
                 }
             }else if (instruccion.tipo === TIPO_INSTRUCCION.LLAMADA) {
-                const StartWith = require("./Arranque/StartWith")
                 var mensaje = StartWith(instruccion, _ambito)
                 if (mensaje.cadena)
                     cadena.cadena += mensaje.cadena

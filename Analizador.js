@@ -182,7 +182,7 @@ break;
 case 38:
  if($$[$0] !== "") $$[$0-1].push($$[$0]); this.$=$$[$0-1]; 
 break;
-case 40: case 75: case 76: case 77:
+case 40: case 52: case 75: case 76: case 77:
  this.$=$$[$0] 
 break;
 case 47:
@@ -190,9 +190,6 @@ this.$=$$[$0-1]
 break;
 case 48: case 49:
  this.$=""; errores.push({ tipo: "Sintactico", error: "Declaracion de instruccion no valida", linea: this._$.first_line, columna: this._$.first_column+1}); 
-break;
-case 52:
- this.$=1 
 break;
 case 55:
  this.$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de sentencia If no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); 

@@ -1,6 +1,7 @@
-function cicloWhile(_instruccion, _ambito) {
+function Ci_cicloWhile(_instruccion, _ambito) {
     var cadena = { cadena: "", retorno: null, err: null, hasBreak: false, hasContinue: false, hasReturn: false }
     var operacion = Operacion(_instruccion.expresion, _ambito)
+    var LIMIT = TIPO_OPERACION.MAX;
     if (operacion.err) { cadena.err = operacion.err; return cadena; }
     if (operacion.cadena) cadena.cadena = operacion.cadena;
     if (operacion.retorno) operacion = operacion.retorno;

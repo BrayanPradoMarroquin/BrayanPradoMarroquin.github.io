@@ -231,7 +231,7 @@ SentenciasControl: ControlIF { $$ = $1 }
 		| CSwitch { $$ = $1 }
 ;
 
-ControlIF: If { $$=1 }
+ControlIF: If { $$=$1 }
 	| IfElse { $$ = $1 }
 	| ElseIf { $$ = $1 }
         | TK_IF error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de sentencia If no válida.", linea: this._$.first_line, columna: this._$.first_column+1 }); }
