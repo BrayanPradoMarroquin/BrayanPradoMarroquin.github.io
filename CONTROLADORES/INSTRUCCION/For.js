@@ -1,4 +1,4 @@
-function cicloFor(_instruccion, _ambito) {
+function I_cicloFor(_instruccion, _ambito) {
     var cadena = { cadena: "", retorno: null, err: null, hasBreak: false, hasContinue: false, hasReturn: false }
     var ambitoFor = new Ambito(_ambito, "declaracionFor");
     

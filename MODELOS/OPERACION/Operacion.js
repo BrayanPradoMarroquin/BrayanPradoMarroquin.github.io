@@ -8,8 +8,8 @@ function Operacion(_expresion, _ambito) {
         || _expresion.tipo === TIPO_OPERACION.MULTIPLICACION || _expresion.tipo === TIPO_OPERACION.DIVISION
         || _expresion.tipo === TIPO_OPERACION.POTENCIA || _expresion.tipo === TIPO_OPERACION.MODULO
         || _expresion.tipo === TIPO_OPERACION.NEGACION || _expresion.tipo === TIPO_OPERACION.SENO 
-        || _expresion.tipo === TIPO_OPERACION.COSENO || _expresion.tipo === TIPO_OPERACION.TANGENTE
-        || _expresion.tipo === TIPO_OPERACION.LOGARITMO){
+        || _expresion.tipo === TIPO_OPERACION.COSENO || _expresion.tipo === TIPO_OPERACION.TANGETE
+        || _expresion.tipo === TIPO_OPERACION.LOGARITMO || _expresion.tipo === TIPO_OPERACION.RAIZ){
         return Aritmetica(_expresion, _ambito)
     }
     else if (_expresion.tipo === TIPO_OPERACION.IGUALIGUAL || _expresion.tipo === TIPO_OPERACION.DIFERENTE ||

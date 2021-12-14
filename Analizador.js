@@ -419,7 +419,7 @@ case 173:
  this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TIPO_OPERACION.COSENO,this._$.first_line,this._$.first_column+1);
 break;
 case 174:
- this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TIPO_OPERACION.TANGENTE,this._$.first_line,this._$.first_column+1);
+ this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TIPO_OPERACION.TANGETE,this._$.first_line,this._$.first_column+1);
 break;
 case 175:
  this.$= Instruccion.nuevaOperacionBinaria(null,$$[$0-1], TIPO_OPERACION.LOGARITMO,this._$.first_line,this._$.first_column+1);

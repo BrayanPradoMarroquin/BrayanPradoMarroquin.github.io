@@ -81,7 +81,7 @@ function Block(_instrucciones, _ambito) {
                         brk = true;
                 }
             }else if (instruccion.tipo === TIPO_INSTRUCCION.FOR) {
-                var mensaje = CicloFor(instruccion, _ambito)
+                var mensaje = Ci_cicloFor(instruccion, _ambito)
                 if (mensaje) {
                     if (mensaje.cadena)
                         cadena.cadena += mensaje.cadena
@@ -271,7 +271,6 @@ function Block(_instrucciones, _ambito) {
                 }else
                     brk = cadena.hasContinue = true;
             }else if (instruccion.tipo === TIPO_INSTRUCCION.RETURN) {
-                const Operacion = require("../../Model/Operacion/Operacion");
                 brk = cadena.hasReturn = true;
                 if (instruccion.expresion) {
                     var expresion = Operacion(instruccion.expresion, _ambito);

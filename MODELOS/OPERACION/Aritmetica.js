@@ -15,6 +15,9 @@ function Aritmetica(_expresion, _ambito) {
         case TIPO_OPERACION.POTENCIA:
             return potencia(_expresion.opIzq, _expresion.opDer, _ambito)
 
+        case TIPO_OPERACION.RAIZ:
+            return raiz(_expresion.opDer, _ambito)
+
         case TIPO_OPERACION.MODULO:
             return modulo(_expresion.opIzq, _expresion.opDer, _ambito)
 
@@ -22,16 +25,16 @@ function Aritmetica(_expresion, _ambito) {
             return negacion(_expresion.opIzq, _ambito)
 
         case TIPO_OPERACION.SENO:
-            return seno(_expresion.opIzq, _ambito)
+            return seno(_expresion.opDer, _ambito)
         
         case TIPO_OPERACION.COSENO:
-            return coseno(_expresion.opIzq, _ambito)
+            return coseno(_expresion.opDer, _ambito)
 
         case TIPO_OPERACION.TANGETE:
-            return tangente(_expresion.opIzq, _ambito)
+            return tangente(_expresion.opDer, _ambito)
 
         case TIPO_OPERACION.LOGARITMO:
-            return logaritmo(_expresion.opIzq, _ambito)
+            return logaritmo(_expresion.opDer, _ambito)
 
         default:
             break;
@@ -492,7 +495,7 @@ function seno(_opIzq, _ambito){
     if (tipoRes != null) {
         switch (tipoRes) {
             case TIPO_DATO.DOBLE:
-                resultado = Math.sin(Number(opIzq.valor)) 
+                resultado = Math.sin(Number((opIzq.valor*Math.PI)/180)) 
                 return {
                     valor: resultado,
                     tipo: tipoRes,
@@ -517,7 +520,7 @@ function coseno(_opIzq, _ambito){
     if (tipoRes != null) {
         switch (tipoRes) {
             case TIPO_DATO.DOBLE:
-                resultado = Math.cos(Number(opIzq.valor)) 
+                resultado = Math.cos(Number((opIzq.valor*Math.PI)/180)) 
                 return {
                     valor: resultado,
                     tipo: tipoRes,
@@ -542,7 +545,7 @@ function tangente(_opIzq, _ambito){
     if (tipoRes != null) {
         switch (tipoRes) {
             case TIPO_DATO.DOBLE:
-                resultado = Math.tan(Number(opIzq.valor)) 
+                resultado = Math.tan(Number((opIzq.valor*Math.PI)/180)) 
                 return {
                     valor: resultado,
                     tipo: tipoRes,
@@ -568,6 +571,31 @@ function logaritmo(_opIzq, _ambito){
         switch (tipoRes) {
             case TIPO_DATO.DOBLE:
                 resultado = Math.log10(Number(opIzq.valor)) 
+                return {
+                    valor: resultado,
+                    tipo: tipoRes,
+                    linea: _opIzq.linea,
+                    columna: _opIzq.columna,
+                    cadena: cadena
+                }
+            default:
+                break;
+        }
+    }
+}
+
+function raiz(_opIzq, _ambito){
+    var cadena = "";
+    var opIzq = Operacion(_opIzq, _ambito); if (opIzq.err) return opIzq;
+    if (opIzq.cadena) cadena = opIzq.cadena;
+    if (opIzq.retorno)
+        opIzq = opIzq.retorno;
+    const tipoRes = TipoResultado(opIzq.tipo, null, TIPO_OPERACION.RAIZ);
+    var resultado;
+    if (tipoRes != null) {
+        switch (tipoRes) {
+            case TIPO_DATO.DOBLE:
+                resultado = Math.sqrt(Number(opIzq.valor)) 
                 return {
                     valor: resultado,
                     tipo: tipoRes,

@@ -1,7 +1,7 @@
-function cicloFor(_instruccion, _ambito) {
+function Ci_cicloFor(_instruccion, _ambito) {
     var cadena = { cadena: "", retorno: null, err: null, hasBreak: false, hasContinue: false, hasReturn: false }
     var ambitoFor = new Ambito(_ambito, "declaracionFor");
-    
+    var LIMIT = TIPO_OPERACION.MAX; 
     if (_instruccion.variable.tipo === TIPO_INSTRUCCION.DECLARACION) {
         var m = Declaracion(_instruccion.variable, ambitoFor)
         if (m.err) return { err: m.err };
