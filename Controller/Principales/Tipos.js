@@ -1,6 +1,6 @@
 const TIPO_DATO = {
     ENTERO: 'ENTERO',
-    DOUBLE: 'DOUBLE',
+    DOBLE: 'DOBLE',
     BOOLEAN: 'BOOLEANO',
     CARACTER: 'CARACTER',
     CADENA: 'CADENA',
