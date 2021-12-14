@@ -31,7 +31,7 @@ function Global(_instrucciones, _ambito) {
 
     for (let i = 0; i < _instrucciones.length; i++) {
         if (_instrucciones[i].tipo === TIPO_INSTRUCCION.NUEVO_METODO) {
-            var mensaje = Metodo(_instrucciones[i], _ambito)
+            var mensaje = DecMetodo(_instrucciones[i], _ambito)
             if (mensaje != null) {
                 var error = String(mensaje);
                 cadena.cadena += error;
@@ -43,7 +43,7 @@ function Global(_instrucciones, _ambito) {
                 });
             }
         }else if (_instrucciones[i].tipo === TIPO_INSTRUCCION.NUEVA_FUNCION) {
-            var mensaje = Funcion(_instrucciones[i], _ambito)
+            var mensaje = DecFuncion(_instrucciones[i], _ambito)
             if (mensaje != null) {
                 var error = String(mensaje);
                 cadena.cadena += error;
