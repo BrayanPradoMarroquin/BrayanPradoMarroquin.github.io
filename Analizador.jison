@@ -405,8 +405,8 @@ opVector: OP_VECOTRES simbolos Expresiones {}
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 //-------------------------------------------------- Operaciones con String ------------------------------------------------------------
-operString: CADENA CONCATENADOCADENA CADENA {}
-        | operString CONCATENADOCADENA CADENA {}
+operString: Expresiones CONCATENADOCADENA Expresiones {  }
+        | operString CONCATENADOCADENA Expresiones {}
         | CADENA OP_EXPONENTE ENTERO {}
         | operString OP_EXPONENTE ENTERO {}
         | IDENTIFICADOR TK_COMA IDENTIFICADOR {}
