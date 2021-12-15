@@ -415,8 +415,8 @@ operString: CADENA CONCATENADOCADENA CADENA {}
 
 //------------------------------------------------- LLamada a metodos / funciones -------------------------------------------------------
 
-LLamada: IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA {}
-        | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA {}
+LLamada: IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA { $$ = INSTRUCCION.nuevaLlamada($1, $3, this._$.first_line, this._$.first_column+1) }
+        | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = INSTRUCCION.nuevaLlamada($1, [], this._$.first_line, this._$.first_column+1) }
 ;
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -468,6 +468,7 @@ Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this.$.f
             | FuncioesReservadas { $$=$1; }
             | Casteos { $$=$1; }
             | Ternario {$$=$1;}
+            | Llamada { $$=$1 }
             | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	ENTERO COR_CIERRA { }
             | IDENTIFICADOR COR_ABRE TK_BEGIN TK_DOSPUNTS ENTERO COR_CIERRA { }
             | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	TK_END COR_CIERRA { }
