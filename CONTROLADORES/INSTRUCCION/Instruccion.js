@@ -160,7 +160,7 @@ const Instruccion = {
     nuevoVector: function (_tipo1, _tipo2, _id, _tamaño, _valores, _expresion, _linea, _columna) {
         return {
             tipo: TIPO_INSTRUCCION.DECLARACION,
-            tipo_dato: TIPO_DATO.VECTOR,
+            tipo_dato: TIPO_DATO.LISTA,
             id: _id,
             tamaño: _tamaño, 
             valores: _valores, 
@@ -174,8 +174,8 @@ const Instruccion = {
 
     modificacionVector: function (_id, _posicion, _valor, _linea, _columna) {
         return {
-            tipo: TIPO_INSTRUCCION.ASIGNACION,
-            tipo_dato: TIPO_DATO.VECTOR,
+            tipo: TIPO_INSTRUCCION.PUSH,
+            tipo_dato: TIPO_DATO.LISTA,
             id: _id,
             posicion: _posicion,
             valor: _valor,

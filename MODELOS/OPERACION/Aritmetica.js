@@ -349,7 +349,6 @@ function potencia(_opIzq, _opDer, _ambito) {
                     columna: _opIzq.columna,
                     cadena: cadena
                 }
-
             case TIPO_DATO.DOBLE:
                 op1 = 0.0;
                 op2 = 0.0;
@@ -370,7 +369,33 @@ function potencia(_opIzq, _opDer, _ambito) {
                     columna: _opIzq.columna,
                     cadena: cadena
                 }
+            case TIPO_DATO.CADENA:
+                op1 = 0;
+                op2 = 0;
+                if (opIzq.tipo == TIPO_DATO.CARACTER)
+                    op1 = opIzq.valor.charCodeAt(0);
+                else
+                    op1 = (opIzq.valor);
 
+                if (opDer.tipo == TIPO_DATO.CARACTER)
+                    op2 = opDer.valor.charCodeAt(0);
+                else
+                    op2 = Number(opDer.valor);
+                    for(let i =0; i <op2; i++){
+                        if(i==0){
+                            resultado = op1;
+                        }else{
+                            resultado = resultado + op1;
+                        }
+                    }
+                    resultado = resultado;
+                return {
+                    valor: resultado,
+                    tipo: tipoRes,
+                    linea: _opIzq.linea,
+                    columna: _opIzq.columna,
+                    cadena: cadena
+                }
             default:
                 break;
         }

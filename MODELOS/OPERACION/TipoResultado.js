@@ -125,7 +125,7 @@ function TipoResultado(_tipo1, _tipo2, operacion) {
 
             else if (_tipo1 === TIPO_DATO.CARACTER || _tipo2 === TIPO_DATO.CARACTER) { return null }
 
-            else if (_tipo1 === TIPO_DATO.CADENA || _tipo2 === TIPO_DATO.CADENA) { return null }
+            else if (_tipo1 === TIPO_DATO.CADENA || _tipo2 === TIPO_DATO.ENTERO) { return TIPO_DATO.CADENA }
 
             else return null;
 
