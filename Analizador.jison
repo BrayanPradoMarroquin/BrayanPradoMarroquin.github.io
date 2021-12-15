@@ -421,11 +421,11 @@ LLamada: IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA { $$ = INSTRUCCI
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 
-simbolos: OP_SUMA {}
-        | OP_MENOS {}
-        | OP_DIVISION {}
-        | OP_MULTIPLICACION {}
-        | OP_MODULO {}
+simbolos: OP_SUMA { $$=$1 }
+        | OP_MENOS { $$=$1 }
+        | OP_DIVISION { $$=$1 }
+        | OP_MULTIPLICACION { $$=$1 }
+        | OP_MODULO { $$=$1 }
 ;
 
 Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this.$.first_line,this.$.first_column+1)}
@@ -475,17 +475,17 @@ Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this.$.f
             | OP_MENOS Expresiones %prec umenos { $$= Instruccion.nuevaOperacionBinaria($2, null, TIPO_OPERACION.NEGACION,this.$.first_line,this.$.first_column+1); }
 ;
 
-Ternario: Expresiones OP_TERNARIO Expresiones TK_DOSPUNTS Expresiones {}
+Ternario: Expresiones OP_TERNARIO Expresiones TK_DOSPUNTS Expresiones { $$ = new INSTRUCCION.nuevoTernario($1, $3, $5, this._$.first_line, this._$.first_column+1) }
 ;
 
 //------------------------------------------------------ Reservadas --------------------------------------------------------------------
 
-FuncioesReservadas: FCaracterOfPosition {}
-                   | FSubString {}
-                   | Flength {}
-                   | FToLower {}
-                   | FToUpper {}
-                   | FTypeof {}
+FuncioesReservadas: FCaracterOfPosition { $$=$1 }
+                   | FSubString { $$=$1 }
+                   | Flength {$$=$1}
+                   | FToLower { $$=$1 }
+                   | FToUpper { $$=$1 }
+                   | FTypeof { $$=$1 }
 ;
 
 FCaracterOfPosition: IDENTIFICADOR TK_PUNTO TK_CARACTEROFPOSITION PARENTESIS_ABRE ENTERO PARENTESIS_CIERRA {}
@@ -494,31 +494,31 @@ FCaracterOfPosition: IDENTIFICADOR TK_PUNTO TK_CARACTEROFPOSITION PARENTESIS_ABR
 FSubString: IDENTIFICADOR TK_PUNTO TK_SUBSTRING PARENTESIS_ABRE ENTERO TK_COMA ENTERO PARENTESIS_CIERRA {}
 ;
 
-Flength: IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA {}
+Flength: IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new INSTRUCCION.nuevoLength($1, this._$.first_line,this._$.first_column+1) }
 ;
 
-FToLower: IDENTIFICADOR TK_PUNTO TK_TOLOWER PARENTESIS_ABRE PARENTESIS_CIERRA {}
+FToLower: IDENTIFICADOR TK_PUNTO TK_TOLOWER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new INSTRUCCION.toLower($1, this._$.first_line,this._$.first_column+1) }
 ;
 
-FToUpper: IDENTIFICADOR TK_PUNTO TK_TOUPPER PARENTESIS_ABRE PARENTESIS_CIERRA {}
+FToUpper: IDENTIFICADOR TK_PUNTO TK_TOUPPER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new INSTRUCCION.toUpper($1, this._$.first_line,this._$.first_column+1) }
 ;
 
-FTypeof: TK_TYPEOF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+FTypeof: TK_TYPEOF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new INSTRUCCION.nuevoTypeOf($3, this._$.first_line,this._$.first_column+1) }
 ;
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 //-------------------------------------------------------------- Casteos ---------------------------------------------------------------
-Casteos: parseo {}
-        | toTipo {}
-        | TK_STRINGPARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+Casteos: parseo { $$ = $1 }
+        | toTipo { $$ = $1 }
+        | TK_STRINGPARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new INSTRUCCION.nuevoToString($3, this._$.first_line,this._$.first_column+1) }
 ;
 
-parseo: Tipos TK_PUNTO TK_PARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+parseo: Tipos TK_PUNTO TK_PARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new INSTRUCCION.nuevoCasteo($1, $5, this._$.first_line, this._$.first_column+1) }
 ;
 
-toTipo: TK_TOINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
-        | TK_TODOUBLE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {}
+toTipo: TK_TOINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new INSTRUCCION.nuevoCasteo("ENTERO", $3, this._$.first_line, this._$.first_column+1) }
+        | TK_TODOUBLE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new INSTRUCCION.nuevoCasteo("DOBLE", $3, this._$.first_line, this._$.first_column+1) }
 ;
 
 

@@ -95,7 +95,7 @@ break;
 case 4: case 39:
  if($$[$0] !== "") this.$ = [$$[$0]]; else this.$ = []; 
 break;
-case 5: case 28: case 50: case 51: case 53: case 54:
+case 5: case 28: case 50: case 51: case 53: case 54: case 209: case 210:
  this.$ = $$[$0] 
 break;
 case 6: case 7: case 8: case 9:
@@ -155,7 +155,7 @@ break;
 case 29:
  $$[$0-2].push($$[$0]); this.$=1; return $$[$0-2]; 
 break;
-case 30: case 41: case 42: case 43: case 44: case 45: case 46:
+case 30: case 41: case 42: case 43: case 44: case 45: case 46: case 199:
 this.$=$$[$0]
 break;
 case 31:
@@ -182,7 +182,7 @@ break;
 case 38:
  if($$[$0] !== "") $$[$0-1].push($$[$0]); this.$=$$[$0-1]; 
 break;
-case 40: case 52: case 75: case 76: case 77: case 191:
+case 40: case 52: case 75: case 76: case 77: case 152: case 153: case 154: case 155: case 156: case 191: case 197: case 198: case 200: case 201: case 202:
  this.$=$$[$0] 
 break;
 case 47:
@@ -468,6 +468,33 @@ case 192: case 193: case 194:
 break;
 case 195:
  this.$= Instruccion.nuevaOperacionBinaria($$[$0], null, TIPO_OPERACION.NEGACION,this.$.first_line,this.$.first_column+1); 
+break;
+case 196:
+ this.$ = new INSTRUCCION.nuevoTernario($$[$0-4], $$[$0-2], $$[$0], this._$.first_line, this._$.first_column+1) 
+break;
+case 205:
+ this.$ = new INSTRUCCION.nuevoLength($$[$0-4], this._$.first_line,this._$.first_column+1) 
+break;
+case 206:
+ this.$ = new INSTRUCCION.toLower($$[$0-4], this._$.first_line,this._$.first_column+1) 
+break;
+case 207:
+ this.$ = new INSTRUCCION.toUpper($$[$0-4], this._$.first_line,this._$.first_column+1) 
+break;
+case 208:
+ this.$ = new INSTRUCCION.nuevoTypeOf($$[$0-1], this._$.first_line,this._$.first_column+1) 
+break;
+case 211:
+ this.$ = new INSTRUCCION.nuevoToString($$[$0-1], this._$.first_line,this._$.first_column+1) 
+break;
+case 212:
+ this.$ = new INSTRUCCION.nuevoCasteo($$[$0-5], $$[$0-1], this._$.first_line, this._$.first_column+1) 
+break;
+case 213:
+ this.$ = new INSTRUCCION.nuevoCasteo("ENTERO", $$[$0-1], this._$.first_line, this._$.first_column+1) 
+break;
+case 214:
+ this.$ = new INSTRUCCION.nuevoCasteo("DOBLE", $$[$0-1], this._$.first_line, this._$.first_column+1) 
 break;
 case 215:
  this.$ = TIPO_DATO.CADENA; 
