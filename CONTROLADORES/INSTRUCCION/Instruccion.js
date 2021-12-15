@@ -361,11 +361,12 @@ const Instruccion = {
         }
     },
 
-    nuevoStart: function (_nombre, _lista_valores, _linea, _columna) {
+    nuevoStart: function (_nombre, _lista_valores, _instrucciones, _linea, _columna) {
         return {
             tipo: TIPO_INSTRUCCION.MAIN,
             nombre: _nombre,
             lista_valores: _lista_valores,
+            lista_instrucciones: _instrucciones,
             linea: _linea,
             columna: _columna
         }

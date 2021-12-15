@@ -336,6 +336,7 @@ SentenciasTransferencias: TK_BREAK TK_PYC { $$ = new Instruccion.nuevoBreak(this
 //------------------------------------------------------------- Declaraciones -----------------------------------------------------------
 
  Dec_Var: Tipos IDENTIFICADOR IGUAL Expresiones TK_PYC { $$ = Instruccion.nuevaDeclaracion($2, $4, $1, this.$.first_line,this.$.first_column+1) }
+        | Tipos IDENTIFICADOR IGUAL Llamada TK_PYC { $$ = Instruccion.nuevaDeclaracion($2, [$4], $1, this.$.first_line,this.$.first_column+1) }
         | Tipos IDENTIFICADOR TK_PYC { $$ = Instruccion.nuevaDeclaracion($2, null, $1, this.$.first_line,this.$.first_column+1) }
         | IDENTIFICADOR IGUAL Expresiones TK_PYC { $$ = Instruccion.nuevaAsignacion($1, $3, this.$.first_line,this.$.first_column+1) }
         | IDENTIFICADOR INCREMENTO TK_PYC { $$ = Instruccion.nuevaAsignacion($1,
@@ -415,8 +416,8 @@ operString: CADENA CONCATENADOCADENA CADENA {}
 
 //------------------------------------------------- LLamada a metodos / funciones -------------------------------------------------------
 
-LLamada: IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA { $$ = INSTRUCCION.nuevaLlamada($1, $3, this._$.first_line, this._$.first_column+1) }
-        | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = INSTRUCCION.nuevaLlamada($1, [], this._$.first_line, this._$.first_column+1) }
+LLamada: IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA { $$ = Instruccion.nuevaLlamada($1, $3, this._$.first_line, this._$.first_column+1) }
+        | IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = Instruccion.nuevaLlamada($1, [], this._$.first_line, this._$.first_column+1) }
 ;
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -468,14 +469,13 @@ Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this.$.f
             | FuncioesReservadas { $$=$1; }
             | Casteos { $$=$1; }
             | Ternario {$$=$1;}
-            | Llamada { $$=$1 }
             | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	ENTERO COR_CIERRA { }
             | IDENTIFICADOR COR_ABRE TK_BEGIN TK_DOSPUNTS ENTERO COR_CIERRA { }
             | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	TK_END COR_CIERRA { }
             | OP_MENOS Expresiones %prec umenos { $$= Instruccion.nuevaOperacionBinaria($2, null, TIPO_OPERACION.NEGACION,this.$.first_line,this.$.first_column+1); }
 ;
 
-Ternario: Expresiones OP_TERNARIO Expresiones TK_DOSPUNTS Expresiones { $$ = new INSTRUCCION.nuevoTernario($1, $3, $5, this._$.first_line, this._$.first_column+1) }
+Ternario: Expresiones OP_TERNARIO Expresiones TK_DOSPUNTS Expresiones { $$ = new Instruccion.nuevoTernario($1, $3, $5, this._$.first_line, this._$.first_column+1) }
 ;
 
 //------------------------------------------------------ Reservadas --------------------------------------------------------------------
@@ -494,16 +494,16 @@ FCaracterOfPosition: IDENTIFICADOR TK_PUNTO TK_CARACTEROFPOSITION PARENTESIS_ABR
 FSubString: IDENTIFICADOR TK_PUNTO TK_SUBSTRING PARENTESIS_ABRE ENTERO TK_COMA ENTERO PARENTESIS_CIERRA {}
 ;
 
-Flength: IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new INSTRUCCION.nuevoLength($1, this._$.first_line,this._$.first_column+1) }
+Flength: IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.nuevoLength($1, this._$.first_line,this._$.first_column+1) }
 ;
 
-FToLower: IDENTIFICADOR TK_PUNTO TK_TOLOWER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new INSTRUCCION.toLower($1, this._$.first_line,this._$.first_column+1) }
+FToLower: IDENTIFICADOR TK_PUNTO TK_TOLOWER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.toLower($1, this._$.first_line,this._$.first_column+1) }
 ;
 
-FToUpper: IDENTIFICADOR TK_PUNTO TK_TOUPPER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new INSTRUCCION.toUpper($1, this._$.first_line,this._$.first_column+1) }
+FToUpper: IDENTIFICADOR TK_PUNTO TK_TOUPPER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.toUpper($1, this._$.first_line,this._$.first_column+1) }
 ;
 
-FTypeof: TK_TYPEOF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new INSTRUCCION.nuevoTypeOf($3, this._$.first_line,this._$.first_column+1) }
+FTypeof: TK_TYPEOF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoTypeOf($3, this._$.first_line,this._$.first_column+1) }
 ;
 
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -511,14 +511,14 @@ FTypeof: TK_TYPEOF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new INST
 //-------------------------------------------------------------- Casteos ---------------------------------------------------------------
 Casteos: parseo { $$ = $1 }
         | toTipo { $$ = $1 }
-        | TK_STRINGPARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new INSTRUCCION.nuevoToString($3, this._$.first_line,this._$.first_column+1) }
+        | TK_STRINGPARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoToString($3, this._$.first_line,this._$.first_column+1) }
 ;
 
-parseo: Tipos TK_PUNTO TK_PARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new INSTRUCCION.nuevoCasteo($1, $5, this._$.first_line, this._$.first_column+1) }
+parseo: Tipos TK_PUNTO TK_PARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoCasteo($1, $5, this._$.first_line, this._$.first_column+1) }
 ;
 
-toTipo: TK_TOINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new INSTRUCCION.nuevoCasteo("ENTERO", $3, this._$.first_line, this._$.first_column+1) }
-        | TK_TODOUBLE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new INSTRUCCION.nuevoCasteo("DOBLE", $3, this._$.first_line, this._$.first_column+1) }
+toTipo: TK_TOINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoCasteo("ENTERO", $3, this._$.first_line, this._$.first_column+1) }
+        | TK_TODOUBLE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoCasteo("DOBLE", $3, this._$.first_line, this._$.first_column+1) }
 ;
 
 

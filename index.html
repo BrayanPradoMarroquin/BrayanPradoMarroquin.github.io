@@ -31,7 +31,7 @@
         <button type="button" id="Tsimbolos" class="btn btn-outline-dark">Tabla de Simbolos</button>
         <button type="button" id="report" class="btn btn-outline-dark">Reporte AST</button>
         <button type="button" id="grammar" class="btn btn-outline-dark">Reporte de Gramaticas</button>
-        <button type="button" id="clear" class="btn btn-outline-dark">Limpiar Editores</button>
+        <button type="button" id="clear" class="btn btn-outline-dark" onclick="limpiar()" >Limpiar Editores</button>
     </nav>
 
     <div class="containers">
@@ -60,13 +60,60 @@
           </p>
         </div>
       </footer>
-      <script src="Controller/Principales/TOperaciones.js"></script>
-      <script src="Controller/Principales/TValores.js"></script>
-      <script src="Controller/Principales/Tipos.js"></script>
-      <script src="Controller/Principales/Tinstrucciones.js"></script>
-      <script src="Controller/Instrucciones/Instruccion.js"></script>
-      <script src="Analizador.js"></script>
-      <script src="Editores.js"></script>
-      <script src="jquery.js"></script>
+
+    <!-- AREA DE IMPORTACIONES (JAVASCRIPT) -->
+    <!--  PRINCIPALES -->
+    <script type="text/javascript" src="./CONTROLADORES/PRINCIPALES/TValores.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/PRINCIPALES/TOperaciones.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/PRINCIPALES/Tipos.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/PRINCIPALES/Tinstrucciones.js"></script>
+    <script type="text/javascript" src="./MODELOS/AMBITO/Simbolo.js"></script>
+    <script type="text/javascript" src="./MODELOS/AMBITO/FunMet.js"></script>
+
+    <!-- INSTRUCCIOENS SENTENCIAS DE CONTROL -->
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/SENTENCIAS_CONTROL/Switch.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/SENTENCIAS_CONTROL/If.js"></script>
+
+    <!-- OPERACIONES BASICAS -->
+    <script type="text/javascript" src="./MODELOS/OPERACION/Resultados.js"></script>
+    <script type="text/javascript" src="./MODELOS/OPERACION/Aritmetica.js"></script>
+    <script type="text/javascript" src="./MODELOS/OPERACION/Operacion.js"></script>
+    <script type="text/javascript" src="./MODELOS/OPERACION/TipoResultado.js"></script>
+    <script type="text/javascript" src="./MODELOS/OPERACION/Cadena.js"></script>
+    <script type="text/javascript" src="./MODELOS/OPERACION/Relacional.js"></script>
+    <script type="text/javascript" src="./MODELOS/OPERACION/Logica.js"></script>
+    <script type="text/javascript" src="./MODELOS/OPERACION/VExpresion.js"></script>
+    <!-- OTRAS COSAS -->
+
+    <!-- INSTRUCCIONES CICLICAS-->
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/CICLICAS/For.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/CICLICAS/While.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/CICLICAS/DoWhile.js"></script>
+    
+    <script type="text/javascript" src="./MODELOS/FUNCIONES/Reservadas.js"></script>
+    <script type="text/javascript" src="./MODELOS/AMBITO/Reservadas.js"></script>
+    
+    <!--  INSTRUCCIONES -->
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Asignacion.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Asignaciones.js"></script>
+    
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Bloque.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Declaracion.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/DoWhile.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Funcion.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Instruccion.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Metodo.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Print.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/While.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Write.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Block.js"></script>
+    
+    <!-- GLOBALES -->
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/ARRANQUE/StartWith.js"></script>
+    <script type="text/javascript" src="Analizador.js"></script>
+    <script type="text/javascript" src="./MODELOS/AMBITO/Funcion_Metodo.js"></script>
+    <script type="text/javascript" src="./MODELOS/AMBITO/Ambito.js"></script>
+    <script type="text/javascript" src="./MODELOS/AMBITO/Global.js"></script>
+    <script type="text/javascript" src="Editores.js" ></script>
 </body>
 </html>

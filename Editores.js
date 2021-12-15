@@ -24,14 +24,22 @@ traductor.setSize("600", "680");
 
 txtEdditor = edit;
 txtConsole = oup;
+trad = traductor;
 
 function compiler(){
-    var entrada = txtEdditor.getValue();
+    var informacion = txtEdditor.getValue();
     try {
-        var result = Analizador.parse(entrada);
-        console.log(result);
-        var salida = txtConsole.setValue(String(result));
-    } catch (e) {
-        console.log(e)
+        var gramatica = Analizador.parse(informacion);
+        var global = new Ambito(null, "global");
+        var cadena = Global(gramatica, global);
+        var salida = txtConsole.setValue(cadena.cadena);
+    } catch (error) {
+        alert(error);
     }
+}
+
+function limpiar(){
+    var ed = txtEdditor.setValue(" ");
+    var sa = txtConsole.setValue(" ");
+    var t = trad.setValue(" ");
 }
