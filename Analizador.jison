@@ -336,7 +336,7 @@ SentenciasTransferencias: TK_BREAK TK_PYC { $$ = new Instruccion.nuevoBreak(this
 //------------------------------------------------------------- Declaraciones -----------------------------------------------------------
 
  Dec_Var: Tipos IDENTIFICADOR IGUAL Expresiones TK_PYC { $$ = Instruccion.nuevaDeclaracion($2, $4, $1, this.$.first_line,this.$.first_column+1) }
-        | Tipos IDENTIFICADOR IGUAL Llamada TK_PYC { $$ = Instruccion.nuevaDeclaracion($2, [$4], $1, this.$.first_line,this.$.first_column+1) }
+        //| Tipos IDENTIFICADOR IGUAL LLamada TK_PYC { $$ = Instruccion.nuevaDeclaracion($2, [$4], $1, this.$.first_line,this.$.first_column+1) }
         | Tipos IDENTIFICADOR TK_PYC { $$ = Instruccion.nuevaDeclaracion($2, null, $1, this.$.first_line,this.$.first_column+1) }
         | IDENTIFICADOR IGUAL Expresiones TK_PYC { $$ = Instruccion.nuevaAsignacion($1, $3, this.$.first_line,this.$.first_column+1) }
         | IDENTIFICADOR INCREMENTO TK_PYC { $$ = Instruccion.nuevaAsignacion($1,
@@ -469,6 +469,7 @@ Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this.$.f
             | FuncioesReservadas { $$=$1; }
             | Casteos { $$=$1; }
             | Ternario {$$=$1;}
+            | LLamada { $$ = $1; }
             | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	ENTERO COR_CIERRA { }
             | IDENTIFICADOR COR_ABRE TK_BEGIN TK_DOSPUNTS ENTERO COR_CIERRA { }
             | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	TK_END COR_CIERRA { }
