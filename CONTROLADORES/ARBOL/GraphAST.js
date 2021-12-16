@@ -119,12 +119,12 @@ class Graph {
             this.grafo += hijoAST + '[label = \"DECLARACIÓN FUNCIÓN\"];\n';
             this.grafo += _up + '->' + hijoAST + ';\n';
             this.FuncionGrafo(hijoAST, _instruccion);
-        }else if (_instruccion.tipo === TIPO_INSTRUCCION.START_WITH) {
+        }else if (_instruccion.tipo === TIPO_INSTRUCCION.MAIN) {
             var hijoAST = 'Node' + this.contador;
             this.contador++;
-            this.grafo += hijoAST + '[label = \"START WITH\"];\n';
+            this.grafo += hijoAST + '[label = \"MAIN\"];\n';
             this.grafo += _up + '->' + hijoAST + ';\n';
-            this.LlamadaGrafo(hijoAST, _instruccion);
+            this.InstruccionesGrafo(hijoAST, _instruccion);
         }
     }
 

@@ -143,7 +143,7 @@
 
 %%
 
-ini: ENTRADA EOF { retorno = { parse: $1, errores: errores }; errores = []; return $1; }
+ini: ENTRADA EOF { retorno = { parse: $1, errores: errores }; errores = []; return retorno; }
     |error EOF   { retorno = { parse: null, errores: errores }; errores = []; return retorno; }
 ;
 

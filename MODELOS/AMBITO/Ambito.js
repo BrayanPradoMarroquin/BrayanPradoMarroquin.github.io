@@ -106,6 +106,7 @@ class Ambito {
                     id: valor.id,
                     objeto: 'Variable',
                     tipo: tipo,
+                    valor: valor.valor,
                     entorno: 'global',
                     linea: valor.linea,
                     columna: valor.columna
@@ -154,6 +155,77 @@ class Ambito {
                         });
                     }
                 }
+                if (valor.tipo === "main"){
+                    simbolos = valor.getArraySimbolsMain(simbolos)
+                }
+                simbolos = this.getSimbolos(valor.instrucciones, simbolos, valor.id);
+            }
+            return simbolos;
+        } catch (error) {
+            return simbolos;
+        }
+    }
+
+
+    getArraySimbolsMain(simbolos) {
+        try {
+            for (var [clave, valor] of this.tablaSimbolos) {
+                var tipo = valor.tipo;
+                if (tipo === TIPO_DATO.VECTOR) tipo = "Vector: " + valor.valor[0].tipo;
+                if (tipo === TIPO_DATO.LISTA) tipo = "Dynamic List: " + valor.valor[0].tipo;
+                var simb = {
+                    id: valor.id,
+                    objeto: 'Variable',
+                    tipo: tipo,
+                    entorno: 'Main',
+                    valor: valor.valor,
+                    linea: valor.linea,
+                    columna: valor.columna
+                }
+                if (!simbolos.some(e => (e.id === simb.id) && (e.entorno === simb.entorno))) {
+                    simbolos.push(simb);
+                }
+            }
+            for (var [clave, valor] of this.tablaFunciones) {
+                if (valor.constructor.name === 'Metodo') {
+                    simbolos.push({
+                        id: valor.id,
+                        objeto: 'Método',
+                        tipo: 'VOID',
+                        entorno: 'Main',
+                        linea: valor.linea,
+                        columna: valor.columna
+                    });
+                }
+                else if (valor.constructor.name === 'Funcion') {
+                    var tipo = valor.retorno;
+                    if (tipo.vector) tipo = "Vector: " + tipo.vector;
+                    if (tipo.lista) tipo = "Dynamic List: " + tipo.lista;
+                    simbolos.push({
+                        id: valor.id,
+                        objeto: 'Función',
+                        tipo: tipo,
+                        entorno: 'Main',
+                        linea: valor.linea,
+                        columna: valor.columna
+                    });
+                }
+                if (valor.lista_parametros) {
+                    for (let i = 0; i < valor.lista_parametros.length; i++) {
+                        const param = valor.lista_parametros[i];
+                        var tipo = param.tipo_dato;
+                        if (tipo.vector) tipo = "Vector: " + tipo.vector;
+                        if (tipo.lista) tipo = "Dynamic List: " + tipo.lista;
+                        simbolos.push({
+                            id: param.id,
+                            objeto: 'Parámetro',
+                            tipo: tipo,
+                            entorno: valor.id,
+                            linea: param.linea,
+                            columna: param.columna
+                        });
+                    }
+                }
                 simbolos = this.getSimbolos(valor.instrucciones, simbolos, valor.id);
             }
             return simbolos;
@@ -172,6 +244,7 @@ class Ambito {
                     objeto: 'Variable',
                     tipo: instruccion.tipo_dato,
                     entorno: clave,
+                    valor: instruccion.valor,
                     linea: instruccion.linea,
                     columna: instruccion.columna
                 });
