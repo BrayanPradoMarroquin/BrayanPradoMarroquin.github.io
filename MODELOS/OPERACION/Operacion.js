@@ -35,31 +35,31 @@ function Operacion(_expresion, _ambito) {
         }
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.TO_LOWER) {
-        return ToLower(_expresion, _ambito);
+        return to_Lower(_expresion, _ambito);
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.TO_UPPER) {
-        return ToUpper(_expresion, _ambito);
+        return to_Upper(_expresion, _ambito);
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.LENGTH) {
-        return Length(_expresion, _ambito);
+        return get_length(_expresion, _ambito);
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.TRUNCATE) {
-        return Truncate(_expresion, _ambito);
+        return truncate(_expresion, _ambito);
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.ROUND) {
-        return Round(_expresion, _ambito);
+        return round(_expresion, _ambito);
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.TYPEOF) {
-        return TypeOf(_expresion, _ambito);
+        return typeOf(_expresion, _ambito);
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.TOSTRING) {
-        return ToString(_expresion, _ambito);
+        return to_String(_expresion, _ambito);
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.TOCHARLIST) {
-        return ToCharList(_expresion, _ambito);
+        return to_CharList(_expresion, _ambito);
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.LLAMADA) {
-        var retorno = StartWith(_expresion, _ambito);
+        var retorno = Ll_Metodo(_expresion, _ambito);
         if (retorno.err) return retorno;
         if (retorno.retorno == null)
             return { err: `Error: El método '${_expresion.nombre}' no retorna ningún valor.\nLínea: ${_expresion.linea} Columna: ${_expresion.columna}.\n` };

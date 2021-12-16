@@ -57,6 +57,22 @@ function Block(_instrucciones, _ambito) {
                         });
                     }
                 }
+            }else if (instruccion.tipo === TIPO_INSTRUCCION.PUSH) {
+                var mensaje = Asignacion(instruccion, _ambito)
+                if (mensaje) {
+                    if (mensaje.cadena)
+                        cadena.cadena += mensaje.cadena
+                    if (mensaje.err) {
+                        var error = String(mensaje.err);
+                        cadena.cadena += error;
+                        cadena.errores.push({
+                            tipo: 'Semántico',
+                            error: error.substring(error.indexOf("Error") + 7, error.indexOf("Línea") - 1),
+                            linea: error.substring(error.indexOf("Línea") + 7, error.indexOf("Columna") - 1),
+                            columna: error.substring(error.indexOf("Columna") + 9),
+                        });
+                    }
+                }
             }else if (instruccion.tipo === TIPO_INSTRUCCION.WHILE) {
                 var mensaje = Ci_cicloWhile(instruccion, _ambito)
                 if (mensaje) {
@@ -219,7 +235,7 @@ function Block(_instrucciones, _ambito) {
                         brk = true;
                 }
             }else if (instruccion.tipo === TIPO_INSTRUCCION.LLAMADA) {
-                var mensaje = StartWith(instruccion, _ambito)
+                var mensaje = Ll_Metodo(instruccion, _ambito)
                 if (mensaje.cadena)
                     cadena.cadena += mensaje.cadena
                 if (mensaje.err) {

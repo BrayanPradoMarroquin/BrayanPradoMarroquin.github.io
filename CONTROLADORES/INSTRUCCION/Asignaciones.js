@@ -33,50 +33,60 @@ function Asignacion(_instruccion, _ambito) {
         const simbolo = _ambito.getSimbolo(id);
         if (simbolo) {
             if (simbolo.tipo !== TIPO_DATO.LISTA) { return { err: `Error: la variable '${String(id)}' de tipo ${simbolo.tipo} no corresponde a una lista.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` } }
-            if (_instruccion.posicion != null) { // Modificación de una posición de la lista
-                var pos = Operacion(_instruccion.posicion, _ambito);
-                if (pos.err) return { err: pos.err }
-                if (pos.cadena) cadena.cadena = pos.cadena;
-                if (pos.retorno) pos = pos.retorno;
-                if (pos.tipo != TIPO_DATO.ENTERO) {
-                    return { err: `Error: el índice '${String(pos.valor)}' no es de tipo numérico.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
-                }
-                var valor = Operacion(_instruccion.valor, _ambito);
-                if (valor.err) return { err: valor.err }
-                if (valor.cadena) cadena.cadena += valor.cadena;
-                if (valor.retorno) valor = valor.retorno;
-                var tipoLista = simbolo.valor[0].tipo;
-                if (tipoLista === valor.tipo) {
-                    if (simbolo.valor[0].valor === 'EMPTY') {
-                        return { err: `Error: la lista '${String(id)}' se encuentra vacía.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+            if(_instruccion.valor != null){
+                if (_instruccion.posicion != null) { // Modificación de una posición de la lista
+                    var pos = Operacion(_instruccion.posicion, _ambito);
+                    if (pos.err) return { err: pos.err }
+                    if (pos.cadena) cadena.cadena = pos.cadena;
+                    if (pos.retorno) pos = pos.retorno;
+                    if (pos.tipo != TIPO_DATO.ENTERO) {
+                        return { err: `Error: el índice '${String(pos.valor)}' no es de tipo numérico.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
                     }
-                    else if (pos.valor < 0 || pos.valor >= simbolo.valor.length) {
-                        return { err: `Error: la posición '${String(pos.valor)}' se encuentra fuera del tamaño de la lista.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+                    var valor = Operacion(_instruccion.valor, _ambito);
+                    if (valor.err) return { err: valor.err }
+                    if (valor.cadena) cadena.cadena += valor.cadena;
+                    if (valor.retorno) valor = valor.retorno;
+                    var tipoLista = simbolo.valor[0].tipo;
+                    if (tipoLista === valor.tipo) {
+                        if (simbolo.valor[0].valor === 'EMPTY') {
+                            return { err: `Error: la lista '${String(id)}' se encuentra vacía.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+                        }
+                        else if (pos.valor < 0 || pos.valor >= simbolo.valor.length) {
+                            return { err: `Error: la posición '${String(pos.valor)}' se encuentra fuera del tamaño de la lista.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+                        }
+                        simbolo.valor[pos.valor] = valor;
+                        _ambito.actualizar(id, simbolo)
+                        return cadena;
                     }
-                    simbolo.valor[pos.valor] = valor;
-                    _ambito.actualizar(id, simbolo)
-                    return cadena;
+                    return { err: "Error: No es posible asignar un valor de tipo " + valor.tipo + " dentro de la lista '" + id + "'\nque es de tipo " + tipoLista + ".\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
                 }
-                return { err: "Error: No es posible asignar un valor de tipo " + valor.tipo + " dentro de la lista '" + id + "'\nque es de tipo " + tipoLista + ".\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
+                else { // Agregación de item a la lista
+                    var valor;
+                    for (i = 0; i < _instruccion.valor.length; i++){
+                        valor = Operacion(_instruccion.valor[i], _ambito);
+                    }
+                    if (valor.err) return { err: valor.err }
+                    if (valor.cadena) cadena.cadena = valor.cadena;
+                    if (valor.retorno) valor = valor.retorno;
+                    var tipoLista = simbolo.valor[0].tipo;
+                    if (tipoLista === valor.tipo) { // ...
+                        if (simbolo.valor[0].valor === 'EMPTY') {
+                            simbolo.valor[0] = valor;
+                        }
+                        else {
+                            simbolo.valor.push(valor);
+                        }
+                        _ambito.actualizar(id, simbolo)
+                        return cadena
+                    }
+                    return { err: "Error: No es posible agregar un valor de tipo " + valor.tipo + " a la lista '" + id + "'\nque es de tipo " + tipoLista + ".\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
+                }
+            }else{
+                simbolo.valor.pop();
+                _ambito.actualizar(id, simbolo)
+                return cadena
             }
-            else { // Agregación de item a la lista
-                var valor = Operacion(_instruccion.valor, _ambito);
-                if (valor.err) return { err: valor.err }
-                if (valor.cadena) cadena.cadena = valor.cadena;
-                if (valor.retorno) valor = valor.retorno;
-                var tipoLista = simbolo.valor[0].tipo;
-                if (tipoLista === valor.tipo) { // ...
-                    if (simbolo.valor[0].valor === 'EMPTY') {
-                        simbolo.valor[0] = valor;
-                    }
-                    else {
-                        simbolo.valor.push(valor);
-                    }
-                    _ambito.actualizar(id, simbolo)
-                    return cadena
-                }
-                return { err: "Error: No es posible agregar un valor de tipo " + valor.tipo + " a la lista '" + id + "'\nque es de tipo " + tipoLista + ".\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
-            }
+            
         }
         return { err: `Error: la lista '${String(id)}' no existe.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
     }
@@ -85,6 +95,7 @@ function Asignacion(_instruccion, _ambito) {
         const id = _instruccion.id;
         const simbolo = _ambito.getSimbolo(id)
         if (simbolo) {
+
             var valor = Operacion(_instruccion.expresion, _ambito)
             if (valor.err) return { err: valor.err }
             if (valor.cadena) cadena.cadena = valor.cadena;

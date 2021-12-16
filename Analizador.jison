@@ -363,8 +363,8 @@ Dec_Vect: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE Params COR_CIER
         | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL COR_ABRE COR_CIERRA TK_PYC { $$ = Instruccion.nuevoVector($1, null, $4, null, null, null, this.$.first_line, this.$.first_column+1) }
         | Tipos COR_ABRE COR_CIERRA IDENTIFICADOR IGUAL OP_VECOTRES IDENTIFICADOR TK_PYC {  }
         
-        | IDENTIFICADOR TK_PUNTO TK_PUSH PARENTESIS_ABRE Params PARENTESIS_CIERRA TK_PYC {}
-        | IDENTIFICADOR TK_PUNTO TK_POP PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
+        | IDENTIFICADOR TK_PUNTO TK_PUSH PARENTESIS_ABRE Params PARENTESIS_CIERRA TK_PYC {$$ = Instruccion.modificacionLista($1, null, $5, this._$.first_line, this._$.first_column+1)}
+        | IDENTIFICADOR TK_PUNTO TK_POP PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {$$ = Instruccion.modificacionVector($1, null, null, this._$.first_line, this._$.first_column+1)}
 
         | IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {$$ = new Instruccion.nuevoLength($3, this.$.first_line,this.$.first_column+1)}
         
@@ -405,12 +405,10 @@ opVector: OP_VECOTRES simbolos Expresiones {}
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 //-------------------------------------------------- Operaciones con String ------------------------------------------------------------
-operString: Expresiones CONCATENADOCADENA Expresiones {  }
-        | operString CONCATENADOCADENA Expresiones {}
-        | CADENA OP_EXPONENTE ENTERO {}
-        | operString OP_EXPONENTE ENTERO {}
-        | IDENTIFICADOR TK_COMA IDENTIFICADOR {}
-        | operString TK_COMA IDENTIFICADOR {}
+operString: Expresiones CONCATENADOCADENA Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.SUMA,this.$.first_line,this.$.first_column+1); }
+        | operString CONCATENADOCADENA Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.SUMA,this.$.first_line,this.$.first_column+1); }
+        | CADENA OP_EXPONENTE ENTERO {$$= Instruccion.nuevaOperacionBinaria(Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this.$.first_line,this.$.first_column+1),Instruccion.nuevoValor($3, TIPO_VALOR.ENTERO, this.$.first_line,this.$.first_column+1), TIPO_OPERACION.POTENCIA,this.$.first_line,this.$.first_column+1); }
+        | operString OP_EXPONENTE ENTERO {$$= Instruccion.nuevaOperacionBinaria($1,Instruccion.nuevoValor($3, TIPO_VALOR.ENTERO, this.$.first_line,this.$.first_column+1), TIPO_OPERACION.POTENCIA,this.$.first_line,this.$.first_column+1); }
 ;
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -469,7 +467,7 @@ Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this.$.f
             | FuncioesReservadas { $$=$1; }
             | Casteos { $$=$1; }
             | Ternario {$$=$1;}
-            | LLamada { $$ = $1; }
+            | LLamada {$$=$1; }
             | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	ENTERO COR_CIERRA { }
             | IDENTIFICADOR COR_ABRE TK_BEGIN TK_DOSPUNTS ENTERO COR_CIERRA { }
             | IDENTIFICADOR COR_ABRE ENTERO TK_DOSPUNTS	TK_END COR_CIERRA { }
@@ -495,13 +493,13 @@ FCaracterOfPosition: IDENTIFICADOR TK_PUNTO TK_CARACTEROFPOSITION PARENTESIS_ABR
 FSubString: IDENTIFICADOR TK_PUNTO TK_SUBSTRING PARENTESIS_ABRE ENTERO TK_COMA ENTERO PARENTESIS_CIERRA {}
 ;
 
-Flength: IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.nuevoLength($1, this._$.first_line,this._$.first_column+1) }
+Flength: IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.nuevoLength(Instruccion.nuevoValor($1.trim(), TIPO_VALOR.IDENTIFICADOR, this.$.first_line,this.$.first_column+1), this._$.first_line,this._$.first_column+1) }
 ;
 
-FToLower: IDENTIFICADOR TK_PUNTO TK_TOLOWER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.toLower($1, this._$.first_line,this._$.first_column+1) }
+FToLower: IDENTIFICADOR TK_PUNTO TK_TOLOWER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.toLower(Instruccion.nuevoValor($1.trim(), TIPO_VALOR.IDENTIFICADOR, this.$.first_line,this.$.first_column+1), this._$.first_line,this._$.first_column+1) }
 ;
 
-FToUpper: IDENTIFICADOR TK_PUNTO TK_TOUPPER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.toUpper($1, this._$.first_line,this._$.first_column+1) }
+FToUpper: IDENTIFICADOR TK_PUNTO TK_TOUPPER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.toUpper(Instruccion.nuevoValor($1.trim(), TIPO_VALOR.IDENTIFICADOR, this.$.first_line,this.$.first_column+1), this._$.first_line,this._$.first_column+1) }
 ;
 
 FTypeof: TK_TYPEOF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoTypeOf($3, this._$.first_line,this._$.first_column+1) }

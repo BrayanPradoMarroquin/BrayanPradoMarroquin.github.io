@@ -127,13 +127,13 @@ function Declaracion(_instruccion, _ambito) {
         return cadena;
     }
 
-    else if (_instruccion.tipo_dato === TIPO_DATO.VECTOR || _instruccion.tipo_dato.vector) {
+    else if (_instruccion.tipo_dato === TIPO_DATO.LISTA || _instruccion.tipo_dato.lista) {
         var valores = [];
         if (_instruccion.isParam) {
             _instruccion.valor = Operacion(_instruccion.valor, _ambito)
             if (_instruccion.valor.err) { cadena.err = _instruccion.valor.err; return cadena }
             if (_instruccion.valor.retorno) _instruccion.valor = _instruccion.valor.retorno;
-            if (_instruccion.valor.tipo === TIPO_DATO.VECTOR) {
+            if (_instruccion.valor.tipo === TIPO_DATO.LISTA) {
                 if (_instruccion.valor.valor[0].tipo === _instruccion.tipo_dato.vector) {
                     valores = _instruccion.valor.valor;
                 }
@@ -160,7 +160,7 @@ function Declaracion(_instruccion, _ambito) {
             if (op.err) { cadena.err = op.err; return cadena; }
             if (op.cadena) cadena.cadena = op.cadena;
             if (op.retorno) op = op.retorno;
-            if (op.tipo === TIPO_DATO.VECTOR) {
+            if (op.tipo === TIPO_DATO.LISTA) {
                 if (op.valor[0].tipo === _instruccion.tipo_dato1)
                     valores = op.valor;
                 else
@@ -193,7 +193,7 @@ function Declaracion(_instruccion, _ambito) {
             else
                 return { err: "Error: El tipo " + _instruccion.tipo_dato1 + " no coincide con el tipo " + _instruccion.tipo_dato2 + " del vector.\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
         }
-        const nuevoSimbolo = new Simbolo(_instruccion.id, valores, TIPO_DATO.VECTOR, _instruccion.linea, _instruccion.columna)
+        const nuevoSimbolo = new Simbolo(_instruccion.id, valores, TIPO_DATO.LISTA, _instruccion.linea, _instruccion.columna)
         if (_ambito.existeSimbolo(nuevoSimbolo.id) != false) {
             return { err: "Error: La variable '" + nuevoSimbolo.id + "' ya existe.\nLínea: " + nuevoSimbolo.linea + " Columna: " + nuevoSimbolo.columna + "\n" }
         }
@@ -201,13 +201,13 @@ function Declaracion(_instruccion, _ambito) {
         return cadena;
     }
 
-    else if (_instruccion.tipo_dato === TIPO_DATO.LISTA || _instruccion.tipo_dato.lista) {
+    else if (_instruccion.tipo_dato === TIPO_DATO.VECTOR || _instruccion.tipo_dato.vector) {
         var valores = [];
         if (_instruccion.isParam) { 
             _instruccion.valor = Operacion(_instruccion.valor, _ambito)
             if (_instruccion.valor.err) { cadena.err = _instruccion.valor.err; return cadena }
             if (_instruccion.valor.retorno) _instruccion.valor = _instruccion.valor.retorno;
-            if (_instruccion.valor.tipo === TIPO_DATO.LISTA) {
+            if (_instruccion.valor.tipo === TIPO_DATO.VECTOR) {
                 if (_instruccion.valor.valor[0].tipo === _instruccion.tipo_dato.lista)
                     valores = _instruccion.valor.valor;
                 else
