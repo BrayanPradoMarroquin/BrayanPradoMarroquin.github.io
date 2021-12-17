@@ -29,6 +29,13 @@ let errores = null;
 let simbolos = null;
 
 function compiler(){
+    Lista_Traducciones = []
+    temporales=0
+    Stack=0
+    Enc_Temp=""
+    opera=""
+    etiquetas=0
+    Heap=0
     var informacion = txtEdditor.getValue();
     try {
         var gramatica = Analizador.parse(informacion);
@@ -44,6 +51,11 @@ function compiler(){
     } catch (error) {
         alert(error);
     }
+}
+
+function Traductor(){
+    var respuesta = Llamado_Traductor();
+    var re = trad.setValue(respuesta);
 }
 
 function TablaSimbolos(){

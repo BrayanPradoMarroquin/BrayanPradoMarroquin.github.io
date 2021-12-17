@@ -200,7 +200,7 @@ function multiplicacion(_opIzq, _opDer, _ambito) {
     if (opDer.retorno)
         opDer = opDer.retorno;
     const tipoRes = TipoResultado(opIzq.tipo, opDer.tipo, TIPO_OPERACION.MULTIPLICACION)
-    var op1, op2, resultado;
+    var op1, op2, resultado, trad;
     if (tipoRes != null) {
         switch (tipoRes) {
             case TIPO_DATO.ENTERO:
@@ -215,13 +215,27 @@ function multiplicacion(_opIzq, _opDer, _ambito) {
                     op2 = opDer.valor.charCodeAt(0);
                 else
                     op2 = Number(opDer.valor);
+                if((opDer.ubicacion==null) && (opIzq.ubicacion==null) && (opIzq.id==null) && (opDer.id==null)){
+                    trad = T_Aritmetica(op1, "*", op2)
+                    Lista_Traducciones.push(new Traductor_id(trad.ubicacion, null, trad, null, "OPERACION"))
+                }else if((opDer.ubicacion!=null) && (opIzq.ubicacion==null)){
+                    trad = T_Aritmetica(op1, "*", opDer.ubicacion)
+                    Lista_Traducciones.push(new Traductor_id(trad.ubicacion, null, trad, null, "OPERACION"))
+                }else if((opDer.ubicacion==null) && (opIzq.ubicacion!=null)){
+                    trad = T_Aritmetica(opIzq.ubicacion, "*", op2)
+                    Lista_Traducciones.push(new Traductor_id(trad.ubicacion, null, trad, null, "OPERACION"))
+                }else if((opDer.ubicacion!=null) && (opIzq.ubicacion!=null)){
+                    trad = T_Aritmetica(opIzq.ubicacion, "*", opDer.ubicacion)
+                    Lista_Traducciones.push(new Traductor_id(trad.ubicacion, null, trad, null, "OPERACION"))
+                }
                 resultado = op1 * op2;
                 return {
                     valor: resultado,
                     tipo: tipoRes,
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
-                    cadena: cadena
+                    cadena: cadena,
+                    ubicacion: trad.ubicacion
                 }
 
             case TIPO_DATO.DOBLE:
@@ -236,13 +250,31 @@ function multiplicacion(_opIzq, _opDer, _ambito) {
                     op2 = opDer.valor.charCodeAt(0);
                 else
                     op2 = Number(opDer.valor);
+                                if (opDer.tipo == TIPO_DATO.CARACTER)
+                    op2 = opDer.valor.charCodeAt(0);
+                else
+                    op2 = Number(opDer.valor);
+                if((opDer.ubicacion==null) && (opIzq.ubicacion==null)){
+                    trad = T_Aritmetica(op1, "*", op2)
+                    Lista_Traducciones.push(new Traductor_id(trad.ubicacion, null, trad, null, "OPERACION"))
+                }else if((opDer.ubicacion!=null) && (opIzq.ubicacion==null)){
+                    trad = T_Aritmetica(op1, "*", opDer.ubicacion)
+                    Lista_Traducciones.push(new Traductor_id(trad.ubicacion, null, trad, null, "OPERACION"))
+                }else if((opDer.ubicacion==null) && (opIzq.ubicacion!=null)){
+                    trad = T_Aritmetica(opIzq.ubicacion, "*", op2)
+                    Lista_Traducciones.push(new Traductor_id(trad.ubicacion, null, trad, null, "OPERACION"))
+                }else if((opDer.ubicacion!=null) && (opIzq.ubicacion!=null)){
+                    trad = T_Aritmetica(opIzq.ubicacion, "*", opDer.ubicacion)
+                    Lista_Traducciones.push(new Traductor_id(trad.ubicacion, null, trad, null, "OPERACION"))
+                }
                 resultado = op1 * op2;
                 return {
                     valor: resultado,
                     tipo: tipoRes,
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
-                    cadena: cadena
+                    cadena: cadena,
+                    ubicacion: trad.ubicacion
                 }
 
             default:
@@ -633,3 +665,4 @@ function raiz(_opIzq, _ambito){
         }
     }
 }
+

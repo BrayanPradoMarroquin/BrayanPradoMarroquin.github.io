@@ -20,10 +20,16 @@ function Declaracion(_instruccion, _ambito) {
     var cadena = { cadena: "", retorno: null, err: null }
 
     if (_instruccion.tipo_dato === TIPO_DATO.ENTERO) {
+        var trad = 0
+        let data;
         var valor = defaultValue(TIPO_DATO.ENTERO);
         if (_instruccion.valor != null) {
             var op = Operacion(_instruccion.valor, _ambito)
             if (op.err) { cadena.err = op.err; return cadena }
+            if(op.ubicacion!=null){
+                data = new Traductor_id(_instruccion.id, null, op.ubicacion, null, "DECLARACION")
+                trad = 1;
+            }
             if (op.cadena) cadena.cadena = op.cadena;
             if (op.retorno) op = op.retorno;
             tipo = op.tipo;
@@ -36,7 +42,13 @@ function Declaracion(_instruccion, _ambito) {
         if (_ambito.existeSimbolo(nuevoSimbolo.id) != false) {
             return { err: "Error: La variable '" + nuevoSimbolo.id + "' ya existe.\nLínea: " + nuevoSimbolo.linea + " Columna: " + nuevoSimbolo.columna + "\n" }
         }
+        if((_instruccion.valor==null) && (trad===0)){
+             data = new Traductor_id(_instruccion.id, null, valor, null, "DECLARACION")
+        }else if((_instruccion.valor!=null) && (trad===0)){
+            data = new Traductor_id(_instruccion.id, null, valor, null, "DECLARACION")
+        }
         _ambito.addSimbolo(nuevoSimbolo.id, nuevoSimbolo)
+        Lista_Traducciones.push(data)
         return cadena;
     }
 
