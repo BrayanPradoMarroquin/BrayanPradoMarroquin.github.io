@@ -73,28 +73,30 @@ function T_Declaracion(opIzq, valor, opDer){
     }
 }
 
-function T_Aritmetica(opIzq, signo, opDer){
+function T_Aritmetica(opIzq, tipoA, signo, opDer, tipoB){
     porIzq = ""
+    tA = ""
     porDer = ""
-    if(isLetter(opIzq)){
+    tB = ""
+    if(tipoA=="VAL_IDENTIFICADOR"){
         t = BuscarPosicion(opIzq);
-        t = "t"+temporales.toString()+" = "+t
+        tA = "t"+temporales.toString()+" = "+t+"\n"
+        porIzq = "t"+temporales.toString()
         temporales = temporales +1
-        porIzq = t
     }else{
         porIzq = opIzq.toString()
     }
 
-    if(isLetter(opDer)){
+    if(tipoB=="VAL_IDENTIFICADOR"){
         t = BuscarPosicion(opDer);
-        t = "t"+temporales.toString()+" = "+t
+        tB = "t"+temporales.toString()+" = "+t+"\n"
+        porDer = "t"+temporales.toString()
         temporales = temporales +1
-        porDer = t
     }else{
         porDer = opDer.toString()
     }
 
-    let data = {traducciones: "t"+temporales.toString()+" ="+(porIzq)+signo+(porDer)+";",
+    let data = {traducciones:tA+tB+"t"+temporales.toString()+" ="+(porIzq)+signo+(porDer)+";\n",
                 ubicacion: "t"+temporales.toString()}
     temporales = temporales +1;
     return data
@@ -115,7 +117,7 @@ function isLetter(char){
 }
 
 function BuscarPosicion(dato){
-    for (let i = 0; i < Lista_Traducciones.length(); i++){
+    for (let i = 0; i < Lista_Traducciones.length; i++){
         if(Lista_Traducciones[i].id === dato){
             return Lista_Traducciones[i].ubicacion
         }
