@@ -674,7 +674,7 @@ function seno(_opIzq, _ambito){
     if (tipoRes != null) {
         switch (tipoRes) {
             case TIPO_DATO.DOBLE:
-                resultado = Math.sin(Number((opIzq.valor*Math.PI)/180)) 
+                resultado = Math.sin(Number(opIzq.valor)) 
                 return {
                     valor: resultado,
                     tipo: tipoRes,
@@ -700,7 +700,7 @@ function coseno(_opIzq, _ambito){
     if (tipoRes != null) {
         switch (tipoRes) {
             case TIPO_DATO.DOBLE:
-                resultado = Math.cos(Number((opIzq.valor*Math.PI)/180)) 
+                resultado = Math.cos(Number(opIzq.valor)) 
                 return {
                     valor: resultado,
                     tipo: tipoRes,
@@ -726,7 +726,7 @@ function tangente(_opIzq, _ambito){
     if (tipoRes != null) {
         switch (tipoRes) {
             case TIPO_DATO.DOBLE:
-                resultado = Math.tan(Number((opIzq.valor*Math.PI)/180)) 
+                resultado = Math.tan(Number(opIzq.valor)) 
                 return {
                     valor: resultado,
                     tipo: tipoRes,

@@ -154,6 +154,21 @@ CHAR     |    X   |    X   |    x    |    X   |    x   |
 
 double[] arr2 = sqrt#(sin#(sqrt#(pow#(arr#*2)))#*2)
 
+String_3 = string(int2_ > 77 || false) + "," + string(int2_ < 78 && true) + "," + string(int2_ + 10 <= int2_ || false) + "," + string(!!!!!!!!!!!! (int2_ + 10 >= int2_));
+
+int factorial(int a){
+  if(a==0){
+    return 1;
+  }else{
+    return a*factorial(a-1);
+  }
+}
+
+void main(){
+  print("El factorial es: "+factorial(10));
+  return;
+}
+
 
 void main(){
 	int n = 20;
