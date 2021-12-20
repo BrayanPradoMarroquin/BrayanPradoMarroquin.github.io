@@ -18,6 +18,12 @@ function casteo(_instruccion, _ambito) {
                 cadena.retorno = expresion;
                 return cadena;
             }
+            else if (expresion.tipo === TIPO_DATO.CADENA) {
+                expresion.valor = parseFloat(expresion.valor);
+                expresion.tipo = TIPO_DATO.ENTERO;
+                cadena.retorno = expresion;
+                return cadena;
+            }
             else
                 return { err: "Error: no se puede castear " + expresion.tipo + " a " + _instruccion.nuevoTipo + "\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
         case TIPO_DATO.ENTERO:
@@ -29,6 +35,12 @@ function casteo(_instruccion, _ambito) {
             }
             else if (expresion.tipo === TIPO_DATO.CARACTER) {
                 expresion.valor = parseInt(expresion.valor.charCodeAt(0));
+                expresion.tipo = TIPO_DATO.ENTERO;
+                cadena.retorno = expresion;
+                return cadena;
+            }
+            else if (expresion.tipo === TIPO_DATO.CADENA) {
+                expresion.valor = parseInt(expresion.valor);
                 expresion.tipo = TIPO_DATO.ENTERO;
                 cadena.retorno = expresion;
                 return cadena;

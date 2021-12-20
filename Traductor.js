@@ -28,8 +28,6 @@ double xstack[30101999];
 double resultados[3010199];
 double SP;
 double HP;
-
-;
             `
 inicio = ` 
 int main(){
@@ -45,7 +43,6 @@ int main(){
     // -2 : iso
     // -3 : ascii
     
-    stack[(int)0] = -1;
         `
 
 final=`
@@ -102,18 +99,51 @@ function T_Aritmetica(opIzq, tipoA, signo, opDer, tipoB){
     return data
 }
 
+function T_imprimir(dato){
+    da = BuscarPosicion(dato)
+    data =  "t"+temporales.toString()+" = "+da+"\n";
+    data = data + "printf(\"%f\", (double)t"+temporales.toString()+");\n"
+    data = data + "printf(\"%c\", (char)10);\n"
+    temporales = temporales +1;
+    return data
+}
+
 function Llamado_Traductor(){
     var tem = ""
+    var contenido = ""
+    Enc_Temp = cantidadTemporales(temporales);
+    contenido = concatenar(Lista_Traducciones)
     if(Enc_Temp!=""){
         tem = " double "+Enc_Temp+";";
     }
-    var re = encabezado+tem+inicio+final;
+    var re = encabezado+tem+inicio+contenido+final;
     return re;
 }
 
-function isLetter(char){
-    return ( (char >= 'A' &&  char <= 'Z') ||
-             (char >= 'a' &&  char <= 'z') );
+function concatenar(Lista){
+    concate = ""
+    for(i=0; i<Lista.length; i++){
+        if(Lista[i].tipo=="DECLARACION"){
+            concate = concate + Lista[i].traduccion;
+        }else if(Lista[i].tipo=="ARITMETICA"){
+            concate = concate + Lista[i].valor;
+        }else if(Lista[i].tipo=="IMPRIMIR"){
+            concate = concate + Lista[i].valor;
+        }
+    }
+    return concate
+}
+
+function cantidadTemporales(cantidad){
+    total = ""
+    for(let i = 0; i<cantidad; i++){
+        if(i==(cantidad-1)){
+            total = total+"t"+i.toString()
+        }else{
+            total = total+"t"+i.toString()+","
+        }
+    }
+    return total
 }
 
 function BuscarPosicion(dato){

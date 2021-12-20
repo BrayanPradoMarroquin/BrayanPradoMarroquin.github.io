@@ -25,6 +25,39 @@ CARACTEROFPOSITION
 SUBSTRING
 STRUCT
 
+ void Hanoi(int discos, int origen, int auxiliar, int destino) {
+    if (discos == 1) {
+        print("Mover disco de " + origen + " a " + destino);
+    } else {
+        Hanoi(discos - 1, origen, destino, auxiliar);
+        print("Mover disco de " + origen + " a " + destino);
+        Hanoi(discos - 1, auxiliar, origen, destino);
+    }
+}
+
+void main(){
+  int discos = 3;
+    int origen = 1;
+    int auxiliar = 2;
+    int destino = 3;
+    Hanoi(discos, origen, auxiliar, destino);
+  return;
+}
+
+
+
+int multiplicacion(int a, int b){
+  if(b==0){
+    return 0;
+  }else{
+    return a+multiplicacion(a,b-1);
+  }
+}
+
+void main(){
+  print(multiplicacion(5,4));
+  return;
+}
 
 ini: ENTRADA EOF { typeof console !== 'undefined' ? console.log($1) : print($1); return $1; }
     |error TK_PYC   {errores.push({ tipo: "Sintactico", error: "Token no Válido", linea: this._$.first_line, columna: this._$.first_column+1 }); return 'INVALID';}

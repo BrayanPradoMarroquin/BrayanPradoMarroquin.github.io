@@ -200,7 +200,7 @@ Params: parametros { $$ = [$1];  }
         | Params TK_COMA parametros { $1.push($3); $$=$1; } 
 ;
 
-parametros: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR { $$ = Instruccion.nuevoParametro($4, {vector: $1}, this.$.first_line, this.$.first_column+1) }
+parametros: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR { $$ = Instruccion.nuevoParametro($4, {lista: $1}, this.$.first_line, this.$.first_column+1) }
 	| Tipos IDENTIFICADOR { $$=Instruccion.nuevoParametro($2, $1, this.$.first_line, this.$.first_column+1) }
         | IDENTIFICADOR IDENTIFICADOR { $$=Instruccion.nuevoParametro($2, {struct: $1}, this.$.first_line, this.$.first_column+1) }
         | Expresiones { $$ = $1}
@@ -429,8 +429,8 @@ simbolos: OP_SUMA { $$=$1 }
 
 Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this.$.first_line,this.$.first_column+1)}
             | CARACTER {$$ = Instruccion.nuevoValor($1.trim().substring(1, $1.length - 1), TIPO_VALOR.CARACTER, this.$.first_line,this.$.first_column+1)}
-            | TRUE {$$ = Instruccion.nuevoValor($1.trim(), TIPO_VALOR.BOOLEAN, this.$.first_line,this.$.first_column+1)}
-            | FALSE {$$ = Instruccion.nuevoValor($1.trim(), TIPO_VALOR.BOOLEAN, this.$.first_line,this.$.first_column+1)}
+            | TRUE {$$ = Instruccion.nuevoValor($1.trim(), TIPO_VALOR.BOOLEANO, this.$.first_line,this.$.first_column+1)}
+            | FALSE {$$ = Instruccion.nuevoValor($1.trim(), TIPO_VALOR.BOOLEANO, this.$.first_line,this.$.first_column+1)}
             | ENTERO {$$ = Instruccion.nuevoValor(Number($1.trim()), TIPO_VALOR.ENTERO, this.$.first_line,this.$.first_column+1)}
             | DECI {$$ = Instruccion.nuevoValor(Number($1.trim()), TIPO_VALOR.DOBLE, this.$.first_line,this.$.first_column+1)}
             | NULL {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.NULL, this.$.first_line,this.$.first_column+1)}
@@ -516,7 +516,7 @@ Casteos: parseo { $$ = $1 }
 parseo: Tipos TK_PUNTO TK_PARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoCasteo($1, $5, this._$.first_line, this._$.first_column+1) }
 ;
 
-toTipo: TK_TOINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoCasteo("ENTERO", $3, this._$.first_line, this._$.first_column+1) }
+toTipo: TK_TOINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoTruncate($3, this._$.first_line, this._$.first_column+1) }
         | TK_TODOUBLE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoCasteo("DOBLE", $3, this._$.first_line, this._$.first_column+1) }
 ;
 
@@ -529,5 +529,5 @@ Tipos: STRING { $$ = TIPO_DATO.CADENA; }
     | DOUBLE { $$ = TIPO_DATO.DOBLE; }
     | CHAR { $$ = TIPO_DATO.CARACTER; }
     | FLOAT { $$ = TIPO_DATO.DOBLE; }
-    | BOOLEAN { $$ = TIPO_DATO.BOOLEAN; }
+    | BOOLEAN { $$ = TIPO_DATO.BOOLEANO; }
 ;

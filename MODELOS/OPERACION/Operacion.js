@@ -24,7 +24,7 @@ function Operacion(_expresion, _ambito) {
         return Ternario(_expresion, _ambito)
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.CASTEO) {
-        return Casteo(_expresion, _ambito)
+        return casteo(_expresion, _ambito)
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.ACCESO) {
         switch (_expresion.tipo_dato) {

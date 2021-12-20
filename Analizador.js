@@ -168,7 +168,7 @@ case 33:
  $$[$0-2].push($$[$0]); this.$=$$[$0-2]; 
 break;
 case 34:
- this.$ = Instruccion.nuevoParametro($$[$0], {vector: $$[$0-3]}, this.$.first_line, this.$.first_column+1) 
+ this.$ = Instruccion.nuevoParametro($$[$0], {LISTA: $$[$0-3]}, this.$.first_line, this.$.first_column+1) 
 break;
 case 35:
  this.$=Instruccion.nuevoParametro($$[$0], $$[$0-1], this.$.first_line, this.$.first_column+1) 
@@ -395,7 +395,7 @@ case 156:
 this.$ = Instruccion.nuevoValor($$[$0].trim().substring(1, $$[$0].length - 1), TIPO_VALOR.CARACTER, this.$.first_line,this.$.first_column+1)
 break;
 case 157: case 158:
-this.$ = Instruccion.nuevoValor($$[$0].trim(), TIPO_VALOR.BOOLEAN, this.$.first_line,this.$.first_column+1)
+this.$ = Instruccion.nuevoValor($$[$0].trim(), TIPO_VALOR.BOOLEANO, this.$.first_line,this.$.first_column+1)
 break;
 case 159:
 this.$ = Instruccion.nuevoValor(Number($$[$0].trim()), TIPO_VALOR.ENTERO, this.$.first_line,this.$.first_column+1)
@@ -506,7 +506,7 @@ case 210:
  this.$ = new Instruccion.nuevoCasteo($$[$0-5], $$[$0-1], this._$.first_line, this._$.first_column+1) 
 break;
 case 211:
- this.$ = new Instruccion.nuevoCasteo("ENTERO", $$[$0-1], this._$.first_line, this._$.first_column+1) 
+ this.$ = new Instruccion.nuevoTruncate($$[$0-1], this._$.first_line, this._$.first_column+1) 
 break;
 case 212:
  this.$ = new Instruccion.nuevoCasteo("DOBLE", $$[$0-1], this._$.first_line, this._$.first_column+1) 
@@ -524,7 +524,7 @@ case 216:
  this.$ = TIPO_DATO.CARACTER; 
 break;
 case 218:
- this.$ = TIPO_DATO.BOOLEAN; 
+ this.$ = TIPO_DATO.BOOLEANO; 
 break;
 }
 },

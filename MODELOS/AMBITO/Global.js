@@ -6,10 +6,10 @@ function Global(_instrucciones, _ambito) {
         if (_instrucciones[i].tipo === TIPO_INSTRUCCION.MAIN) {
             contStart++;
             if (contStart > 1) {
-                cadena.cadena = `Error: No es posible ejecutar más de un Start With.\nLínea: ${String(_instrucciones[i].linea)} Columna: ${String(_instrucciones[i].columna)}\n`;
+                cadena.cadena = `Error: No es posible ejecutar más de un MAIN.\nLínea: ${String(_instrucciones[i].linea)} Columna: ${String(_instrucciones[i].columna)}\n`;
                 cadena.errores.push({
                     tipo: 'Semántico',
-                    error: "No es posible ejecutar más de un Start With.",
+                    error: "No es posible ejecutar más de un MAIN",
                     linea: _instrucciones[i].linea,
                     columna: _instrucciones[i].columna
                 });
@@ -19,10 +19,10 @@ function Global(_instrucciones, _ambito) {
         }
     }
     if (contStart == 0) {
-        cadena.cadena = `Error: No se ha encontrado ninguna sentencia Start With.\n`;
+        cadena.cadena = `Error: No se ha encontrado ninguna sentencia MAIN.\n`;
         cadena.errores.push({
             tipo: 'Semántico',
-            error: "No se ha encontrado ninguna sentencia Start With.",
+            error: "No se ha encontrado ninguna sentencia MAIN.",
             linea: "-",
             columna: "-"
         });
