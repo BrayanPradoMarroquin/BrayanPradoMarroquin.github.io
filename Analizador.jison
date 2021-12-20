@@ -27,13 +27,13 @@
 "case"					return 'TK_CASE'
 "break"					return 'TK_BREAK'
 "default"				return 'TK_DEFAULT'
-"while"               	return 'TK_WHILE'
+"while"               	                return 'TK_WHILE'
 "for"					return 'TK_FOR'
 "do"					return 'TK_DO'
 "continue"				return 'TK_CONTINUE'
 "return"				return 'TK_RETURN'
 "void"					return 'TK_VOID'
-"main"                  return 'TK_MAIN'
+"main"                                  return 'TK_MAIN'
 "++"					return 'INCREMENTO'
 "--"					return 'DECREMENTO'
 "in"                                    return 'IN'
@@ -61,7 +61,7 @@
 "<"                   	return 'MENOR'
 
 "&"                     return 'CONCATENADOCADENA'
-"$"                     return "OPERACIONESALIMPRIMIR"
+"$"                     return 'OPERACIONESALIMPRIMIR'
 "#"                     return "OP_VECOTRES"
 
 ","                   	return 'TK_COMA'
@@ -81,14 +81,14 @@
 ")"                   	return 'PARENTESIS_CIERRA'
 "{"                   	return 'LlaveAbre'
 "}"                   	return 'LlaveCierra'
-"["						return 'COR_ABRE'
-"]"						return 'COR_CIERRA'
+"["			return 'COR_ABRE'
+"]"		        return 'COR_CIERRA'
 
 "caracterOfPosition"    return 'TK_CARACTEROFPOSITION'
 "subString"             return 'TK_SUBSTRING'
-"toLowercase"			return 'TK_TOLOWER'
-"toUppercase"			return 'TK_TOUPPER'
-"length"				return 'TK_LENGTH'
+"toLowercase"		return 'TK_TOLOWER'
+"toUppercase"		return 'TK_TOUPPER'
+"length"		return 'TK_LENGTH'
 "print"                 return 'TK_PRINT'
 "println"               return 'TK_PRINTLN'
 "parse"                 return 'TK_PARSE'
@@ -409,6 +409,7 @@ operString: Expresiones CONCATENADOCADENA Expresiones {$$= Instruccion.nuevaOper
         | operString CONCATENADOCADENA Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.SUMA,this.$.first_line,this.$.first_column+1); }
         | CADENA OP_EXPONENTE ENTERO {$$= Instruccion.nuevaOperacionBinaria(Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this.$.first_line,this.$.first_column+1),Instruccion.nuevoValor($3, TIPO_VALOR.ENTERO, this.$.first_line,this.$.first_column+1), TIPO_OPERACION.POTENCIA,this.$.first_line,this.$.first_column+1); }
         | operString OP_EXPONENTE ENTERO {$$= Instruccion.nuevaOperacionBinaria($1,Instruccion.nuevoValor($3, TIPO_VALOR.ENTERO, this.$.first_line,this.$.first_column+1), TIPO_OPERACION.POTENCIA,this.$.first_line,this.$.first_column+1); }
+        | Expresiones TK_COMA Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.SUMA,this.$.first_line,this.$.first_column+1); }
 ;
 //--------------------------------------------------------------------------------------------------------------------------------------
 
