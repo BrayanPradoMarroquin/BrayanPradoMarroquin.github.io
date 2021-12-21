@@ -87,6 +87,34 @@ function to_Upper(_instruccion, _ambito) {
     return { err: "Error: La expresión de tipo " + expresion.tipo + " no es aceptada en 'toUpper()'.\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
 }
 
+function CaracterOfPosition(_instruccion, _ambito){
+    var cadena = { cadena: "", retorno: null, err: null }
+    var expresion = Operacion(_instruccion.expresion, _ambito);
+    if (expresion.err) { cadena.err = expresion.err; return cadena }
+    if (expresion.cadena) cadena.cadena = expresion.cadena;
+    if (expresion.retorno) expresion = expresion.retorno;
+    if (expresion.tipo === TIPO_DATO.CADENA){
+        expresion.valor = expresion.valor.charAt(_instruccion.posicion);
+        cadena.retorno = expresion;
+        return cadena
+    }
+    return { err: "Error: La expresión de tipo " + expresion.tipo + " no es aceptada en 'CaracterOfPosition()'.\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
+}
+
+function SubString(_instruccion, _ambito){
+    var cadena = { cadena: "", retorno: null, err: null }
+    var expresion = Operacion(_instruccion.expresion, _ambito);
+    if (expresion.err) { cadena.err = expresion.err; return cadena }
+    if (expresion.cadena) cadena.cadena = expresion.cadena;
+    if (expresion.retorno) expresion = expresion.retorno;
+    if (expresion.tipo === TIPO_DATO.CADENA){
+        expresion.valor = expresion.valor.substring(_instruccion.inicio, _instruccion.fin);
+        cadena.retorno = expresion;
+        return cadena
+    }
+    return { err: "Error: La expresión de tipo " + expresion.tipo + " no es aceptada en 'SubString()'.\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
+}
+
 function get_length(_instruccion, _ambito) {
     var cadena = { cadena: "", retorno: null, err: null }
     var expresion = Operacion(_instruccion.expresion, _ambito);

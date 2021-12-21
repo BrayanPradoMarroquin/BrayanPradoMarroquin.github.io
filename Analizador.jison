@@ -488,19 +488,19 @@ FuncioesReservadas: FCaracterOfPosition { $$=$1 }
                    | FTypeof { $$=$1 }
 ;
 
-FCaracterOfPosition: IDENTIFICADOR TK_PUNTO TK_CARACTEROFPOSITION PARENTESIS_ABRE ENTERO PARENTESIS_CIERRA {}
+FCaracterOfPosition: IDENTIFICADOR TK_PUNTO TK_CARACTEROFPOSITION PARENTESIS_ABRE ENTERO PARENTESIS_CIERRA { $$ = new Instruccion.nuevoPosition(Instruccion.nuevoValor($1.trim(), TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1), $5, this._$.first_line,this._$.first_column+1)}
 ;
 
-FSubString: IDENTIFICADOR TK_PUNTO TK_SUBSTRING PARENTESIS_ABRE ENTERO TK_COMA ENTERO PARENTESIS_CIERRA {}
+FSubString: IDENTIFICADOR TK_PUNTO TK_SUBSTRING PARENTESIS_ABRE ENTERO TK_COMA ENTERO PARENTESIS_CIERRA { $$ = new Instruccion.nuevoSub(Instruccion.nuevoValor($1.trim(), TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1), $5, $7, this._$.first_line,this._$.first_column+1)}
 ;
 
-Flength: IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.nuevoLength(Instruccion.nuevoValor($1.trim(), TIPO_VALOR.IDENTIFICADOR, this.$.first_line,this.$.first_column+1), this._$.first_line,this._$.first_column+1) }
+Flength: IDENTIFICADOR TK_PUNTO TK_LENGTH PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.nuevoLength(Instruccion.nuevoValor($1.trim(), TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1), this._$.first_line,this._$.first_column+1) }
 ;
 
-FToLower: IDENTIFICADOR TK_PUNTO TK_TOLOWER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.toLower(Instruccion.nuevoValor($1.trim(), TIPO_VALOR.IDENTIFICADOR, this.$.first_line,this.$.first_column+1), this._$.first_line,this._$.first_column+1) }
+FToLower: IDENTIFICADOR TK_PUNTO TK_TOLOWER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.toLower(Instruccion.nuevoValor($1.trim(), TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1), this._$.first_line,this._$.first_column+1) }
 ;
 
-FToUpper: IDENTIFICADOR TK_PUNTO TK_TOUPPER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.toUpper(Instruccion.nuevoValor($1.trim(), TIPO_VALOR.IDENTIFICADOR, this.$.first_line,this.$.first_column+1), this._$.first_line,this._$.first_column+1) }
+FToUpper: IDENTIFICADOR TK_PUNTO TK_TOUPPER PARENTESIS_ABRE PARENTESIS_CIERRA { $$ = new Instruccion.toUpper(Instruccion.nuevoValor($1.trim(), TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1), this._$.first_line,this._$.first_column+1) }
 ;
 
 FTypeof: TK_TYPEOF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoTypeOf($3, this._$.first_line,this._$.first_column+1) }
