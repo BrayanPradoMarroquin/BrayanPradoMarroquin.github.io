@@ -31,7 +31,7 @@ function Operacion(_expresion, _ambito) {
             case TIPO_DATO.VECTOR:
                 return AccesoVector(_expresion, _ambito);
             case TIPO_DATO.LISTA:
-                return AccesoLista(_expresion, _ambito);
+                return accesoLista(_expresion, _ambito);
         }
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.TO_LOWER) {

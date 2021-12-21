@@ -463,7 +463,7 @@ Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this._$.
             | Expresiones DIFERENTEA Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.DIFERENTE,this._$.first_line,this._$.first_column+1);  }
             | NOT Expresiones { $$= Instruccion.nuevaOperacionBinaria($2, null, TIPO_OPERACION.NOT,this._$.first_line,this._$.first_column+1); }
 
-            | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA {}
+            | IDENTIFICADOR COR_ABRE Expresiones COR_CIERRA {$$ = Instruccion.accesoLista($1, $3, this._$.first_line, this._$.first_column);}
             | COR_ABRE Expresiones COR_CIERRA {}
             | FuncioesReservadas { $$=$1; }
             | Casteos { $$=$1; }

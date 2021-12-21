@@ -469,6 +469,9 @@ break;
 case 184:
  this.$= Instruccion.nuevaOperacionBinaria($$[$0], null, TIPO_OPERACION.NOT,this._$.first_line,this._$.first_column+1); 
 break;
+case 185:
+this.$ = Instruccion.accesoLista($$[$0-3], $$[$0-1], this._$.first_line, this._$.first_column);
+break;
 case 187: case 188:
  this.$=$$[$0]; 
 break;
