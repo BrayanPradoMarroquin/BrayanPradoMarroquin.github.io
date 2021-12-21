@@ -168,7 +168,7 @@ case 33:
  $$[$0-2].push($$[$0]); this.$=$$[$0-2]; 
 break;
 case 34:
- this.$ = Instruccion.nuevoParametro($$[$0], {lista: $$[$0-3]}, this._$.first_line, this._$.first_column+1) 
+ this.$ = Instruccion.nuevoParametro($$[$0], ["LISTA", $$[$0-3]], this._$.first_line, this._$.first_column+1) 
 break;
 case 35:
  this.$=Instruccion.nuevoParametro($$[$0], $$[$0-1], this._$.first_line, this._$.first_column+1) 

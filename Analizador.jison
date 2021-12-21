@@ -200,7 +200,7 @@ Params: parametros { $$ = [$1];  }
         | Params TK_COMA parametros { $1.push($3); $$=$1; } 
 ;
 
-parametros: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR { $$ = Instruccion.nuevoParametro($4, {lista: $1}, this._$.first_line, this._$.first_column+1) }
+parametros: Tipos COR_ABRE COR_CIERRA IDENTIFICADOR { $$ = Instruccion.nuevoParametro($4, ["LISTA", $1], this._$.first_line, this._$.first_column+1) }
 	| Tipos IDENTIFICADOR { $$=Instruccion.nuevoParametro($2, $1, this._$.first_line, this._$.first_column+1) }
         | IDENTIFICADOR IDENTIFICADOR { $$=Instruccion.nuevoParametro($2, {struct: $1}, this._$.first_line, this._$.first_column+1) }
         | Expresiones { $$ = $1}
