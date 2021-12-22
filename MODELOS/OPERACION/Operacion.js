@@ -21,7 +21,7 @@ function Operacion(_expresion, _ambito) {
         return Logica(_expresion, _ambito)
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.TERNARIO) {
-        return Ternario(_expresion, _ambito)
+        return operadorTernario(_expresion, _ambito)
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.CASTEO) {
         return casteo(_expresion, _ambito)
