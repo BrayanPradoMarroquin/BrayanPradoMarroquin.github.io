@@ -22,6 +22,15 @@ var traductor = CodeMirror.fromTextArea(document.getElementById('trad'), {
 });
 traductor.setSize("600", "680");
 
+var arbolito = CodeMirror.fromTextArea(document.getElementById('textAST'), {
+    mode: "text/x-java",
+    theme: "lesser-dark",
+    lineNumbers: true,
+    autoCloseTags: true
+});
+arbolito.setSize("600", "680");
+
+textAST = arbolito;
 txtEdditor = edit;
 txtConsole = oup;
 trad = traductor;
@@ -136,13 +145,10 @@ function TablaSimbolos(){
     doc.close();  
 }
 
-function Generar_AST(){
+function mostrarAST(){
     var root_AST = new Graph(gramatica.parse);
     var dot = root_AST.getDot();
-    d3.graphviz("#graph")
-    .addImage("images/first.png", "400px", "300px")
-    .addImage("images/second.png", "400px", "300px")
-    .renderDot(dot);   
+    textAST.setValue(dot);
 }
 
 function TablaErrores(){

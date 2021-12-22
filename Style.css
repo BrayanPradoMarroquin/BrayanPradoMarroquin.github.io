@@ -162,7 +162,16 @@ h1 {
   width: 600px;
   height: 680px;
   margin-top: 2.5%;
-  margin-left: 453.25px;
+  margin-left: 7%;
+  float: left;
+}
+
+.ast {
+  width: 600px;
+  height: 680px;
+  margin-top: 2.5%;
+  margin-left: 7%;
+  float: left;
 }
 
 /* Titulos */
@@ -186,3 +195,10 @@ h1 {
   font-size: 28px;
   margin-left: 35%;
 }
+.Tast {
+  font-family: "Patua One", cursive;
+  position: absolute;
+  font-size: 28px;
+  margin-left: 58%;
+}
+

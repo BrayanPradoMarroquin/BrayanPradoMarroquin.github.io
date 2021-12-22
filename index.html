@@ -32,7 +32,7 @@
 
         <button type="button" id="Terrores" class="btn btn-outline-dark" onclick="TablaSimbolos()">Tabla de Simbolos</button>
         <button type="button" id="Tsimbolos" class="btn btn-outline-dark" onclick="TablaErrores()">Tabla de Errores</button>
-        <button type="button" id="report" class="btn btn-outline-dark" onclick="Generar_AST()">Reporte AST</button>
+        <button type="button" id="report" class="btn btn-outline-dark" onclick="mostrarAST()">Reporte AST</button>
         <button type="button" id="grammar" class="btn btn-outline-dark">Reporte de Gramaticas</button>
         <button type="button" id="clear" class="btn btn-outline-dark" onclick="limpiar()" >Limpiar Editores</button>
     </nav>
@@ -54,8 +54,12 @@
         <div class="traductor">
             <textarea id="trad"></textarea>
         </div>
+        <p class="Tast">AST</p>
+        <div class="ast">
+            <textarea id="textAST"></textarea>
+        </div>
     </div>
-    <div id="graph" class="graph"></div>
+    
     <footer class="text-center text-lg-start">
         <div class="text-center p-3" style="background-color: #EDEDED;">
           <p class="foot my-0">

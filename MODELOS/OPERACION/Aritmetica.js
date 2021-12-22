@@ -69,7 +69,7 @@ function suma(_opIzq, _opDer, _ambito) {
                 else
                     op2 = Number(opDer.valor);
                //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
-               /* if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
+               if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
                     respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "+", _opDer.valor, _opDer.tipo)
                     Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
                 //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
@@ -84,7 +84,7 @@ function suma(_opIzq, _opDer, _ambito) {
                 }else if((opIzq.ubicacion==null) && (opDer.ubicacion!=null)){
                     respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "+", opDer.ubicacion, "GUARDA")
                     Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
-                }*/
+                }
                 resultado = op1 + op2;
                 return {
                     valor: resultado,
@@ -92,7 +92,7 @@ function suma(_opIzq, _opDer, _ambito) {
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
                     cadena: cadena,
-                    //ubicacion: respuesta.ubicacion
+                    ubicacion: respuesta.ubicacion
                 }
 
             case TIPO_DATO.DOBLE:
@@ -108,7 +108,7 @@ function suma(_opIzq, _opDer, _ambito) {
                 else
                     op2 = Number(opDer.valor);
                 //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
-                /*if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
+                if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
                     respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "+", _opDer.valor, _opDer.tipo)
                     Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
                 //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
@@ -123,7 +123,7 @@ function suma(_opIzq, _opDer, _ambito) {
                 }else if((opIzq.ubicacion==null) && (opDer.ubicacion!=null)){
                     respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "+", opDer.ubicacion, "GUARDA")
                     Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
-                }*/
+                }
                 resultado = op1 + op2;
                 return {
                     valor: resultado,
@@ -131,7 +131,7 @@ function suma(_opIzq, _opDer, _ambito) {
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
                     cadena: cadena,
-                    //ubicacion: respuesta.ubicacion
+                    ubicacion: respuesta.ubicacion
                 }
 
             case TIPO_DATO.CADENA:
@@ -196,7 +196,7 @@ function resta(_opIzq, _opDer, _ambito) {
                 else
                     op2 = Number(opDer.valor);
                 //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
-                /*if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
+                if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
                     respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "-", _opDer.valor, _opDer.tipo)
                     Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
                 //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
@@ -211,7 +211,7 @@ function resta(_opIzq, _opDer, _ambito) {
                 }else if((opIzq.ubicacion==null) && (opDer.ubicacion!=null)){
                     respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "-", opDer.ubicacion, "GUARDA")
                     Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
-                }*/
+                }
                 resultado = op1 - op2;
                 return {
                     valor: resultado,
@@ -219,7 +219,7 @@ function resta(_opIzq, _opDer, _ambito) {
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
                     cadena: cadena,
-                    //ubicacion: respuesta.ubicacion
+                    ubicacion: respuesta.ubicacion
                 }
 
             case TIPO_DATO.DOBLE:
@@ -235,7 +235,7 @@ function resta(_opIzq, _opDer, _ambito) {
                 else
                     op2 = Number(opDer.valor);
                 //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
-                /*if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
+                if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
                     respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "-", _opDer.valor, _opDer.tipo)
                     Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
                 //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
@@ -250,7 +250,7 @@ function resta(_opIzq, _opDer, _ambito) {
                 }else if((opIzq.ubicacion==null) && (opDer.ubicacion!=null)){
                     respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "-", opDer.ubicacion, "GUARDA")
                     Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
-                }*/
+                }
                 resultado = op1 - op2;
                 return {
                     valor: resultado,
@@ -258,7 +258,7 @@ function resta(_opIzq, _opDer, _ambito) {
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
                     cadena: cadena,
-                    //ubicacion: respuesta.ubicacion
+                    ubicacion: respuesta.ubicacion
                 }
 
             default:
@@ -301,7 +301,7 @@ function multiplicacion(_opIzq, _opDer, _ambito) {
                     op2 = opDer.valor.charCodeAt(0);
                 else
                     op2 = Number(opDer.valor);
-                /*if((_opIzq.valor!=null) && (_opDer.valor!=null)){
+                if((_opIzq.valor!=null) && (_opDer.valor!=null)){
                     //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
                     if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
                         respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "*", _opDer.valor, _opDer.tipo)
@@ -319,7 +319,7 @@ function multiplicacion(_opIzq, _opDer, _ambito) {
                         respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "*", opDer.ubicacion, "GUARDA")
                         Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
                     }
-                }*/
+                }
                 
                 resultado = op1 * op2;
                 //if((_opIzq.valor!=null) && (_opDer.valor!=null)){
@@ -329,7 +329,7 @@ function multiplicacion(_opIzq, _opDer, _ambito) {
                         linea: _opIzq.linea,
                         columna: _opIzq.columna,
                         cadena: cadena,
-                        //ubicacion: respuesta.ubicacion
+                        ubicacion: respuesta.ubicacion
                     }    
                /* }else{
                     return {
@@ -341,7 +341,6 @@ function multiplicacion(_opIzq, _opDer, _ambito) {
                     //}
                 }*/
                 
-
             case TIPO_DATO.DOBLE:
                 op1 = 0.0;
                 op2 = 0.0;
@@ -358,7 +357,7 @@ function multiplicacion(_opIzq, _opDer, _ambito) {
                     op2 = opDer.valor.charCodeAt(0);
                 else
                     op2 = Number(opDer.valor);
-               /* if((_opIzq.valor!=null) && (_opDer.valor!=null)){
+                if((_opIzq.valor!=null) && (_opDer.valor!=null)){
                         //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
                     if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
                         respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "*", _opDer.valor, _opDer.tipo)
@@ -376,7 +375,7 @@ function multiplicacion(_opIzq, _opDer, _ambito) {
                         respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "*", opDer.ubicacion, "GUARDA")
                         Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
                     }
-                }*/
+                }
                 resultado = op1 * op2;
                 return {
                     valor: resultado,
@@ -384,7 +383,7 @@ function multiplicacion(_opIzq, _opDer, _ambito) {
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
                     cadena: cadena,
-                    //ubicacion: respuesta.ubicacion
+                    ubicacion: respuesta.ubicacion
                 }
 
             default:
@@ -437,7 +436,7 @@ function division(_opIzq, _opDer, _ambito) {
                     }
                 }
                 //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
-                /*if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
+                if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
                     respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "/", _opDer.valor, _opDer.tipo)
                     Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
                 //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
@@ -452,7 +451,7 @@ function division(_opIzq, _opDer, _ambito) {
                 }else if((opIzq.ubicacion==null) && (opDer.ubicacion!=null)){
                     respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "/", opDer.ubicacion, "GUARDA")
                     Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
-                }*/
+                }
                 resultado = op1 / op2;
                 return {
                     valor: resultado,
@@ -460,7 +459,7 @@ function division(_opIzq, _opDer, _ambito) {
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
                     cadena: cadena,
-                    //ubicacion: respuesta.ubicacion
+                    ubicacion: respuesta.ubicacion
                 }
 
             default:
@@ -503,13 +502,31 @@ function potencia(_opIzq, _opDer, _ambito) {
                     op2 = opDer.valor.charCodeAt(0);
                 else
                     op2 = Number(opDer.valor);
+                    //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
+                if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "POTENCIA", _opDer.valor, _opDer.tipo)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
+                }else if((opIzq.ubicacion!=null) && (opDer.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "POTENCIA", opDer.ubicacion, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO IZQUIERDO 
+                }else if((opIzq.ubicacion!=null) && (opDer.ubicacion==null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "POTENCIA", _opDer.valor, _opDer.tipo)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO DERECHO
+                }else if((opIzq.ubicacion==null) && (opDer.ubicacion!=null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "POTENCIA", opDer.ubicacion, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                }
                 resultado = op1 ** op2;
                 return {
                     valor: resultado,
                     tipo: tipoRes,
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
-                    cadena: cadena
+                    cadena: cadena,
+                    ubicacion: respuesta.ubicacion
                 }
             case TIPO_DATO.DOBLE:
                 op1 = 0.0;
@@ -523,13 +540,31 @@ function potencia(_opIzq, _opDer, _ambito) {
                     op2 = opDer.valor.charCodeAt(0);
                 else
                     op2 = Number(opDer.valor);
+                //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
+                if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "POTENCIA", _opDer.valor, _opDer.tipo)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
+                }else if((opIzq.ubicacion!=null) && (opDer.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "POTENCIA", opDer.ubicacion, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO IZQUIERDO 
+                }else if((opIzq.ubicacion!=null) && (opDer.ubicacion==null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "POTENCIA", _opDer.valor, _opDer.tipo)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO DERECHO
+                }else if((opIzq.ubicacion==null) && (opDer.ubicacion!=null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "POTENCIA", opDer.ubicacion, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                }
                 resultado = op1 ** op2;
                 return {
                     valor: resultado,
                     tipo: tipoRes,
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
-                    cadena: cadena
+                    cadena: cadena,
+                    ubicacion: respuesta.ubicacion
                 }
             case TIPO_DATO.CADENA:
                 op1 = 0;
