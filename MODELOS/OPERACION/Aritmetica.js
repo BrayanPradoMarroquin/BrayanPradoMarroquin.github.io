@@ -716,17 +716,35 @@ function seno(_opIzq, _ambito){
     if (opIzq.retorno)
         opIzq = opIzq.retorno;
     const tipoRes = TipoResultado(opIzq.tipo, null, TIPO_OPERACION.SENO);
-    var resultado;
+    var resultado, respuesta;
     if (tipoRes != null) {
         switch (tipoRes) {
             case TIPO_DATO.DOBLE:
+                //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
+                if((opIzq.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "SENO", 0, null)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
+                }else if((opIzq.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "SENO", 0, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO IZQUIERDO 
+                }else if((opIzq.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "SENO", 0, null)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO DERECHO
+                }else if((opIzq.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "SENO", 0, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                }
                 resultado = Math.sin(Number(opIzq.valor)) 
                 return {
                     valor: resultado,
                     tipo: tipoRes,
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
-                    cadena: cadena
+                    cadena: cadena, 
+                    ubicacion: respuesta.ubicacion 
                 }
             default:
                 break;
@@ -746,13 +764,31 @@ function coseno(_opIzq, _ambito){
     if (tipoRes != null) {
         switch (tipoRes) {
             case TIPO_DATO.DOBLE:
+                //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
+                if((opIzq.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "COSENO", 0, null)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
+                }else if((opIzq.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "COSENO", 0, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO IZQUIERDO 
+                }else if((opIzq.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "COSENO", 0, null)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO DERECHO
+                }else if((opIzq.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "COSENO", 0, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                }
                 resultado = Math.cos(Number(opIzq.valor)) 
                 return {
                     valor: resultado,
                     tipo: tipoRes,
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
-                    cadena: cadena
+                    cadena: cadena,
+                    ubicacion: respuesta.ubicacion
                 }
             default:
                 break;
@@ -772,13 +808,30 @@ function tangente(_opIzq, _ambito){
     if (tipoRes != null) {
         switch (tipoRes) {
             case TIPO_DATO.DOBLE:
+                if((opIzq.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "TAN", 0, null)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
+                }else if((opIzq.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "TAN", 0, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO IZQUIERDO 
+                }else if((opIzq.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "TAN", 0, null)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO DERECHO
+                }else if((opIzq.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "TAN", 0, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                }
                 resultado = Math.tan(Number(opIzq.valor)) 
                 return {
                     valor: resultado,
                     tipo: tipoRes,
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
-                    cadena: cadena
+                    cadena: cadena,
+                    ubicacion: respuesta.ubicacion
                 }
             default:
                 break;
@@ -798,13 +851,30 @@ function logaritmo(_opIzq, _ambito){
     if (tipoRes != null) {
         switch (tipoRes) {
             case TIPO_DATO.DOBLE:
+                if((opIzq.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "LOG", 0, null)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
+                }else if((opIzq.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "LOG", 0, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO IZQUIERDO 
+                }else if((opIzq.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "LOG", 0, null)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO DERECHO
+                }else if((opIzq.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "LOG", 0, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                }
                 resultado = Math.log10(Number(opIzq.valor)) 
                 return {
                     valor: resultado,
                     tipo: tipoRes,
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
-                    cadena: cadena
+                    cadena: cadena,
+                    ubicacion: respuesta.ubicacion
                 }
             default:
                 break;
@@ -820,17 +890,35 @@ function raiz(_opIzq, _ambito){
     if (opIzq.retorno)
         opIzq = opIzq.retorno;
     const tipoRes = TipoResultado(opIzq.tipo, null, TIPO_OPERACION.RAIZ);
-    var resultado;
+    var resultado, respuesta;
     if (tipoRes != null) {
         switch (tipoRes) {
             case TIPO_DATO.DOBLE:
+                //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
+                if((opIzq.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "RAIZ", 0, null)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
+                }else if((opIzq.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "RAIZ", 0, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO IZQUIERDO 
+                }else if((opIzq.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "RAIZ", 0, null)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO DERECHO
+                }else if((opIzq.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "RAIZ", 0, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                }
                 resultado = Math.sqrt(Number(opIzq.valor)) 
                 return {
                     valor: resultado,
                     tipo: tipoRes,
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
-                    cadena: cadena
+                    cadena: cadena,
+                    ubicacion: respuesta.ubicacion
                 }
             default:
                 break;

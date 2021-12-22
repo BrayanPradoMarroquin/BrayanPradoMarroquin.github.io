@@ -5,7 +5,12 @@ class Traductor_id{
         this.valor = _valor
         this.opDer = _opDer
         this.tipo = _tipo
-        if(this.tipo=="DECLARACION"){
+        if((this.tipo=="DECLARACION") && ((_valor==true) || (_valor==false))){
+            let a = T_V_boolean(this.valor)
+            this.traduccion = a.traduccion
+            this.ubicacion = a.ubicacion
+            console.log("hola")
+        }else if(this.tipo=="DECLARACION"){
             let a = T_Declaracion(this.opIzq, this.valor, this.opDer)
             this.traduccion = a.traduccion
             this.ubicacion = a.ubicacion
@@ -121,13 +126,57 @@ function T_Aritmetica(opIzq, tipoA, signo, opDer, tipoB){
         //P = P - 0;
         Op__potencia = Op__potencia + "P = P - 0;\n"
         data = {traducciones: tA+tB+Op__potencia, ubicacion: "t"+(temporales-4).toString()}
-    }else{
+    }else if(signo=="RAIZ"){
+        data = {traducciones:tA+"t"+temporales.toString()+"= sqrt( "+porIzq.toString()+");\n",
+                ubicacion: "t"+temporales.toString()}
+        temporales = temporales +1;
+    }else if(signo=="SENO"){
+        data = {traducciones:tA+"t"+temporales.toString()+"= sin( "+porIzq.toString()+");\n",
+                ubicacion: "t"+temporales.toString()}
+        temporales = temporales +1;
+    }else if(signo=="COSENO"){
+        data = {traducciones:tA+"t"+temporales.toString()+"= cos( "+porIzq.toString()+");\n",
+                ubicacion: "t"+temporales.toString()}
+        temporales = temporales +1;
+    }else if(signo=="TAN"){
+        data = {traducciones:tA+"t"+temporales.toString()+"= tan( "+porIzq.toString()+");\n",
+                ubicacion: "t"+temporales.toString()}
+        temporales = temporales +1;
+    }else if(signo=="LOG"){
+        data = {traducciones:tA+"t"+temporales.toString()+"= log10("+porIzq.toString()+");\n",
+                ubicacion: "t"+temporales.toString()}
+        temporales = temporales +1;
+    }
+    else{
         data = {traducciones:tA+tB+"t"+temporales.toString()+" ="+(porIzq)+signo+(porDer)+";\n",
                 ubicacion: "t"+temporales.toString()}
         temporales = temporales +1;
     }
     return data
 }
+
+function T_V_boolean(valor){
+    data = ""
+    /**
+    goto L0;
+    L0:
+    stack[(int)0] = 1;
+    goto L2;
+    L1:
+    stack[(int)0] = 0;
+    L2:
+     */
+    if(valor == true){
+        return data =  {traduccion: "goto L0;\n L0:\n stack[(int)"+Stack.toString()+"] = 1;\n goto L2;\n L1:\n stack[(int)"+Stack.toString()+"] = 0;\n L2:",
+                        ubicacion: "stack[(int)"+(Stack).toString()+"];"}
+    }else if(valor == false){
+        return data =  {traduccion: "goto L1;\n L0:\n stack[(int)"+Stack.toString()+"] = 1;\n goto L2;\n L1:\n stack[(int)"+Stack.toString()+"] = 0;\n L2:",
+                        ubicacion: "stack[(int)"+(Stack).toString()+"];"}
+    }
+
+}
+
+//FUNCIONES PARA IMPRIMIR VALORES
 
 function T_imprimir(dato){
     da = BuscarPosicion(dato)
@@ -146,6 +195,7 @@ function T_imprimir2(dato){
     return data
 }
 
+//FUNCION INTERNA DE LA POTENCIA
 function T_Potencia(){
     let inicio = `/*------NATIVES------*/
                 void potencia() {\n`
@@ -196,6 +246,8 @@ function T_Potencia(){
     traducciones = traducciones + "return;\n}"
     OP_Potencia =  inicio+traducciones;
 }
+
+//FUNCIONES INTERMEDIRARIAS
 
 function Llamado_Traductor(){
     var tem = ""
