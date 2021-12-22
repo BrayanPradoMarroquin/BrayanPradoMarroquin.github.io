@@ -106,7 +106,9 @@ function get_length(_instruccion, _ambito) {
     if (expresion.cadena) cadena.cadena = expresion.cadena;
     if (expresion.retorno) expresion = expresion.retorno;
     if (expresion.tipo === TIPO_DATO.VECTOR || expresion.tipo === TIPO_DATO.LISTA) {
-        if (expresion.valor[0].valor === 'EMPTY')
+        if (expresion.valor.length === 0){
+            cadena.retorno = { valor: 0, tipo: TIPO_DATO.ENTERO, linea: _instruccion.linea, columna: _instruccion.columna }
+        }else if (expresion.valor[0].valor === 'EMPTY')
             cadena.retorno = { valor: 0, tipo: TIPO_DATO.ENTERO, linea: _instruccion.linea, columna: _instruccion.columna }
         else
             cadena.retorno = { valor: expresion.valor.length, tipo: TIPO_DATO.ENTERO, linea: _instruccion.linea, columna: _instruccion.columna }

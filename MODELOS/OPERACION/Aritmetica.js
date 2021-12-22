@@ -135,7 +135,18 @@ function suma(_opIzq, _opDer, _ambito) {
                 }
 
             case TIPO_DATO.CADENA:
-                resultado = opIzq.valor.toString() + opDer.valor.toString();
+                resultado = ""
+                if(opIzq.tipo === TIPO_DATO.LISTA){
+                    resultado = opIzq.print_val + opDer.valor.toString();
+                }else{
+                    resultado = opIzq.valor.toString() + opDer.valor.toString();
+                }
+                
+                if(opDer.tipo === TIPO_DATO.LISTA){
+                    resultado = opIzq.valor.toString() + opDer.print_val;
+                }else{
+                    resultado = opIzq.valor.toString() + opDer.valor.toString();
+                }
                 return {
                     valor: resultado,
                     tipo: tipoRes,
