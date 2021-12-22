@@ -25,7 +25,7 @@ class Graph {
         if (_instruccion.tipo === TIPO_INSTRUCCION.PRINT) {
             var hijoAST = 'Node' + this.contador;
             this.contador++;
-            this.grafo += hijoAST + '[label = \"WRITE LINE\"];\n';
+            this.grafo += hijoAST + '[label = \"PRINT\"];\n';
             this.grafo += _up + '->' + hijoAST + ';\n';
             this.WriteGrafo(hijoAST, _instruccion);
         }else if (_instruccion.tipo === TIPO_INSTRUCCION.DECLARACION) {
@@ -124,7 +124,7 @@ class Graph {
             this.contador++;
             this.grafo += hijoAST + '[label = \"MAIN\"];\n';
             this.grafo += _up + '->' + hijoAST + ';\n';
-            this.InstruccionesGrafo(hijoAST, _instruccion);
+            this.MetodoGrafo(hijoAST, _instruccion);
         }
     }
 
@@ -428,6 +428,18 @@ class Graph {
                 this.InstruccionesGrafo(metodoinstrucciones, inst);
             }
         }
+
+        if (_instruccion.lista_instrucciones != null) {
+            var metodoinstrucciones = 'Node' + this.contador;
+            this.contador++;
+            this.grafo += metodoinstrucciones + '[label = \"INSTRUCCIONES\"];\n';
+            this.grafo += _up + '->' + metodoinstrucciones + ';\n';
+            for (let i = 0; i < _instruccion.lista_instrucciones.length; i++) {
+                const inst = _instruccion.lista_instrucciones[i];
+                this.InstruccionesGrafo(metodoinstrucciones, inst);
+            }
+        }
+
     }
 
     FuncionGrafo(_up, _instruccion) {

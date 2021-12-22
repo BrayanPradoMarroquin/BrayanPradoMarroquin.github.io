@@ -27,6 +27,7 @@ txtConsole = oup;
 trad = traductor;
 let errores = null;
 let simbolos = null;
+let gramatica = null;
 
 function compiler(){
     Lista_Traducciones = []
@@ -38,7 +39,7 @@ function compiler(){
     Heap=0
     var informacion = txtEdditor.getValue();
     try {
-        var gramatica = Analizador.parse(informacion);
+        gramatica = Analizador.parse(informacion);
         errores = gramatica.errores;
         var global = new Ambito(null, "global", "");
         var cadena = Global(gramatica.parse, global);
@@ -135,6 +136,14 @@ function TablaSimbolos(){
     doc.close();  
 }
 
+function Generar_AST(){
+    var root_AST = new Graph(gramatica.parse);
+    var dot = root_AST.getDot();
+    d3.graphviz("#graph")
+    .addImage("images/first.png", "400px", "300px")
+    .addImage("images/second.png", "400px", "300px")
+    .renderDot(dot);   
+}
 
 function TablaErrores(){
     var base = `<!DOCTYPE html>
