@@ -379,5 +379,26 @@ const Instruccion = {
             linea: _linea,
             columna: _columna
         }
+    },
+
+    nuevoPosition: function (_expresion, _posicion, _linea, _columna ){
+        return{
+            tipo: TIPO_INSTRUCCION.CARACTEROFPOSITION,
+            expresion: _expresion,
+            posicion: _posicion,
+            linea: _linea,
+            columna: _columna
+        }
+    },
+
+    nuevoSub: function (_expresion, _inicio, _final, _linea, _columna){
+        return{
+            tipo: TIPO_INSTRUCCION.SUBSTRING,
+            expresion: _expresion,
+            inicio: _inicio,
+            fin: _final,
+            linea: _linea,
+            columna: _columna
+        } 
     }
 }

@@ -493,6 +493,12 @@ break;
 case 196:
  this.$ = new Instruccion.nuevoTernario($$[$0-4], $$[$0-2], $$[$0], this._$.first_line, this._$.first_column+1) 
 break;
+case 203:
+ this.$ = new Instruccion.nuevoPosition(Instruccion.nuevoValor($$[$0-5].trim(), TIPO_VALOR.IDENTIFICADOR, this.$.first_line,this.$.first_column+1), $$[$0-1], this.$.first_line,this.$.first_column+1)
+break;
+case 204:
+ this.$ = new Instruccion.nuevoSub(Instruccion.nuevoValor($$[$0-7].trim(), TIPO_VALOR.IDENTIFICADOR, this.$.first_line,this.$.first_column+1), $$[$0-3], $$[$0-1], this.$.first_line,this.$.first_column+1)
+break;
 case 205:
  this.$ = new Instruccion.nuevoLength(Instruccion.nuevoValor($$[$0-4].trim(), TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1), this._$.first_line,this._$.first_column+1) 
 break;

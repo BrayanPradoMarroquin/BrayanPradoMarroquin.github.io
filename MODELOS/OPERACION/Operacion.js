@@ -52,6 +52,12 @@ function Operacion(_expresion, _ambito) {
     else if (_expresion.tipo === TIPO_INSTRUCCION.TYPEOF) {
         return typeOf(_expresion, _ambito);
     }
+    else if(_expresion.tipo === TIPO_INSTRUCCION.CARACTEROFPOSITION){
+        return CaracterOfPosition(_expresion, _ambito);
+    }
+    else if (_expresion.tipo === TIPO_INSTRUCCION.SUBSTRING){
+        return SubString(_expresion, _ambito);
+    }
     else if (_expresion.tipo === TIPO_INSTRUCCION.TOSTRING) {
         return to_String(_expresion, _ambito);
     }
