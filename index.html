@@ -29,7 +29,7 @@
 
         <button type="button" id="Terrores" class="btn btn-outline-dark">Tabla de Errores</button>
         <button type="button" id="Tsimbolos" class="btn btn-outline-dark">Tabla de Simbolos</button>
-        <button type="button" id="report" class="btn btn-outline-dark">Reporte AST</button>
+        <button type="button" id="report" class="btn btn-outline-dark" onclick="mostrarAST()" >Reporte AST</button>
         <button type="button" id="grammar" class="btn btn-outline-dark">Reporte de Gramaticas</button>
         <button type="button" id="clear" class="btn btn-outline-dark" onclick="limpiar()" >Limpiar Editores</button>
     </nav>
@@ -50,6 +50,10 @@
         <p class="tra">Traductor</p>
         <div class="traductor">
             <textarea id="trad"></textarea>
+        </div>
+        <p class="Tast">AST</p>
+        <div class="ast">
+            <textarea id="textAST"></textarea>
         </div>
     </div>
 
@@ -105,6 +109,7 @@
     <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Funcion.js"></script>
     <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Instruccion.js"></script>
     <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Metodo.js"></script>
+    <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Struct.js"></script>
     <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Print.js"></script>
     <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/While.js"></script>
     <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Write.js"></script>

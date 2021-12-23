@@ -18,3 +18,12 @@ class Funcion {
         this.columna = _columna
     }
 }
+
+class Struct{
+    constructor(_id, _lista_variables, _linea, _columna){
+        this.id = _id;
+        this.lista_variables = _lista_variables;
+        this.linea = _linea;
+        this.columna = _columna;
+    }
+}

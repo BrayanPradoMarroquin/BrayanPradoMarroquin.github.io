@@ -5,5 +5,6 @@ const TIPO_DATO = {
     CARACTER: 'CARACTER',
     CADENA: 'CADENA',
     VECTOR: 'VECTOR',
-    LISTA: 'LISTA'
+    LISTA: 'LISTA',
+    TSTRUCT: 'TIPO_STRUCT'
 }

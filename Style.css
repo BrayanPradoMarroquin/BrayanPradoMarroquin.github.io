@@ -146,6 +146,23 @@ h1 {
   float: left;
 }
 
+.traductor {
+  width: 600px;
+  height: 680px;
+  margin-top: 2.5%;
+  margin-left: 7%;
+  float: left;
+}
+
+.ast {
+  width: 600px;
+  height: 680px;
+  margin-top: 2.5%;
+  margin-left: 7%;
+  float: left;
+}
+
+/*Cuadro donde estan los botones ejecutar y traducir*/
 .exec {
   width: 1306.5px;
   height: 100px;
@@ -157,13 +174,7 @@ h1 {
   border-bottom-right-radius: 25px;
   background-color: #5f7a61;
 }
-
-.traductor {
-  width: 600px;
-  height: 680px;
-  margin-top: 2.5%;
-  margin-left: 453.25px;
-}
+/*---------------------------------------------------*/
 
 /* Titulos */
 .ed {
@@ -184,5 +195,12 @@ h1 {
   font-family: "Patua One", cursive;
   position: absolute;
   font-size: 28px;
-  margin-left: 35%;
+  margin-left: 10%;
+}
+
+.Tast {
+  font-family: "Patua One", cursive;
+  position: absolute;
+  font-size: 28px;
+  margin-left: 58%;
 }

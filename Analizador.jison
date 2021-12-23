@@ -1,6 +1,7 @@
 %{
     var cadena = '';
     var errores = [];
+    var producciones = [];
 %}
 
 %lex
@@ -180,21 +181,24 @@ MFBody: Tipos IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA LlaveAbre Instruct
         | TK_VOID error LlaveCierra { $$ = ""; errores.push({ tipo: "Sintáctico", error: "Declaración de método no válida.", linea: this.$.first_line, columna: this.$.first_column+1 }); }
 ;
 
-Dec_Struct: TK_STRUCT IDENTIFICADOR LlaveAbre BodyStruct LlaveCierra TK_PYC { alert("Struct: "+$1+", Nombre: "+$2); return $4; }
-        | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA TK_PYC { alert("Nombre Struct: "+$1+", Identificador1: "+$2+", Identificador2: "+$4); return $5; }
-        | IDENTIFICADOR IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC { alert("Nombre Struct: "+$1+", Identificador1: "+$2+", Identificador2: "+$4); return $1; }
-        | IDENTIFICADOR TK_PUNTO IDENTIFICADOR IGUAL Expresiones TK_PYC { alert("Nombre Struct: "+$1+" Identificador: "+$3); return $5; }
+Dec_Struct: TK_STRUCT IDENTIFICADOR LlaveAbre BodyStruct LlaveCierra TK_PYC { $$ = Instruccion.nuevoStruct($2, $4, this._$.first_line, this._$.first_column+1) }
+        | ts IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE Params PARENTESIS_CIERRA TK_PYC { $$ = Instruccion.nuevaDeclaracion($2, ($$ = Instruccion.nuevoStruct($4, ($$ = Instruccion.nuevaAsignacion($4, $6, this._$.first_line, this._$.first_column+1)), this._$.first_line, this._$.first_column+1) ), $1, this._$.first_line, this._$.first_column+1) }
+        | ts IDENTIFICADOR IGUAL IDENTIFICADOR PARENTESIS_ABRE PARENTESIS_CIERRA TK_PYC {}
+        | IDENTIFICADOR TK_PUNTO IDENTIFICADOR IGUAL Expresiones TK_PYC {}
 ;
 
-BodyStruct: s { $$ = $1 }
-        | s TK_COMA BodyStruct { $1.push($3); $$=1; return $1; }
+BodyStruct: s { $$ = [$1]; }
+        | s TK_COMA BodyStruct { $3.push($1); $$=$3; }
 ;
 
 s: Dec_Var {$$=$1}
-        | IDENTIFICADOR IDENTIFICADOR { alert("Nombre: "+$1+", identificador: "+$2); return $2; }
+        | IDENTIFICADOR IDENTIFICADOR { $$ = Instruccion.nuevaAsignacion($1, $2, this._$.first_line,this._$.first_column+1) }
+;
+
+ts: IDENTIFICADOR { $$ = TIPO_DATO.TSTRUCT; }
 ;
 //------------------------------------------------------------------------------------------------------------------------------------
-
+Ñ
 //----------------------------------------------------------- PARAMETROS -------------------------------------------------------------
 Params: parametros { $$ = [$1];  }
         | Params TK_COMA parametros { $1.push($3); $$=$1; } 
@@ -428,7 +432,7 @@ simbolos: OP_SUMA { $$=$1 }
         | OP_MODULO { $$=$1 }
 ;
 
-Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this.$.first_line,this.$.first_column+1)}
+Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this.$.first_line,this.$.first_column+1); }
             | CARACTER {$$ = Instruccion.nuevoValor($1.trim().substring(1, $1.length - 1), TIPO_VALOR.CARACTER, this.$.first_line,this.$.first_column+1)}
             | TRUE {$$ = Instruccion.nuevoValor($1.trim(), TIPO_VALOR.BOOLEAN, this.$.first_line,this.$.first_column+1)}
             | FALSE {$$ = Instruccion.nuevoValor($1.trim(), TIPO_VALOR.BOOLEAN, this.$.first_line,this.$.first_column+1)}
@@ -439,11 +443,11 @@ Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this.$.f
 
             | PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA {$$=$2;}
 
-            | Expresiones OP_SUMA Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.SUMA,this.$.first_line,this.$.first_column+1); }
-            | Expresiones OP_MENOS Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.RESTA,this.$.first_line,this.$.first_column+1);}
-            | Expresiones OP_DIVISION Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.DIVISION,this.$.first_line,this.$.first_column+1);}
-            | Expresiones OP_MULTIPLICACION Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.MULTIPLICACION,this.$.first_line,this.$.first_column+1);}
-            | Expresiones OP_MODULO Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.MODULO,this.$.first_line,this.$.first_column+1);}
+            | Expresiones OP_SUMA Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.SUMA,this.$.first_line,this.$.first_column+1); producciones.push({Sintactico: "Expresion -> Expresion SUMA Expresiones", Regla_Semantica: "Expresion.val := Expresion SUMA Expresion"}); }
+            | Expresiones OP_MENOS Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.RESTA,this.$.first_line,this.$.first_column+1); producciones.push({Sintactico: "Expresion -> Expresion RESTA Expresiones", Regla_Semantica: "Expresion.val := Expresion RESTA Expresion"});}
+            | Expresiones OP_DIVISION Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.DIVISION,this.$.first_line,this.$.first_column+1); producciones.push({Sintactico: "Expresion -> Expresion DIVISION Expresiones", Regla_Semantica: "Expresion.val := Expresion DIVISION Expresion"});}
+            | Expresiones OP_MULTIPLICACION Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.MULTIPLICACION,this.$.first_line,this.$.first_column+1); producciones.push({Sintactico: "Expresion -> Expresion MULTIPLICACION Expresiones", Regla_Semantica: "Expresion.val := Expresion MULTIPLICACION Expresion"});}
+            | Expresiones OP_MODULO Expresiones {$$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.MODULO,this.$.first_line,this.$.first_column+1); producciones.push({Sintactico: "Expresion -> Expresion MODULO Expresiones", Regla_Semantica: "Expresion.val := Expresion MODULO Expresion"}); }
 
             | TK_POW PARENTESIS_ABRE Expresiones TK_COMA Expresiones PARENTESIS_CIERRA {$$= Instruccion.nuevaOperacionBinaria($3,$5, TIPO_OPERACION.POTENCIA,this.$.first_line,this.$.first_column+1); }
             | TK_SQRT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= Instruccion.nuevaOperacionBinaria(null,$3, TIPO_OPERACION.RAIZ,this.$.first_line,this.$.first_column+1);}

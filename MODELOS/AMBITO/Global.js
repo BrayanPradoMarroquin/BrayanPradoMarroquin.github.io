@@ -54,6 +54,18 @@ function Global(_instrucciones, _ambito) {
                     columna: error.substring(error.indexOf("Columna") + 9),
                 });
             }
+        }else if (_instrucciones[i].tipo === TIPO_INSTRUCCION.NUEVO_STRUCT){
+            var mensaje = DecStruct(_instrucciones[i], _ambito)
+            if ( mensaje != null){
+                var error = String(mensaje);
+                cadena.cadena += error;
+                cadena.errores.push({
+                    tipo: 'Semántico',
+                    error: error.substring(error.indexOf("Error") + 7, error.indexOf("Línea") - 1),
+                    linea: error.substring(error.indexOf("Línea") + 7, error.indexOf("Columna") - 1),
+                    columna: error.substring(error.indexOf("Columna") + 9),
+                });
+            }
         }
     }
     for (let i = 0; i < _instrucciones.length; i++) {
