@@ -146,6 +146,18 @@ h1 {
   float: left;
 }
 
+.exec {
+  width: 1306.5px;
+  height: 100px;
+  margin-left: 7%;
+  clear: both;
+  border-bottom-left-radius: 25px;
+  border-top-right-radius: 25px;
+  border-top-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  background-color: #5f7a61;
+}
+
 .traductor {
   width: 600px;
   height: 680px;
@@ -161,20 +173,6 @@ h1 {
   margin-left: 7%;
   float: left;
 }
-
-/*Cuadro donde estan los botones ejecutar y traducir*/
-.exec {
-  width: 1306.5px;
-  height: 100px;
-  margin-left: 7%;
-  clear: both;
-  border-bottom-left-radius: 25px;
-  border-top-right-radius: 25px;
-  border-top-left-radius: 25px;
-  border-bottom-right-radius: 25px;
-  background-color: #5f7a61;
-}
-/*---------------------------------------------------*/
 
 /* Titulos */
 .ed {
@@ -195,12 +193,12 @@ h1 {
   font-family: "Patua One", cursive;
   position: absolute;
   font-size: 28px;
-  margin-left: 10%;
+  margin-left: 35%;
 }
-
 .Tast {
   font-family: "Patua One", cursive;
   position: absolute;
   font-size: 28px;
   margin-left: 58%;
 }
+

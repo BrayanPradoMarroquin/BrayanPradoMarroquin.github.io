@@ -1,0 +1,452 @@
+ACCIONES QUE YA REALIZA ESTA COSA
+*****************************************
+OPERACIONES BASICAS     -> YA
+CICLOS DE REPETICION    -> YA
+CONDICIONALES           -> YA
+ASIGNACIONES            -> YA
+DECLARACIONES           -> YA
+METODOS                 -> YA
+FUNCIONES               -> YA
+LLAMADAS                -> YA
+TOUPPER                 -> YA
+TOLOWER                 -> YA
+LENGTH                  -> YA
+ERRORES                 -> YA
+OPERACIONES CON CADENA  -> YA
+VECTORES                -> YA
+PUSH                    -> YA
+POP                     -> YA
+-----------------------------------------------------
+FALTA 
+***********************************************
+  
+OPERACIONES ENTRE VECTORES
+CARACTEROFPOSITION
+SUBSTRING
+STRUCT
+
+ void Hanoi(int discos, int origen, int auxiliar, int destino) {
+    if (discos == 1) {
+        print("Mover disco de " + origen + " a " + destino);
+    } else {
+        Hanoi(discos - 1, origen, destino, auxiliar);
+        print("Mover disco de " + origen + " a " + destino);
+        Hanoi(discos - 1, auxiliar, origen, destino);
+    }
+}
+
+void main(){
+  int discos = 3;
+    int origen = 1;
+    int auxiliar = 2;
+    int destino = 3;
+    Hanoi(discos, origen, auxiliar, destino);
+  return;
+}
+
+
+
+int multiplicacion(int a, int b){
+  if(b==0){
+    return 0;
+  }else{
+    return a+multiplicacion(a,b-1);
+  }
+}
+
+void main(){
+  print(multiplicacion(5,4));
+  return;
+}
+
+ini: ENTRADA EOF { typeof console !== 'undefined' ? console.log($1) : print($1); return $1; }
+    |error TK_PYC   {errores.push({ tipo: "Sintactico", error: "Token no Válido", linea: this._$.first_line, columna: this._$.first_column+1 }); return 'INVALID';}
+;
+
+$$ = Instruccion.nuevoStart("main", [], $6, this._$.first_line, this._$.first_column+1)
+
+TIPOS DE OPERACIONES QUE SE PUEDEN REALIZAR EN JAVA
+
+
+void main(){
+double a = 5.6+9 - 7*8;
+print(a);
+return;
+}
+
+SI SE PUEDEN EJECUTAR
+
+INT = INT + INT
+FLOAT = FLOAT + FLOAT
+DOUBLE = DOUBLE + DOUBLE
+STRING = STRING + STRING
+DOUBLE = INT + INT
+DOUBLE = FLOAT + DOUBLE
+
+
+
+TABLA DE RESULTADOS 
+                 
+                      SUMA (+)
+
+         | INT    | DOUBLE | BOOLEAN | STRING | CHAR   | 
+INT      | INT    | DOUBLE |    X    | STRING | INT    |  
+DOUBLE   | DOUBLE | DOUBLE |    X    | STRING | DOUBLE |
+BOOLEAN  |    X   |    X   |    X    | STRING |    X   |     
+STRING   | STRING | STRING | STRING  | STRING | STRING | 
+CHAR     | INT    | DOUBLE |    x    | STRING | CHAR   |
+
+_______________________________________________________________
+
+                      RESTA (-)
+
+         | INT    | DOUBLE | BOOLEAN | STRING | CHAR   | 
+INT      | INT    | DOUBLE |    X    |    X   | INT    |  
+DOUBLE   | DOUBLE | DOUBLE |    X    |    X   | DOUBLE |
+BOOLEAN  |    X   |    X   |    X    |    X   |    X   |     
+STRING   |    X   |    X   |    X    |    X   |    X   | 
+CHAR     | INT    | DOUBLE |    x    |    X   |    x   |
+
+________________________________________________________________
+
+                      PRODUCTO (*)
+
+         | INT    | DOUBLE | BOOLEAN | STRING | CHAR   | 
+INT      | INT    | DOUBLE |    X    |    X   | INT    |  
+DOUBLE   | DOUBLE | DOUBLE |    X    |    X   | DOUBLE |
+BOOLEAN  |    X   |    X   |    X    |    X   |    X   |     
+STRING   |    X   |    X   |    X    |    X   |    X   | 
+CHAR     | INT    | DOUBLE |    x    |    X   |    x   |
+
+________________________________________________________________
+
+                      DIVISION (/)
+
+         | INT    | DOUBLE | BOOLEAN | STRING | CHAR   | 
+INT      | INT    | DOUBLE |    X    |    X   | INT    |  
+DOUBLE   | DOUBLE | DOUBLE |    X    |    X   | DOUBLE |
+BOOLEAN  |    X   |    X   |    X    |    X   |    X   |     
+STRING   |    X   |    X   |    X    |    X   |    X   | 
+CHAR     | INT    | DOUBLE |    x    |    X   |    x   |
+
+________________________________________________________________
+
+                      MODULO (%)
+
+         | INT    | DOUBLE | BOOLEAN | STRING | CHAR   | 
+INT      | INT    | DOUBLE |    X    |    X   | INT    |  
+DOUBLE   | DOUBLE | DOUBLE |    X    |    X   | DOUBLE |
+BOOLEAN  |    X   |    X   |    X    |    X   |    X   |     
+STRING   |    X   |    X   |    X    |    X   |    X   | 
+CHAR     | INT    | DOUBLE |    x    |    X   |    x   |
+
+________________________________________________________________
+
+                      POTENCIA (^)
+
+         | INT    | DOUBLE | BOOLEAN | STRING | CHAR   | 
+INT      | INT    | DOUBLE |    X    |    X   |    X   |  
+DOUBLE   | DOUBLE | DOUBLE |    X    |    X   |    X   |
+BOOLEAN  |    X   |    X   |    X    |    X   |    X   |     
+STRING   |    X   |    X   |    X    |    X   |    X   | 
+CHAR     |    X   |    X   |    x    |    X   |    x   |
+
+
+double[] arr2 = sqrt#(sin#(sqrt#(pow#(arr#*2)))#*2)
+
+String_3 = string(int2_ > 77 || false) + "," + string(int2_ < 78 && true) + "," + string(int2_ + 10 <= int2_ || false) + "," + string(!!!!!!!!!!!! (int2_ + 10 >= int2_));
+
+int factorial(int a){
+  if(a==0){
+    return 1;
+  }else{
+    return a*factorial(a-1);
+  }
+}
+
+void main(){
+  print("El factorial es: "+factorial(10));
+  return;
+}
+
+
+void main(){
+	int n = 20;
+    String cadenaFigura = "";
+    int i;
+    for (i = -3 * n / 2; i <= n; i++) {
+        cadenaFigura = "";
+        int j;
+        for (j = -3 * n / 2; j <= 3 * n / 2; j++) {
+
+            int absolutoi;
+            absolutoi = i;
+            int absolutoj;
+            absolutoj = j;
+            if (i < 0) {
+                absolutoi = i * -1;
+            }
+            if (j < 0) {
+                absolutoj = j * -1;
+            }
+            if ((absolutoi + absolutoj < n)
+                || ((-n / 2 - i) * (-n / 2 - i) + (n / 2 - j) * (n / 2 - j) <= n * n / 2)
+                || ((-n / 2 - i) * (-n / 2 - i) + (-n / 2 - j) * (-n / 2 - j) <= n * n / 2)) {
+                cadenaFigura = cadenaFigura + "* ";
+            }
+            else {
+                cadenaFigura = cadenaFigura + ". ";
+            }
+        }
+        print(cadenaFigura);
+    }
+    print("Si la figura es un corazon +10 <3");
+return;
+}
+
+
+int imprimir(int a){
+     print(a);
+     int operacion = a*8/4;
+     print(operacion);
+     return operacion;
+}
+
+int otrovalor(int a, int b){
+    print(b);
+    return a+b;
+}
+
+void main(){
+      int a = 10;
+      int resultado = imprimir(a);
+      print(resultado);
+      resultado = otrovalor(5, resultado);
+      print(resultado);
+      //otro();
+      return;
+}
+
+void ParoImpar(int a) {
+    if (par(a) == 1) { // El número es Par
+        print("El numero '" + a + "'" + " es Par");
+    } else { // El número es impar
+        print("El numero '" + a + "'" + " es Impar");
+    }
+}
+
+int par(int nump) {
+    if (nump == 0) {
+        return 1;
+    }
+    return impar(nump - 1);
+}
+
+int impar(int numi) {
+    if (numi == 0) {
+        return 0;
+    }
+    return par(numi - 1);
+}
+
+void main(){
+      //int a = 100-(-5)-53;
+      //ParoImpar(a);
+      String hola =  "Buenas tardes" & "HOLA COMO estas"^5;
+      print(hola.length());
+      print(hola & ", que me alegra");
+      return;
+}
+
+
+void prueba(){
+   print("*********************************************************************");
+  print("Vamos a probar los vectores");
+       int[] numero = [1, 2, 3, 6+8];
+       print(numero);
+       numero.push(9);
+       print("No se como voy a ver si jala pero confio en Alux Nahual que jale");
+       print(numero);
+       numero.pop();
+       print(numero);
+   print("*********************************************************************");
+return;
+}
+
+void main(){
+      prueba();
+      return;
+}
+
+
+void main(){
+FactorialIterativo(10);
+return;
+}
+
+void FactorialIterativo(int n2){
+    print("==============Para Calificar Ciclos=============");
+    print("----------------CICLO WHILE Y FOR---------------");
+
+    int numeroFactorial = n2;
+    while (numeroFactorial > -1) {
+        mostrarFactorial(numeroFactorial);
+        numeroFactorial--;
+    }
+    print("------------------------------------------------");
+    SentenciasAnidadas();
+    print("======================================");
+}
+
+void mostrarFactorial(int n2){
+    int fact = 1;
+    String cadena1 = "El factorial de: " + n2 + " = ";
+    if (n2 != 0) {
+        for (int i = n2; i > 0; i--) {
+            fact = fact * i;
+            cadena1 = cadena1 + i;
+            if (i > 1) {
+                cadena1 = cadena1 + " * ";
+
+            } else {
+                cadena1 = cadena1 + " = ";
+            }
+        }
+    }
+    cadena1 = cadena1 + fact;
+    print(cadena1);
+}
+
+void SentenciasAnidadas(){
+    print("-----------------CICLO DO WHILE-----------------");
+    int numero1 = 0;
+    print("-------------------SWITCH CASE------------------");
+    do {
+        switch (numero1) {
+            case 0:
+                figura0(8);
+                break;
+            case 1:
+                figura1(10);
+                break;
+            case 2:
+                figura2();
+                print("");
+                break;
+            case 3:
+                ciclosContinueBreak();
+                print("");
+                break;
+            default:
+                print("Esto se va a imprimir 2 veces :3");
+        }
+        numero1 = numero1 + 1;
+    } while (numero1 < 1);
+    print("------------------------------------------------");
+}
+
+void figura0(int numero){
+    print("-----------------WHILE ANIDADO------------------");
+    int i = 0;
+    while (i < numero) {
+        int j = 0;
+        int numeroMostrar = 1;
+        String unaFila = "";
+        while (j <= i) {
+            unaFila = unaFila + " " + numeroMostrar;
+            numeroMostrar = numeroMostrar + 1;
+            j = j + 1;
+        }
+        print(unaFila);
+        i = i + 1;
+    }
+    print("Si la figura es un triangulo de numeros + 5 :3");
+    print("------------------------------------------------");
+}
+
+
+
+void main(){
+FactorialIterativo(10);
+return;
+}
+
+void FactorialIterativo(int n2){
+    print("==============Para Calificar Ciclos=============");
+    print("----------------CICLO WHILE Y FOR---------------");
+
+    int numeroFactorial = n2;
+    while (numeroFactorial > -1) {
+        mostrarFactorial(numeroFactorial);
+        numeroFactorial--;
+    }
+    print("------------------------------------------------");
+    SentenciasAnidadas();
+    print("======================================");
+}
+
+void mostrarFactorial(int n2){
+    int fact = 1;
+    String cadena1 = "El factorial de: " + n2 + " = ";
+    if (n2 != 0) {
+        for (int i = n2; i > 0; i--) {
+            fact = fact * i;
+            cadena1 = cadena1 + i;
+            if (i > 1) {
+                cadena1 = cadena1 + " * ";
+
+            } else {
+                cadena1 = cadena1 + " = ";
+            }
+        }
+    }
+    cadena1 = cadena1 + fact;
+    print(cadena1);
+}
+
+void SentenciasAnidadas(){
+    print("-----------------CICLO DO WHILE-----------------");
+    int numero1 = 0;
+    print("-------------------SWITCH CASE------------------");
+    do {
+        switch (numero1) {
+            case 0:
+                figura0(8);
+                break;
+            case 1:
+                figura1(10);
+                break;
+            case 2:
+                figura2();
+                print("");
+                break;
+            case 3:
+                ciclosContinueBreak();
+                print("");
+                break;
+            default:
+                print("Esto se va a imprimir 2 veces :3");
+        }
+        numero1 = numero1 + 1;
+    } while (numero1 < 1);
+    print("------------------------------------------------");
+}
+
+void figura0(int numero){
+    print("-----------------WHILE ANIDADO------------------");
+    int i = 0;
+    while (i < numero) {
+        int j = 0;
+        int numeroMostrar = 1;
+        String unaFila = "";
+        while (j <= i) {
+            unaFila = unaFila + " " + numeroMostrar;
+            numeroMostrar = numeroMostrar + 1;
+            j = j + 1;
+        }
+        print(unaFila);
+        i = i + 1;
+    }
+    print("Si la figura es un triangulo de numeros + 5 :3");
+    print("------------------------------------------------");
+}

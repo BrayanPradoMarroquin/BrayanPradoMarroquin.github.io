@@ -21,17 +21,17 @@ function Operacion(_expresion, _ambito) {
         return Logica(_expresion, _ambito)
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.TERNARIO) {
-        return Ternario(_expresion, _ambito)
+        return operadorTernario(_expresion, _ambito)
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.CASTEO) {
-        return Casteo(_expresion, _ambito)
+        return casteo(_expresion, _ambito)
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.ACCESO) {
         switch (_expresion.tipo_dato) {
             case TIPO_DATO.VECTOR:
                 return AccesoVector(_expresion, _ambito);
             case TIPO_DATO.LISTA:
-                return AccesoLista(_expresion, _ambito);
+                return accesoLista(_expresion, _ambito);
         }
     }
     else if (_expresion.tipo === TIPO_INSTRUCCION.TO_LOWER) {

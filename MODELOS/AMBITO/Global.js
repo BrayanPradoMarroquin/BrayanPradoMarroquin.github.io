@@ -6,10 +6,10 @@ function Global(_instrucciones, _ambito) {
         if (_instrucciones[i].tipo === TIPO_INSTRUCCION.MAIN) {
             contStart++;
             if (contStart > 1) {
-                cadena.cadena = `Error: No es posible ejecutar más de un Main.\nLínea: ${String(_instrucciones[i].linea)} Columna: ${String(_instrucciones[i].columna)}\n`;
+                cadena.cadena = `Error: No es posible ejecutar más de un MAIN.\nLínea: ${String(_instrucciones[i].linea)} Columna: ${String(_instrucciones[i].columna)}\n`;
                 cadena.errores.push({
                     tipo: 'Semántico',
-                    error: "No es posible ejecutar más de un Main.",
+                    error: "No es posible ejecutar más de un MAIN",
                     linea: _instrucciones[i].linea,
                     columna: _instrucciones[i].columna
                 });
@@ -19,10 +19,10 @@ function Global(_instrucciones, _ambito) {
         }
     }
     if (contStart == 0) {
-        cadena.cadena = `Error: No se ha encontrado ninguna sentencia Main.\n`;
+        cadena.cadena = `Error: No se ha encontrado ninguna sentencia MAIN.\n`;
         cadena.errores.push({
             tipo: 'Semántico',
-            error: "No se ha encontrado ninguna sentencia Main.",
+            error: "No se ha encontrado ninguna sentencia MAIN.",
             linea: "-",
             columna: "-"
         });
@@ -45,18 +45,6 @@ function Global(_instrucciones, _ambito) {
         }else if (_instrucciones[i].tipo === TIPO_INSTRUCCION.NUEVA_FUNCION) {
             var mensaje = DecFuncion(_instrucciones[i], _ambito)
             if (mensaje != null) {
-                var error = String(mensaje);
-                cadena.cadena += error;
-                cadena.errores.push({
-                    tipo: 'Semántico',
-                    error: error.substring(error.indexOf("Error") + 7, error.indexOf("Línea") - 1),
-                    linea: error.substring(error.indexOf("Línea") + 7, error.indexOf("Columna") - 1),
-                    columna: error.substring(error.indexOf("Columna") + 9),
-                });
-            }
-        }else if (_instrucciones[i].tipo === TIPO_INSTRUCCION.NUEVO_STRUCT){
-            var mensaje = DecStruct(_instrucciones[i], _ambito)
-            if ( mensaje != null){
                 var error = String(mensaje);
                 cadena.cadena += error;
                 cadena.errores.push({
@@ -104,7 +92,7 @@ function Global(_instrucciones, _ambito) {
         }
     }
 
-    // Ejecutar Main
+    // Ejecutar Start With
     var instruccion;
     for (let i = 0; i < _instrucciones.length; i++) {
         if (_instrucciones[i].tipo === TIPO_INSTRUCCION.MAIN) {

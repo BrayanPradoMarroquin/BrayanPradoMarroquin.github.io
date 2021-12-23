@@ -8,9 +8,6 @@
     <link rel="stylesheet" href="Style.css">
     <link rel="icon" type="image/x-icon" href="quetzal.ico">
     <script src="codemirror-5.64.0/lib/codemirror.js"></script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
-    <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
     <link rel="stylesheet" href="codemirror-5.64.0/lib/codemirror.css">
     <script src="codemirror-5.64.0/mode/clike/clike.js"></script>
     <link rel="stylesheet" href="codemirror-5.64.0/theme/lesser-dark.css">
@@ -30,10 +27,10 @@
         <button type="button" id="abrir" class="btn btn-outline-dark">Abrir Archivo</button>
         <input type="file" id="fileInput" style="display: none;" >
 
-        <button type="button" id="Terrores" class="btn btn-outline-dark" onclick="TablaSimbolos()">Tabla de Simbolos</button>
-        <button type="button" id="Tsimbolos" class="btn btn-outline-dark" onclick="TablaErrores()">Tabla de Errores</button>
-        <button type="button" id="report" class="btn btn-outline-dark" onclick="mostrarAST()">Reporte AST</button>
-        <button type="button" id="grammar" class="btn btn-outline-dark" onclick="Producciones()">Reporte de Gramaticas</button>
+        <button type="button" id="Terrores" class="btn btn-outline-dark" onclick="TablaSimbolos()">Tabla de Errores</button>
+        <button type="button" id="Tsimbolos" class="btn btn-outline-dark">Tabla de Simbolos</button>
+        <button type="button" id="report" class="btn btn-outline-dark">Reporte AST</button>
+        <button type="button" id="grammar" class="btn btn-outline-dark">Reporte de Gramaticas</button>
         <button type="button" id="clear" class="btn btn-outline-dark" onclick="limpiar()" >Limpiar Editores</button>
     </nav>
 
@@ -48,20 +45,14 @@
         </div>
         <div class="exec">
             <button type="button" id="ejecutar" class="btn btn-outline-dark" onclick="compiler()">Compilar</button>
-            <button type="button" id="traducir" class="btn btn-outline-dark" onclick="Traductor()">Traducir</button>
+            <button type="button" id="traducir" class="btn btn-outline-dark">Traducir</button>
         </div>
         <p class="tra">Traductor</p>
         <div class="traductor">
             <textarea id="trad"></textarea>
         </div>
-        <p class="Tast">AST</p>
-        <div class="ast">
-            <textarea id="textAST"></textarea>
-        </div>
     </div>
-    <h3 >Grafico </h3>
-            <div id="AST" class="terminal-container" style="background-color: #06141d60;">
-            <div id="graph" style="text-align: center;"></div>
+
     <footer class="text-center text-lg-start">
         <div class="text-center p-3" style="background-color: #EDEDED;">
           <p class="foot my-0">
@@ -72,9 +63,6 @@
 
    <!-- AREA DE IMPORTACIONES (JAVASCRIPT) -->
     <!--  PRINCIPALES -->
-    <script type="text/javascript" src="./Traductor.js"></script>
-    <script type="text/javascript" src="./MODELOS/OPERACION/Acceso_Vector_Lista.js"></script>
-    <script type="text/javascript" src="./MODELOS/FUNCIONES/Reservadas.js"></script>
     <script type="text/javascript" src="./CONTROLADORES/PRINCIPALES/TValores.js"></script>
     <script type="text/javascript" src="./CONTROLADORES/PRINCIPALES/TOperaciones.js"></script>
     <script type="text/javascript" src="./CONTROLADORES/PRINCIPALES/Tipos.js"></script>
@@ -87,6 +75,7 @@
     <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/SENTENCIAS_CONTROL/If.js"></script>
 
     <!-- OPERACIONES BASICAS -->
+    <script type="text/javascript" src="./MODELOS/AMBITO/Reservadas.js"></script>
     <script type="text/javascript" src="./MODELOS/OPERACION/Resultados.js"></script>
     <script type="text/javascript" src="./MODELOS/OPERACION/Aritmetica.js"></script>
     <script type="text/javascript" src="./MODELOS/OPERACION/Operacion.js"></script>
@@ -102,6 +91,8 @@
     <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/CICLICAS/For.js"></script>
     <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/CICLICAS/While.js"></script>
     <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/CICLICAS/DoWhile.js"></script>
+    <script type="text/javascript" src="./MODELOS/FUNCIONES/Reservadas.js"></script>
+    <script type="text/javascript" src="./MODELOS/AMBITO/Reservadas.js"></script>
   
     <!--  INSTRUCCIONES -->
     <script type="text/javascript" src="./CONTROLADORES/INSTRUCCION/Asignacion.js"></script>
@@ -125,7 +116,6 @@
     <script type="text/javascript" src="./MODELOS/AMBITO/Funcion_Metodo.js"></script>
     <script type="text/javascript" src="./MODELOS/AMBITO/Ambito.js"></script>
     <script type="text/javascript" src="./MODELOS/AMBITO/Global.js"></script>
-    <script type="text/javascript" src="./CONTROLADORES/ARBOL/GraphAST.js"></script>
     <script type="text/javascript" src="Conecciones.js" ></script>
 </body>
 </html>

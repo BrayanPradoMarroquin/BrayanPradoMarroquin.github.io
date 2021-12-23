@@ -351,16 +351,6 @@ const Instruccion = {
         }
     },
 
-    nuevoStruct: function(_id, _lista_variables, _linea, _columna){
-        return{
-            tipo: TIPO_INSTRUCCION.NUEVO_STRUCT,
-            id: _id,
-            lista_variables: _lista_variables,
-            linea: _linea,
-            columna: _columna
-        }
-    },
-
     nuevaLlamada: function (_id, _lista_valores, _linea, _columna) {
         return {
             tipo: TIPO_INSTRUCCION.LLAMADA,

@@ -18,12 +18,19 @@ function defaultValue(tipo_dato) {
 function Declaracion(_instruccion, _ambito) {
 
     var cadena = { cadena: "", retorno: null, err: null }
-
+    console.log(_instruccion.tipo_dato.length);
+    var trad = 0;
     if (_instruccion.tipo_dato === TIPO_DATO.ENTERO) {
+        var trad = 0
+        let data;
         var valor = defaultValue(TIPO_DATO.ENTERO);
         if (_instruccion.valor != null) {
             var op = Operacion(_instruccion.valor, _ambito)
             if (op.err) { cadena.err = op.err; return cadena }
+            if(op.ubicacion!=null){
+                data = new Traductor_id(_instruccion.id, null, op.ubicacion, null, "DECLARACION")
+                trad = 1;
+            }
             if (op.cadena) cadena.cadena = op.cadena;
             if (op.retorno) op = op.retorno;
             tipo = op.tipo;
@@ -36,7 +43,13 @@ function Declaracion(_instruccion, _ambito) {
         if (_ambito.existeSimbolo(nuevoSimbolo.id) != false) {
             return { err: "Error: La variable '" + nuevoSimbolo.id + "' ya existe.\nLínea: " + nuevoSimbolo.linea + " Columna: " + nuevoSimbolo.columna + "\n" }
         }
+        if((_instruccion.valor==null) && (trad===0)){
+             data = new Traductor_id(_instruccion.id, null, valor, null, "DECLARACION")
+        }else if((_instruccion.valor!=null) && (trad===0)){
+            data = new Traductor_id(_instruccion.id, null, valor, null, "DECLARACION")
+        }
         _ambito.addSimbolo(nuevoSimbolo.id, nuevoSimbolo)
+        Lista_Traducciones.push(data)
         return cadena;
     }
 
@@ -45,6 +58,12 @@ function Declaracion(_instruccion, _ambito) {
         if (_instruccion.valor != null) {
             var op = Operacion(_instruccion.valor, _ambito)
             if (op.err) { cadena.err = op.err; return cadena; }
+            
+            if(op.ubicacion!=null){
+                data = new Traductor_id(_instruccion.id, null, op.ubicacion, null, "DECLARACION")
+                trad = 1;
+            }
+
             if (op.cadena) cadena.cadena = op.cadena;
             if (op.retorno) op = op.retorno;
             tipo = op.tipo;
@@ -57,15 +76,26 @@ function Declaracion(_instruccion, _ambito) {
         if (_ambito.existeSimbolo(nuevoSimbolo.id) != false) {
             return { err: "Error: La variable '" + nuevoSimbolo.id + "' ya existe.\nLínea: " + nuevoSimbolo.linea + " Columna: " + nuevoSimbolo.columna + "\n" }
         }
-        _ambito.addSimbolo(nuevoSimbolo.id, nuevoSimbolo)
+        if((_instruccion.valor==null) && (trad===0)){
+            data = new Traductor_id(_instruccion.id, null, valor, null, "DECLARACION")
+       }else if((_instruccion.valor!=null) && (trad===0)){
+           data = new Traductor_id(_instruccion.id, null, valor, null, "DECLARACION")
+       }
+       _ambito.addSimbolo(nuevoSimbolo.id, nuevoSimbolo)
+       Lista_Traducciones.push(data)
         return cadena;
     }
 
     else if (_instruccion.tipo_dato === TIPO_DATO.BOOLEANO) {
+        var trad=0;
         var valor = defaultValue(TIPO_DATO.BOOLEANO);
         if (_instruccion.valor != null) {
             var op = Operacion(_instruccion.valor, _ambito)
             if (op.err) { cadena.err = op.err; return cadena; }
+            if(op.ubicacion!=null){
+                data = new Traductor_id(_instruccion.id, null, op.ubicacion, null, "DECLARACION")
+                trad = 1;
+            }
             if (op.cadena) cadena.cadena = op.cadena;
             if (op.retorno) op = op.retorno;
             tipo = op.tipo;
@@ -79,7 +109,13 @@ function Declaracion(_instruccion, _ambito) {
         if (_ambito.existeSimbolo(nuevoSimbolo.id) != false) {
             return { err: "Error: La variable '" + nuevoSimbolo.id + "' ya existe.\nLínea: " + nuevoSimbolo.linea + " Columna: " + nuevoSimbolo.columna + "\n" }
         }
+        if((_instruccion.valor==null) && (trad===0)){
+            data = new Traductor_id(_instruccion.id, null, valor, null, "DECLARACION")
+       }else if((_instruccion.valor!=null) && (trad===0)){
+           data = new Traductor_id(_instruccion.id, null, valor, null, "DECLARACION")
+       }
         _ambito.addSimbolo(nuevoSimbolo.id, nuevoSimbolo)
+        Lista_Traducciones.push(data)
         return cadena;
     }
 
@@ -134,7 +170,7 @@ function Declaracion(_instruccion, _ambito) {
             if (_instruccion.valor.err) { cadena.err = _instruccion.valor.err; return cadena }
             if (_instruccion.valor.retorno) _instruccion.valor = _instruccion.valor.retorno;
             if (_instruccion.valor.tipo === TIPO_DATO.LISTA) {
-                if (_instruccion.valor.valor[0].tipo === _instruccion.tipo_dato.vector) {
+                if (_instruccion.valor.valor[0].tipo === _instruccion.tipo_dato.lista) {
                     valores = _instruccion.valor.valor;
                 }
                 else
@@ -201,20 +237,33 @@ function Declaracion(_instruccion, _ambito) {
         return cadena;
     }
 
-    else if (_instruccion.tipo_dato === TIPO_DATO.VECTOR || _instruccion.tipo_dato.vector) {
+    else if (_instruccion.tipo_dato.length === 2 && _instruccion.tipo_dato[0] === TIPO_DATO.LISTA) {
         var valores = [];
-        if (_instruccion.isParam) { 
+        if (_instruccion.isParam) {
             _instruccion.valor = Operacion(_instruccion.valor, _ambito)
             if (_instruccion.valor.err) { cadena.err = _instruccion.valor.err; return cadena }
             if (_instruccion.valor.retorno) _instruccion.valor = _instruccion.valor.retorno;
-            if (_instruccion.valor.tipo === TIPO_DATO.VECTOR) {
-                if (_instruccion.valor.valor[0].tipo === _instruccion.tipo_dato.lista)
+            if (_instruccion.valor.tipo === TIPO_DATO.LISTA) {
+                if (_instruccion.valor.valor[0].tipo === _instruccion.tipo_dato[1]) {
                     valores = _instruccion.valor.valor;
+                }
                 else
-                    return { err: `Error: No es posible declarar una lista de tipo ${_instruccion.valor.valor[0].tipo} a la lista '${_instruccion.id}' que es de tipo ${_instruccion.tipo_dato.lista}.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+                    return { err: `Error: No es posible declarar un vector de tipo ${_instruccion.valor.valor[0].tipo} al vector '${_instruccion.id}' que es de tipo ${_instruccion.tipo_dato.vector}.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
             }
             else
-                return { err: `Error: No es posible declarar un valor de tipo ${_instruccion.valor.tipo} a la lista '${_instruccion.id}'.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+                return { err: `Error: No es posible declarar un valor de tipo ${_instruccion.valor.tipo} al vector '${_instruccion.id}'.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+        }
+        else if (_instruccion.valores != null) {
+            for (let i = 0; i < _instruccion.valores.length; i++) {
+                var exp = Operacion(_instruccion.valores[i], _ambito);
+                if (exp.err) { cadena.err = exp.err; return cadena; }
+                if (exp.cadena) cadena.cadena = exp.cadena;
+                if (exp.retorno) exp = exp.retorno;
+                if (exp.tipo === _instruccion.tipo_dato1)
+                    valores.push(exp);
+                else
+                    return { err: "Error: La expresión '" + exp.valor + "' de tipo " + exp.tipo + " no corresponde al tipo " + _instruccion.tipo_dato1 + " de la declaración del vector.\nLínea: " + exp.linea + " Columna: " + exp.columna + "\n" }
+            }
         }
         else if (_instruccion.expresion != null) { 
             var op = Operacion(_instruccion.expresion, _ambito);
@@ -225,23 +274,34 @@ function Declaracion(_instruccion, _ambito) {
                 if (op.valor[0].tipo === _instruccion.tipo_dato1)
                     valores = op.valor;
                 else
-                    return { err: `Error: No es posible declarar una lista de tipo ${op.valor[0].tipo} a la lista '${_instruccion.id}' que es de tipo ${_instruccion.tipo_dato1}.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+                    return { err: `Error: No es posible declarar un vector de tipo ${op.valor[0].tipo} al vector '${_instruccion.id}' que es de tipo ${_instruccion.tipo_dato1}.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
             }
             else
-                return { err: `Error: No es posible declarar un valor de tipo ${op.tipo} a la lista '${_instruccion.id}'.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+                return { err: `Error: No es posible declarar un valor de tipo ${op.tipo} al vector '${_instruccion.id}'.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
         }
         else { 
             if (_instruccion.tipo_dato1 === _instruccion.tipo_dato2) {
-                var exp = {
-                    tipo: _instruccion.tipo_dato1,
-                    valor: 'EMPTY',
-                    linea: _instruccion.linea,
-                    columna: _instruccion.columna
+                var tamano = Operacion(_instruccion.tamaño, _ambito)
+                if (tamano.err) { cadena.err = tamano.err; return cadena; }
+                if (tamano.cadena) cadena.cadena = tamano.cadena;
+                if (tamano.retorno) tamano = tamano.retorno;
+                if (tamano.tipo === TIPO_DATO.ENTERO) {
+                    if (tamano.valor < 1) { return { err: "Error: La expresión de valor " + tamano.valor + " no es un tamaño válido para declarar el vector.\nLínea: " + tamano.linea + " Columna: " + tamano.columna + "\n" } }
+                    for (let i = 0; i < tamano.valor; i++) {
+                        var exp = {
+                            tipo: _instruccion.tipo_dato1,
+                            valor: defaultValue(_instruccion.tipo_dato1),
+                            linea: _instruccion.linea,
+                            columna: _instruccion.columna
+                        }
+                        valores.push(exp);
+                    }
                 }
-                valores.push(exp);
+                else
+                    return { err: "Error: La expresión de tipo " + tamano.tipo + " no es de tipo numérica para declarar el tamaño del vector.\nLínea: " + tamano.linea + " Columna: " + tamano.columna + "\n" }
             }
             else
-                return { err: "Error: El tipo " + _instruccion.tipo_dato1 + " no coincide con el tipo " + _instruccion.tipo_dato2 + " de la lista '" + _instruccion.id + "'.\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
+                return { err: "Error: El tipo " + _instruccion.tipo_dato1 + " no coincide con el tipo " + _instruccion.tipo_dato2 + " del vector.\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
         }
         const nuevoSimbolo = new Simbolo(_instruccion.id, valores, TIPO_DATO.LISTA, _instruccion.linea, _instruccion.columna)
         if (_ambito.existeSimbolo(nuevoSimbolo.id) != false) {

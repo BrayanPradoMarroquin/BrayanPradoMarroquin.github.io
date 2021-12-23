@@ -87,19 +87,19 @@ function TipoResultado(_tipo1, _tipo2, operacion) {
             if (_tipo1 === TIPO_DATO.ENTERO && _tipo2 === TIPO_DATO.ENTERO) { return TIPO_DATO.DOBLE }
             else if (_tipo1 === TIPO_DATO.ENTERO && _tipo2 === TIPO_DATO.DOBLE) { return TIPO_DATO.DOBLE }
             else if (_tipo1 === TIPO_DATO.ENTERO && _tipo2 === TIPO_DATO.BOOLEANO) { return null }
-            else if (_tipo1 === TIPO_DATO.ENTERO && _tipo2 === TIPO_DATO.CARACTER) { return TIPO_DATO.DOBLE }
+            else if (_tipo1 === TIPO_DATO.ENTERO && _tipo2 === TIPO_DATO.CARACTER) { return null }
             else if (_tipo1 === TIPO_DATO.ENTERO && _tipo2 === TIPO_DATO.CADENA) { return null }
 
             else if (_tipo1 === TIPO_DATO.DOBLE && _tipo2 === TIPO_DATO.ENTERO) { return TIPO_DATO.DOBLE }
             else if (_tipo1 === TIPO_DATO.DOBLE && _tipo2 === TIPO_DATO.DOBLE) { return TIPO_DATO.DOBLE }
             else if (_tipo1 === TIPO_DATO.DOBLE && _tipo2 === TIPO_DATO.BOOLEANO) { return null }
-            else if (_tipo1 === TIPO_DATO.DOBLE && _tipo2 === TIPO_DATO.CARACTER) { return TIPO_DATO.DOBLE }
+            else if (_tipo1 === TIPO_DATO.DOBLE && _tipo2 === TIPO_DATO.CARACTER) { return null }
             else if (_tipo1 === TIPO_DATO.DOBLE && _tipo2 === TIPO_DATO.CADENA) { return null }
 
             else if (_tipo1 === TIPO_DATO.BOOLEANO || _tipo2 === TIPO_DATO.BOOLEANO) { return null }
 
-            else if (_tipo1 === TIPO_DATO.CARACTER && _tipo2 === TIPO_DATO.ENTERO) { return TIPO_DATO.DOBLE }
-            else if (_tipo1 === TIPO_DATO.CARACTER && _tipo2 === TIPO_DATO.DOBLE) { return TIPO_DATO.DOBLE }
+            else if (_tipo1 === TIPO_DATO.CARACTER && _tipo2 === TIPO_DATO.ENTERO) { return null }
+            else if (_tipo1 === TIPO_DATO.CARACTER && _tipo2 === TIPO_DATO.DOBLE) { return null }
             else if (_tipo1 === TIPO_DATO.CARACTER && _tipo2 === TIPO_DATO.BOOLEANO) { return null }
             else if (_tipo1 === TIPO_DATO.CARACTER && _tipo2 === TIPO_DATO.CARACTER) { null }
             else if (_tipo1 === TIPO_DATO.CARACTER && _tipo2 === TIPO_DATO.CADENA) { null }

@@ -18,6 +18,12 @@ function casteo(_instruccion, _ambito) {
                 cadena.retorno = expresion;
                 return cadena;
             }
+            else if (expresion.tipo === TIPO_DATO.CADENA) {
+                expresion.valor = parseFloat(expresion.valor);
+                expresion.tipo = TIPO_DATO.ENTERO;
+                cadena.retorno = expresion;
+                return cadena;
+            }
             else
                 return { err: "Error: no se puede castear " + expresion.tipo + " a " + _instruccion.nuevoTipo + "\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
         case TIPO_DATO.ENTERO:
@@ -29,6 +35,12 @@ function casteo(_instruccion, _ambito) {
             }
             else if (expresion.tipo === TIPO_DATO.CARACTER) {
                 expresion.valor = parseInt(expresion.valor.charCodeAt(0));
+                expresion.tipo = TIPO_DATO.ENTERO;
+                cadena.retorno = expresion;
+                return cadena;
+            }
+            else if (expresion.tipo === TIPO_DATO.CADENA) {
+                expresion.valor = parseInt(expresion.valor);
                 expresion.tipo = TIPO_DATO.ENTERO;
                 cadena.retorno = expresion;
                 return cadena;
@@ -87,34 +99,6 @@ function to_Upper(_instruccion, _ambito) {
     return { err: "Error: La expresión de tipo " + expresion.tipo + " no es aceptada en 'toUpper()'.\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
 }
 
-function CaracterOfPosition(_instruccion, _ambito){
-    var cadena = { cadena: "", retorno: null, err: null }
-    var expresion = Operacion(_instruccion.expresion, _ambito);
-    if (expresion.err) { cadena.err = expresion.err; return cadena }
-    if (expresion.cadena) cadena.cadena = expresion.cadena;
-    if (expresion.retorno) expresion = expresion.retorno;
-    if (expresion.tipo === TIPO_DATO.CADENA){
-        expresion.valor = expresion.valor.charAt(_instruccion.posicion);
-        cadena.retorno = expresion;
-        return cadena
-    }
-    return { err: "Error: La expresión de tipo " + expresion.tipo + " no es aceptada en 'CaracterOfPosition()'.\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
-}
-
-function SubString(_instruccion, _ambito){
-    var cadena = { cadena: "", retorno: null, err: null }
-    var expresion = Operacion(_instruccion.expresion, _ambito);
-    if (expresion.err) { cadena.err = expresion.err; return cadena }
-    if (expresion.cadena) cadena.cadena = expresion.cadena;
-    if (expresion.retorno) expresion = expresion.retorno;
-    if (expresion.tipo === TIPO_DATO.CADENA){
-        expresion.valor = expresion.valor.substring(_instruccion.inicio, _instruccion.fin);
-        cadena.retorno = expresion;
-        return cadena
-    }
-    return { err: "Error: La expresión de tipo " + expresion.tipo + " no es aceptada en 'SubString()'.\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
-}
-
 function get_length(_instruccion, _ambito) {
     var cadena = { cadena: "", retorno: null, err: null }
     var expresion = Operacion(_instruccion.expresion, _ambito);
@@ -122,7 +106,9 @@ function get_length(_instruccion, _ambito) {
     if (expresion.cadena) cadena.cadena = expresion.cadena;
     if (expresion.retorno) expresion = expresion.retorno;
     if (expresion.tipo === TIPO_DATO.VECTOR || expresion.tipo === TIPO_DATO.LISTA) {
-        if (expresion.valor[0].valor === 'EMPTY')
+        if (expresion.valor.length === 0){
+            cadena.retorno = { valor: 0, tipo: TIPO_DATO.ENTERO, linea: _instruccion.linea, columna: _instruccion.columna }
+        }else if (expresion.valor[0].valor === 'EMPTY')
             cadena.retorno = { valor: 0, tipo: TIPO_DATO.ENTERO, linea: _instruccion.linea, columna: _instruccion.columna }
         else
             cadena.retorno = { valor: expresion.valor.length, tipo: TIPO_DATO.ENTERO, linea: _instruccion.linea, columna: _instruccion.columna }
@@ -220,4 +206,32 @@ function to_CharList(_instruccion, _ambito) {
         return cadena;
     }
     return { err: "Error: La expresión de tipo " + expresion.tipo + " no es aceptada en 'toCharArray()'.\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
+}
+
+function CaracterOfPosition(_instruccion, _ambito){
+    var cadena = { cadena: "", retorno: null, err: null }
+    var expresion = Operacion(_instruccion.expresion, _ambito);
+    if (expresion.err) { cadena.err = expresion.err; return cadena }
+    if (expresion.cadena) cadena.cadena = expresion.cadena;
+    if (expresion.retorno) expresion = expresion.retorno;
+    if (expresion.tipo === TIPO_DATO.CADENA){
+        expresion.valor = expresion.valor.charAt(_instruccion.posicion);
+        cadena.retorno = expresion;
+        return cadena
+    }
+    return { err: "Error: La expresión de tipo " + expresion.tipo + " no es aceptada en 'CaracterOfPosition()'.\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
+}
+
+function SubString(_instruccion, _ambito){
+    var cadena = { cadena: "", retorno: null, err: null }
+    var expresion = Operacion(_instruccion.expresion, _ambito);
+    if (expresion.err) { cadena.err = expresion.err; return cadena }
+    if (expresion.cadena) cadena.cadena = expresion.cadena;
+    if (expresion.retorno) expresion = expresion.retorno;
+    if (expresion.tipo === TIPO_DATO.CADENA){
+        expresion.valor = expresion.valor.substring(_instruccion.inicio, _instruccion.fin);
+        cadena.retorno = expresion;
+        return cadena
+    }
+    return { err: "Error: La expresión de tipo " + expresion.tipo + " no es aceptada en 'SubString()'.\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
 }

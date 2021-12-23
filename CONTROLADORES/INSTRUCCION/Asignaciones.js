@@ -68,6 +68,11 @@ function Asignacion(_instruccion, _ambito) {
                     if (valor.err) return { err: valor.err }
                     if (valor.cadena) cadena.cadena = valor.cadena;
                     if (valor.retorno) valor = valor.retorno;
+                    if (simbolo.valor.length === 0){
+                        simbolo.valor.push(valor);  
+                        _ambito.actualizar(id, simbolo)
+                        return cadena
+                    }
                     var tipoLista = simbolo.valor[0].tipo;
                     if (tipoLista === valor.tipo) { // ...
                         if (simbolo.valor[0].valor === 'EMPTY') {
@@ -95,55 +100,61 @@ function Asignacion(_instruccion, _ambito) {
         const id = _instruccion.id;
         const simbolo = _ambito.getSimbolo(id)
         if (simbolo) {
-
-            var valor = Operacion(_instruccion.expresion, _ambito)
-            if (valor.err) return { err: valor.err }
-            if (valor.cadena) cadena.cadena = valor.cadena;
-            if (valor.retorno) valor = valor.retorno;
-
-            if (simbolo.tipo === TIPO_DATO.VECTOR) {
-                if (valor.tipo != TIPO_DATO.VECTOR)
-                    return { err: `Error: No es posible asignar un valor de tipo ${valor.tipo} al vector '${id}'.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
-                var tipoVector = simbolo.valor[0].tipo;
-                if (tipoVector === valor.valor[0].tipo) {
-                    simbolo.valor = valor.valor;
-                    _ambito.actualizar(id, simbolo)
-                    return cadena;
-                }
-                else
-                    return { err: `Error: No es posible asignar un vector de tipo ${valor.valor[0].tipo} al vector '${id}' que es de tipo ${tipoVector}.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
-            }
-
-            if (simbolo.tipo === TIPO_DATO.LISTA) {
-                if (valor.tipo != TIPO_DATO.LISTA)
-                    return { err: `Error: No es posible asignar un valor de tipo ${valor.tipo} a la lista '${id}'.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
-                var tipoLista = simbolo.valor[0].tipo;
-                if (tipoLista === valor.valor[0].tipo) {
-                    simbolo.valor = valor.valor;
-                    _ambito.actualizar(id, simbolo)
-                    return cadena;
-                }
-                else
-                    return { err: `Error: No es posible asignar una lista de tipo ${valor.valor[0].tipo} a la lista '${id}' que es de tipo ${tipoLista}.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
-            }
-
-            var tipos = {
-                tipoSimbolo: simbolo.tipo,
-                tipoNuevoValor: valor.tipo
-            }
-            // Casteo implícito entero-doble, doble-entero
-            if ((tipos.tipoSimbolo === TIPO_DATO.ENTERO || tipos.tipoSimbolo === TIPO_DATO.DOBLE) && (tipos.tipoNuevoValor === TIPO_DATO.ENTERO || tipos.tipoNuevoValor === TIPO_DATO.DOBLE)) {
-                simbolo.valor = Number(valor.valor);
+            if(_instruccion.expresion === "[]"){
+                simbolo.valor = [];
+                _ambito.actualizar(id, simbolo);
+                return cadena;
+            }else{
+                var valor = Operacion(_instruccion.expresion, _ambito)
+                if (valor.err) return { err: valor.err }
                 if (valor.cadena) cadena.cadena = valor.cadena;
-                _ambito.actualizar(id, simbolo)
-                return cadena;
+                if (valor.retorno) valor = valor.retorno;
+    
+                if (simbolo.tipo === TIPO_DATO.VECTOR) {
+                    if (valor.tipo != TIPO_DATO.VECTOR)
+                        return { err: `Error: No es posible asignar un valor de tipo ${valor.tipo} al vector '${id}'.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+                    var tipoVector = simbolo.valor[0].tipo;
+                    if (tipoVector === valor.valor[0].tipo) {
+                        simbolo.valor = valor.valor;
+                        _ambito.actualizar(id, simbolo)
+                        return cadena;
+                    }
+                    else
+                        return { err: `Error: No es posible asignar un vector de tipo ${valor.valor[0].tipo} al vector '${id}' que es de tipo ${tipoVector}.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+                }
+    
+                if (simbolo.tipo === TIPO_DATO.LISTA) {
+                    if (valor.tipo != TIPO_DATO.LISTA)
+                        return { err: `Error: No es posible asignar un valor de tipo ${valor.tipo} a la lista '${id}'.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+                    var tipoLista = simbolo.valor[0].tipo;
+                    if (tipoLista === valor.valor[0].tipo) {
+                        simbolo.valor = valor.valor;
+                        _ambito.actualizar(id, simbolo)
+                        return cadena;
+                    }
+                    else
+                        return { err: `Error: No es posible asignar una lista de tipo ${valor.valor[0].tipo} a la lista '${id}' que es de tipo ${tipoLista}.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
+                }
+    
+                var tipos = {
+                    tipoSimbolo: simbolo.tipo,
+                    tipoNuevoValor: valor.tipo
+                }
+                // Casteo implícito entero-doble, doble-entero
+                if ((tipos.tipoSimbolo === TIPO_DATO.ENTERO || tipos.tipoSimbolo === TIPO_DATO.DOBLE) && (tipos.tipoNuevoValor === TIPO_DATO.ENTERO || tipos.tipoNuevoValor === TIPO_DATO.DOBLE)) {
+                    simbolo.valor = Number(valor.valor);
+                    if (valor.cadena) cadena.cadena = valor.cadena;
+                    Lista_Traducciones.push(new Traductor_id(simbolo.id, null, valor.ubicacion, null, "ASIGNACION"))
+                    _ambito.actualizar(id, simbolo)
+                    return cadena;
+                }
+                if (tipos.tipoSimbolo === tipos.tipoNuevoValor) {
+                    simbolo.valor = valor.valor;
+                    _ambito.actualizar(id, simbolo)
+                    return cadena;
+                }
+                return { err: "Error: No es posible asignar un valor de tipo " + tipos.tipoNuevoValor + " a la variable '" + id + "' que es de tipo " + tipos.tipoSimbolo + ".\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
             }
-            if (tipos.tipoSimbolo === tipos.tipoNuevoValor) {
-                simbolo.valor = valor.valor;
-                _ambito.actualizar(id, simbolo)
-                return cadena;
-            }
-            return { err: "Error: No es posible asignar un valor de tipo " + tipos.tipoNuevoValor + " a la variable '" + id + "' que es de tipo " + tipos.tipoSimbolo + ".\nLínea: " + _instruccion.linea + " Columna: " + _instruccion.columna + "\n" }
         }
         return { err: `Error: la variable '${String(id)}' no existe.\nLínea: ${_instruccion.linea} Columna: ${_instruccion.columna}\n` }
     }
