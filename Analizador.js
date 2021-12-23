@@ -168,7 +168,7 @@ case 29:
  this.$ = $$[$0]; producciones.push({Sintactico: "dec_variables -> var ", Semantico: "dec_variables.val -> var.val;" }); 
 break;
 case 30:
- $$[$0].push($$[$0-2]); this.$=$$[$0]; return $$[$0-2]; producciones.push({Sintactico: "dec_variables -> var , dec_variables ", Semantico: "dec_variables.val -> var.val, dec_variables.val;"});
+ $$[$0].push($$[$0-2]); this.$=$$[$0-2]; return $$[$0-2]; producciones.push({Sintactico: "dec_variables -> var , dec_variables ", Semantico: "dec_variables.val -> var.val, dec_variables.val;"});
 break;
 case 31:
 this.$=$$[$0]; producciones.push({Sintactico: "var -> Declaracion_Variable", Semantico: "var.val -> Declaracion_Variable.val"}); 

@@ -189,7 +189,7 @@ Dec_Struct: TK_STRUCT IDENTIFICADOR LlaveAbre BodyStruct LlaveCierra TK_PYC { al
 ;
 
 BodyStruct: s { $$ = $1; producciones.push({Sintactico: "dec_variables -> var ", Semantico: "dec_variables.val -> var.val;" }); }
-        | s TK_COMA BodyStruct { $3.push($1); $$=$3; return $1; producciones.push({Sintactico: "dec_variables -> var , dec_variables ", Semantico: "dec_variables.val -> var.val, dec_variables.val;"});}
+        | s TK_COMA BodyStruct { $3.push($1); $$=$1; return $1; producciones.push({Sintactico: "dec_variables -> var , dec_variables ", Semantico: "dec_variables.val -> var.val, dec_variables.val;"});}
 ;
 
 s: Dec_Var {$$=$1; producciones.push({Sintactico: "var -> Declaracion_Variable", Semantico: "var.val -> Declaracion_Variable.val"}); }
