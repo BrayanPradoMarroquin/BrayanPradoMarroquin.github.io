@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="Style.css">
     <link rel="icon" type="image/x-icon" href="quetzal.ico">
     <script src="codemirror-5.64.0/lib/codemirror.js"></script>
-    <script src="./node_modules/viz.js/viz.js" type='javascript/worker'></script>
-    <script src="./node_modules/d3/build/d3.js"></script>
-    <script src="./node_modules/d3-graphviz/build/d3-graphviz.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+    <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
     <link rel="stylesheet" href="codemirror-5.64.0/lib/codemirror.css">
     <script src="codemirror-5.64.0/mode/clike/clike.js"></script>
     <link rel="stylesheet" href="codemirror-5.64.0/theme/lesser-dark.css">
@@ -59,7 +59,9 @@
             <textarea id="textAST"></textarea>
         </div>
     </div>
-    
+    <h3 >Grafico </h3>
+            <div id="AST" class="terminal-container" style="background-color: #06141d60;">
+            <div id="graph" style="text-align: center;"></div>
     <footer class="text-center text-lg-start">
         <div class="text-center p-3" style="background-color: #EDEDED;">
           <p class="foot my-0">

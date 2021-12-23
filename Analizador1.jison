@@ -455,13 +455,13 @@ Expresiones: CADENA {$$ = Instruccion.nuevoValor($1, TIPO_VALOR.CADENA, this._$.
             | TK_SENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= Instruccion.nuevaOperacionBinaria(null,$3, TIPO_OPERACION.SENO,this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Expresiones -> SEN(Expresiones)", Semantico: "Expresiones.val -> SEN(Expresiones.val)"});}
             | TK_COSENO PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= Instruccion.nuevaOperacionBinaria(null,$3, TIPO_OPERACION.COSENO,this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Expresiones -> COS(Expresiones)", Semantico: "Expresiones.val -> COS(Expresiones.val)"});}
             | TK_TANGENTE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= Instruccion.nuevaOperacionBinaria(null,$3, TIPO_OPERACION.TANGETE,this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Expresiones -> TAN(Expresiones)", Semantico: "Expresiones.val -> TAN(Expresiones.val)"});}
-            | TK_LOGARITMOB10 PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= Instruccion.nuevaOperacionBinaria(null,$3, TIPO_OPERACION.LOGARITMO,this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Expresiones -> LOG10(Expresiones)", Semantico: "Expresiones.val -> LOG10(Expresiones.val)"});}
+            | TK_LOGARITMOB10 PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$= Instruccion.nuevaOperacionBinaria(null,$3, TIPO_OPERACION.LOGARITMO,this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Expresiones -> LOG10(Expresiones)"}, Semantico: "Expresiones.val -> LOG10(Expresiones.val)");}
 
             | Expresiones IGUALIGUAL Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.IGUALIGUAL,this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Expresiones -> Expresiones == Expresiones", Semantico: "Expresiones.val -> Expresiones.val == Expresiones.val"}); }
             | Expresiones MENOR Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.MENOR,this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Expresiones -> Expresiones < Expresiones", Semantico: "Expresiones.val -> Expresiones.val < Expresiones.val"});}
             | Expresiones MENORIGUAL Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.MENORIGUAL,this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Expresiones -> Expresiones <= Expresiones", Semantico: "Expresiones.val -> Expresiones.val <= Expresiones.val"});}
             | Expresiones MAYOR Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.MAYOR,this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Expresiones -> Expresiones > Expresiones", Semantico: "Expresiones.val -> Expresiones.val > Expresiones.val"});}
-            | Expresiones MAYORIGUAL Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.MAYORIGUAL,this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Expresiones -> Expresiones >= Expresiones", Semantico: "Expresiones.val -> Expresiones.val >= Expresiones.val"});}
+            | Expresiones MAYORIGUAL Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.MAYORIGUAL,this._$.first_line,this._$.first_column+1) producciones.push({Sintactico: "Expresiones -> Expresiones >= Expresiones", Semantico: "Expresiones.val -> Expresiones.val >= Expresiones.val"});}
 
             | Expresiones OR Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.OR,this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Expresiones -> Expresiones || Expresiones", Semantico: "Expresiones.val -> Expresiones.val || Expresiones.val"});}
             | Expresiones AND Expresiones { $$= Instruccion.nuevaOperacionBinaria($1,$3, TIPO_OPERACION.AND,this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Expresiones -> Expresiones && Expresiones", Semantico: "Expresiones.val -> Expresiones.val && Expresiones.val"});}
@@ -514,9 +514,8 @@ FTypeof: TK_TYPEOF PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Inst
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
-
 //-------------------------------------------------------------- Casteos ---------------------------------------------------------------
-Casteos: parseo { $$ = $1; producciones.push({Sintactico: "Casteos -> parseo", Semantico: "Casteos.val -> parseo.val"});}
+Casteos: parseo { $$ = $1; producciones.push(Sintactico: "Casteos -> parseo", Semantico: "Casteos.val -> parseo.val");}
         | toTipo { $$ = $1; producciones.push({Sintactico: "Casteos -> toTipo", Semantico: "Casteos.val -> toTipo.val"});}
         | TK_STRINGPARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoToString($3, this._$.first_line,this._$.first_column+1); producciones.push({Sintactico: "Casteos -> String(Expresiones)", Semantico: "Casteos.val -> String(Expresiones.val)"});}
 ;
@@ -524,10 +523,9 @@ Casteos: parseo { $$ = $1; producciones.push({Sintactico: "Casteos -> parseo", S
 parseo: Tipos TK_PUNTO TK_PARSE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoCasteo($1, $5, this._$.first_line, this._$.first_column+1); producciones.push({Sintactico: "parseo -> TIPO.PARSE(Expresiones)", Semantico: "parseo.val -> TIPO.val.PARSE(Expresiones.val)"});}
 ;
 
-toTipo: TK_TOINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoTruncate($3, this._$.first_line, this._$.first_column+1); producciones.push({Sintactico: "toTipo: toInt(Expresiones)", Semantico: "toTipo.val: toInt(Expresiones.val)"});}
+toTipo: TK_TOINT PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoTruncate($3, this._$.first_line, this._$.first_column+1); producciones.push({Sintactico: "toTipo -> toInt(Expresiones)", Semantico: "toTipo.val: toInt(Expresiones.val)"});}
         | TK_TODOUBLE PARENTESIS_ABRE Expresiones PARENTESIS_CIERRA { $$ = new Instruccion.nuevoCasteo("DOBLE", $3, this._$.first_line, this._$.first_column+1); producciones.push({Sintactico: "toTipo: toDouble(Expresiones)", Semantico: "toTipo.val: toDouble(Expresiones.val)"});}
 ;
-
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 

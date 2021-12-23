@@ -149,6 +149,8 @@ function mostrarAST(){
     var root_AST = new Graph(gramatica.parse);
     var dot = root_AST.getDot();
     textAST.setValue(dot);
+    d3.select("#graph").graphviz()
+    .renderDot(dot)
 }
 
 function TablaErrores(){
