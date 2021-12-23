@@ -144,6 +144,7 @@ function Asignacion(_instruccion, _ambito) {
                 if ((tipos.tipoSimbolo === TIPO_DATO.ENTERO || tipos.tipoSimbolo === TIPO_DATO.DOBLE) && (tipos.tipoNuevoValor === TIPO_DATO.ENTERO || tipos.tipoNuevoValor === TIPO_DATO.DOBLE)) {
                     simbolo.valor = Number(valor.valor);
                     if (valor.cadena) cadena.cadena = valor.cadena;
+                    
                     _ambito.actualizar(id, simbolo)
                     return cadena;
                 }
