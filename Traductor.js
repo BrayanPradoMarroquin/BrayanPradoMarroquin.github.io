@@ -16,7 +16,10 @@ class Traductor_id{
             this.ubicacion = a.ubicacion
             console.log("hola")
         }else if(this.tipo=="ASIGNACION"){
-
+            let a = T_Asignacion(this.id, this.valor)
+            this.traduccion = a.traduccion
+            this.ubicacion = a.ubicacion
+            console.log("hola")
         }
     }
 }
@@ -79,6 +82,14 @@ function T_Declaracion(opIzq, valor, opDer){
         Stack = Stack +1
         return data
     }
+}
+
+function T_Asignacion(identificador, valor){
+    var t = BuscarPosicion(identificador);
+        let data = {traduccion:  t.replace(";", "")+ "= "+valor.toString()+";\n",
+                    ubicacion: t};
+        Stack = Stack +1
+        return data
 }
 
 function T_Aritmetica(opIzq, tipoA, signo, opDer, tipoB){
@@ -269,7 +280,7 @@ function Llamado_Traductor(){
 function concatenar(Lista){
     concate = ""
     for(i=0; i<Lista.length; i++){
-        if(Lista[i].tipo=="DECLARACION"){
+        if((Lista[i].tipo=="DECLARACION") || (Lista[i].tipo=="ASIGNACION")){
             concate = concate + Lista[i].traduccion;
         }else if(Lista[i].tipo=="ARITMETICA"){
             concate = concate + Lista[i].valor;
