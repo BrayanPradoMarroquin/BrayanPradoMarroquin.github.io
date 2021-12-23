@@ -37,6 +37,7 @@ trad = traductor;
 let errores = null;
 let simbolos = null;
 let gramatica = null;
+let Reporte_Gra = null;
 
 function compiler(){
     Lista_Traducciones = []
@@ -50,6 +51,7 @@ function compiler(){
     try {
         gramatica = Analizador.parse(informacion);
         errores = gramatica.errores;
+        Reporte_Gra = gramatica.Pro;
         var global = new Ambito(null, "global", "");
         var cadena = Global(gramatica.parse, global);
         simbolos = global.getArraySimbols()
@@ -123,6 +125,68 @@ function TablaSimbolos(){
                                         contcantenar= contcantenar+`
                                                                     </tr>
                                                                     `
+    }
+    var final = `
+        </tbody>
+        </table>
+        </div>
+        </div>
+        <footer class="text-center text-lg-start">
+        <div class="text-center p-3" style="background-color: #EDEDED;">
+          <p class="foot my-0">
+            © 2021 QUETZALITO - Organización de Lenguajes y Compiladores 2 - Proyecto 1
+          </p>
+        </div>
+      </footer>
+      </body>
+</html>                   
+    `  
+    var resul = base + contcantenar + final;       
+    var doc = document.open("text/html");
+    doc.write(resul);
+    doc.close();  
+}
+
+function Producciones(){
+    var base = `<!DOCTYPE html>
+                    <html lang=\"en\">
+                        <head>
+                            <meta charset=\"UTF-8\">
+                            <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
+                            <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+                            <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3\" crossorigin=\"anonymous\">
+                            <link rel=\"stylesheet\" href=\"Style.css\">
+                            <link rel=\"icon\" type=\"image/x-icon\" href=\"quetzal.ico\">
+                            <title>Quetzalito 502</title>
+                        </head>
+                        <body>
+                            <header>
+                                <div class="padre">
+                                    <div class="titlep">
+                                        <h1>Interprete Quetzalito</h1>
+                                    </div>
+                                </div>
+                            </header>
+                            <div class="row my-5">
+                                <div class="col-12">
+                                <p class="mt-2 mb-1 text-white subtitulo" style="text-align: center; font-size: 36px;">Reporte Gramatical</p>
+                                <table class="table table-striped table-dark text-center">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Sintactico</th>
+                                        <th scope="col">Semantico</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    `
+    var contcantenar = "";
+    for(let i = 0; i < Reporte_Gra.length; i++){
+        contcantenar = contcantenar + `
+                                    <tr>
+                                        <td>`+(i+1).toString()+`</td>
+                                        <td>`+Reporte_Gra[i].Sintactico+`</td>
+                                        <td>`+Reporte_Gra[i].Semantico+`</td></tr>`
     }
     var final = `
         </tbody>

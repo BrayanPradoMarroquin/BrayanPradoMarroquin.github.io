@@ -144,7 +144,7 @@
 
 %%
 
-ini: ENTRADA EOF { retorno = { parse: $1, errores: errores }; errores = []; return retorno; producciones.push({Sintactico: "inicio -> entrada EOF", Semantico: "inicio.val := entrada.val EOF"}); }
+ini: ENTRADA EOF {producciones.push({Sintactico: "inicio -> entrada EOF", Semantico: "inicio.val := entrada.val EOF"});  retorno = { parse: $1, errores: errores, Pro: producciones }; errores = []; return retorno; }
     |error EOF   { retorno = { parse: null, errores: errores }; errores = []; return retorno; }
 ;
 

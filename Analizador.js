@@ -84,7 +84,7 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
- retorno = { parse: $$[$0-1], errores: errores }; errores = []; return retorno; producciones.push({Sintactico: "inicio -> entrada EOF", Semantico: "inicio.val := entrada.val EOF"}); 
+producciones.push({Sintactico: "inicio -> entrada EOF", Semantico: "inicio.val := entrada.val EOF"});  retorno = { parse: $$[$0-1], errores: errores, Pro: producciones }; errores = []; return retorno; 
 break;
 case 2:
  retorno = { parse: null, errores: errores }; errores = []; return retorno; 
