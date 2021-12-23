@@ -642,13 +642,31 @@ function modulo(_opIzq, _opDer, _ambito) {
                         columna: _opDer.columna
                     }
                 }
+                //PARA CUANDO ES LA PRIMERA RONDA DE VALORES
+                if((opIzq.ubicacion==null) && (opDer.ubicacion==null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "fmod", _opDer.valor, _opDer.tipo)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DE LOS DOS LADOS
+                }else if((opIzq.ubicacion!=null) && (opDer.ubicacion!=null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "fmod", opDer.ubicacion, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO IZQUIERDO 
+                }else if((opIzq.ubicacion!=null) && (opDer.ubicacion==null)){
+                    respuesta = T_Aritmetica(opIzq.ubicacion, "GUARDA", "fmod", _opDer.valor, _opDer.tipo)
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                //PARA CUANDO HUBIERON OPERACIONES DEL LADO DERECHO
+                }else if((opIzq.ubicacion==null) && (opDer.ubicacion!=null)){
+                    respuesta = T_Aritmetica(_opIzq.valor, _opIzq.tipo, "fmod", opDer.ubicacion, "GUARDA")
+                    Lista_Traducciones.push(new Traductor_id(respuesta.ubicacion, null, respuesta.traducciones, null, "ARITMETICA"))
+                }
                 resultado = op1 % op2;
                 return {
                     valor: resultado,
                     tipo: tipoRes,
                     linea: _opIzq.linea,
                     columna: _opIzq.columna,
-                    cadena: cadena
+                    cadena: cadena,
+                    ubicacion: respuesta.ubicacion
                 }
 
             default:

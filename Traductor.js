@@ -15,6 +15,8 @@ class Traductor_id{
             this.traduccion = a.traduccion
             this.ubicacion = a.ubicacion
             console.log("hola")
+        }else if(this.tipo=="ASIGNACION"){
+
         }
     }
 }
@@ -146,8 +148,11 @@ function T_Aritmetica(opIzq, tipoA, signo, opDer, tipoB){
         data = {traducciones:tA+"t"+temporales.toString()+"= log10("+porIzq.toString()+");\n",
                 ubicacion: "t"+temporales.toString()}
         temporales = temporales +1;
-    }
-    else{
+    }else if(signo=="fmod"){
+        data = {traducciones:tA+tB+"t"+temporales.toString()+" ="+signo+"("+(porIzq)+","+(porDer)+");\n",
+                ubicacion: "t"+temporales.toString()}
+        temporales = temporales +1;
+    }else{
         data = {traducciones:tA+tB+"t"+temporales.toString()+" ="+(porIzq)+signo+(porDer)+";\n",
                 ubicacion: "t"+temporales.toString()}
         temporales = temporales +1;

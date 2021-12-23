@@ -19,6 +19,7 @@ function Declaracion(_instruccion, _ambito) {
 
     var cadena = { cadena: "", retorno: null, err: null }
     console.log(_instruccion.tipo_dato.length);
+    var trad = 0;
     if (_instruccion.tipo_dato === TIPO_DATO.ENTERO) {
         var trad = 0
         let data;
